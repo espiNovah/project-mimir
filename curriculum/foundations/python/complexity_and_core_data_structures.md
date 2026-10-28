@@ -230,7 +230,9 @@ In real code, the same reasoning shows up in less tidy forms. Deduplicating scra
 
 <div class="lesson-content__panel" markdown="1">
 
-1. Read [Rob Bell's "A beginner's guide to Big O Notation"](https://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/), a short classic that walks through O(1), O(n), O(n²) and O(log n) with tiny examples. Then read [freeCodeCamp's "Big O Cheat Sheet"](https://www.freecodecamp.org/news/big-o-cheat-sheet-time-complexity-chart/) for a chart of the same classes and more examples. Its code is in JavaScript, but it reads almost like Python.
+1. Read from [*Problem Solving with Algorithms and Data Structures using Python*](https://runestone.academy/ns/books/published/pythonds3/index.html) by Brad Miller and David Ranum, a free interactive textbook that teaches this lesson's ideas in Python, with code you can run in the page.
+   - Read the "Analysis" chapter. It covers Big-O with worked examples, including an anagram problem solved several ways at different costs, and the performance of Python's lists and dictionaries.
+   - In the "Basic Data Structures" chapter, read the sections on stacks, queues and deques. Skip the linked-list sections for now.
 1. Read [Using Lists as Stacks and Using Lists as Queues](https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-stacks) in the official Python tutorial (two short sections), which show the list-as-stack pattern and explain why a deque makes a better queue.
 1. Read [the TimeComplexity page on the Python wiki](https://wiki.python.org/moin/TimeComplexity) for the lists, deque, set and dict tables. You don't need to memorize it; notice which operations are O(n) and get in the habit of looking things up here.
 1. Read the [deque section of the collections docs](https://docs.python.org/3/library/collections.html#collections.deque) and the [bisect module docs](https://docs.python.org/3/library/bisect.html) up to and including "Searching Sorted Lists". Then skim the [timeit docs](https://docs.python.org/3/library/timeit.html), focusing on the "Basic Examples" and "Command-Line Interface" sections.
@@ -257,6 +259,8 @@ The following questions are an opportunity to reflect on key topics in this less
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
+- [Rob Bell's "A beginner's guide to Big O Notation"](https://rob-bell.net/2009/06/a-beginners-guide-to-big-o-notation/) is a short classic that walks through O(1), O(n), O(n²) and O(log n) with tiny examples. It's a good quick refresher.
+- [freeCodeCamp's "Big O Cheat Sheet"](https://www.freecodecamp.org/news/big-o-cheat-sheet-time-complexity-chart/) charts the common classes with more examples. Its code is in JavaScript, but it reads almost like Python.
 - [The Big-O Cheat Sheet](https://www.bigocheatsheet.com/) charts the complexity of common data structures and sorting algorithms on one page.
 - [VisuAlgo's sorting visualizations](https://visualgo.net/en/sorting) animate sorting algorithms step by step, so you can see why some take n² steps and others n log n.
 - [The NeetCode roadmap](https://neetcode.io/roadmap) groups classic interview problems by pattern, starting with "Arrays and Hashing". It's where the Coding Interviews lesson picks up.
