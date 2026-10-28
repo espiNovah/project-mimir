@@ -546,3 +546,51 @@ Apply the evidence checklist (1.2) to every project, plus these specific changes
 - **Scope creep in the new lessons.** Hold to the definition of done. A lesson can always be extended later.
 - **AI tooling goes stale fast.** Keep the Current Models page, run the weekly link check, and put a "last checked" date on time-sensitive claims such as free tiers and pricing.
 - **Peer review needs a community.** Until one exists, a learner may substitute a recorded self-review with an AI reviewer, but must say so in the README.
+
+---
+
+## Finishing plan (from 2026-10-28)
+
+Phases 0–3 are done, and Phase 4 is partly done. This plan finishes the required paths in batches. **What's left:** 72 required lessons that are still outlines and 31 required project briefs without an `#### Evidence` section. The electives (26 lessons, 8 briefs) are optional and come last.
+
+**Done when** every lesson in a required path meets the definition of done, every project brief has Evidence, `scripts/validate.py` and `scripts/check_exercises.py` both pass, and every item under [Deferred verification](#deferred-verification) is checked.
+
+### How each batch runs
+
+- About 6 writer agents per batch, usually 2 lessons each, all following the writer brief.
+- Each agent saves a complete draft to disk before checking links, so an interrupted run never loses work.
+- After each batch: audit (validator, exercise checker, scope, consistency between lessons), then commit, merge to `main` and push.
+- Order follows the learner's path. Lessons are written before the project briefs that depend on them, so each brief matches what was taught.
+
+### Batches
+
+| # | Lessons | Briefs and fix-ups |
+| --- | --- | --- |
+| 4. Core | User Accounts and Auth, Job Queues and Workers, Timeouts/Retries/Rate Limits, Images/PDFs/Audio, JavaScript, TypeScript, React, Next.js and the AI SDK, HTML and CSS, Rapid UIs, Citations and Grounding, Supervised Learning, Overfitting and Baselines, Fine-Tune/Prompt/RAG (14) | JavaScript must cover `fetch` and async/await. Images/PDFs/Audio must cover the base64 document block. Job Queues must fit the `submit_job`/`INLINE_JOBS` pattern in Deploying Your API |
+| 5. Core briefs, Agentic I | Workflows vs Agents, Designing Tools, Agent Tracing and Debugging, Scaling to Many Tools, Chaining and Routing, Parallelization and Orchestrators (6) | Write the Core Open Brief project. Add Evidence to 5 Core and 7 Foundations briefs. Chat With Your Docs ingests `records.jsonl` so citations keep page numbers |
+| 6. Agentic II | Evaluator-Optimizer, Agent Cost and Latency, MCP Architecture, Building an MCP Server, MCP Transports and Security, Context Engineering, Short- and Long-Term Memory, Compaction, Long-Running Agents, Durable Execution, Claude Agent SDK, Other Frameworks (12) | none |
+| 7. Agentic III | Agent Skills, Running Open Models, When Frameworks Help, How Coding Agents Work, Sandboxing, Browser and Computer Use, Subagents and Orchestration, Secure Design Patterns, Guardrails in Production, Approvals and Permissions, Simulated Users and Benchmarks, Voice (optional) (12) | none |
+| 8. Agentic briefs, Production I | One Real Cloud, Deploying to the Cloud, Managed Postgres and Backups, Feature Flags and A/B Tests, Logging and Tracing, Traces to Evals, Alerting and Incidents, Load Testing (8) | Evidence for all 10 Agentic briefs, each with a prompt-injection test |
+| 9. Production II, Capstone | Caching and Model Choice, Batching/Rate Limits/Fallbacks, Security Review, Code Review, A Server of Your Own (optional), Finding a Real Problem, Writing a Spec, Working in a Team, Resume for AI Roles, Case Studies and Demos (10) | Evidence for 4 Production briefs and the Capstone |
+| 10. Getting Hired | Your First Contribution, Networking and Referrals, Running a Job Search, Freelance and Contract Work, Behavioral Interviews, Offers and Negotiation, System Design Basics, AI System Design (8) | Write the Outreach Sprint project. Evidence for 3 Hired briefs |
+| 11. Final review | none | A consistency pass across the curriculum. Recheck each path's hour estimate against what it assigns. Tick off the checkboxes in this roadmap |
+| 12–13. Electives (optional) | ML: 8 lessons. Research: 17 lessons | ML: 4 briefs. Research: 5 briefs |
+
+Each batch takes about 20–30 minutes of agent time plus review.
+
+### Open decisions
+
+- [ ] **Lesson length.** The brief targets 1,000–1,600 words of explanation, but most finished lessons run 1,800–2,500. Proposal: raise the target to 1,500–2,200 rather than trimming.
+- [ ] **One Real Cloud vs Deploying to the Cloud.** These may overlap now that Core teaches Render. The Batch 8 agent recommends merging or splitting them before writing either.
+- [ ] **Electives.** Write them after the required paths, or leave them as outlines for contributors?
+
+### Deferred verification
+
+Agents work without API keys, Docker or a Render account, so some code has only run against fakes. Test these by hand before calling the curriculum finished. Each batch adds its items here.
+
+- [ ] Run the Claude API examples with a real key: The Agent Loop, Function Calling, Tool Errors and Parallel Calls, Prompt Injection, Agent Eval Fundamentals, Streaming in the Browser, Error Analysis and Labeling (`synth.py`), and Document Parsing (`vision_parse.py`).
+- [ ] Build the Dockerfile and `compose.yaml` from Docker and Docker Compose, and the pgvector Compose file from Chunking and Vector Databases.
+- [ ] Run the Compose `migrate` service from Migrations with Alembic.
+- [ ] Deploy the LLM-Powered API's free `render.yaml` to Render once, with inline jobs.
+- [ ] Run `uv lock` in `exercises/`; numpy was added to `uv.lock` by hand.
+- [ ] Browser checks: the Meta hiring-process page says candidates use only its built-in AI assistant (Coding Interviews), and the Runestone pythonds3 chapter names match the Complexity lesson.
