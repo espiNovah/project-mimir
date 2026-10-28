@@ -38,6 +38,7 @@ Every lesson follows the same layout, so you always know where to look:
 - **Introduction** and **Lesson overview** tell you what the lesson covers and why it matters.
 - The **teaching sections** explain the ideas in plain language, usually with short code examples. Type the examples out yourself instead of copying them. Your fingers learn things your eyes skip.
 - The **Assignment** is a numbered list of readings, videos and exercises. These are the best free resources we could find, and they go deeper than the lesson text. Do them. The lesson text is the summary; the assignment is where most of the learning happens.
+- The **Knowledge check** is a short list of questions. Each one links back to the section that answers it, so if you can't answer one, click it and reread that part.
 - **Additional resources** are optional. Use them when a topic clicks and you want more, or when it doesn't click and you want a second explanation.
 
 A note box like the one below highlights something worth slowing down for.

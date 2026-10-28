@@ -44,13 +44,13 @@ Hallucinations are most likely when a question is about something **specific and
 
 You can't prompt hallucinations away completely, but you can build systems that work despite them. These are patterns you'll implement for real later in the curriculum:
 
-- **Give the model the facts instead of relying on its memory.** If a question can be answered from a document, put the document in the context window and tell the model to answer only from it. This is the idea behind retrieval-augmented generation (RAG), covered in the Embeddings and Retrieval section, and it's the most effective fix there is.
+- **Give the model the facts instead of relying on its memory.** If a question can be answered from a document, put the document in the context window and tell the model to answer only from it. This is the idea behind retrieval-augmented generation (RAG), covered in the RAG section, and it's the most effective fix there is.
 - **Give it permission not to know.** Explicitly say that "I don't know" or "the document doesn't say" is an acceptable answer. Models follow this instruction surprisingly well.
 - **Ask for evidence.** Have the model quote the passage that supports each claim, then check in code that the quote really appears in the source. A model that can't find a supporting quote should withdraw the claim.
 - **Let it look things up.** Give an agent tools to search the web, read documentation or run code, so it can check facts instead of recalling them. You'll build this in the Tool Use section.
 - **Verify in code wherever you can.** If a model writes code, run the tests. If it returns a URL, fetch it. If it returns JSON, validate it. Anything checkable should be checked automatically.
 - **Match the stakes.** Add human review where a wrong answer would be expensive: medical, legal, financial or anything that takes irreversible action.
-- **Measure it.** Build a test set of questions with known answers, including some the model *shouldn't* be able to answer, and track how often it makes things up. That's an eval, and you'll learn to build them in the Evals section.
+- **Measure it.** Build a test set of questions with known answers, including some the model *shouldn't* be able to answer, and track how often it makes things up. That's an eval, and you'll learn to build them in the Measuring Quality section.
 
 Here's a taste of the "permission not to know" plus "answer from the source" pattern, as a prompt you could send to any model:
 
@@ -75,7 +75,7 @@ Question: In what year was the bridge completed?
 1. Watch the "hallucinations, tool use, knowledge/working memory" chapter of Andrej Karpathy's [Deep Dive into LLMs like ChatGPT](https://www.youtube.com/watch?v=7xTGNNLPyMI) (1:20:32 to 1:41:46).
    - It explains, with real examples, why models make things up and how training them to say "I don't know" and to use tools helps.
 1. Read Anthropic's guide to [reducing hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations).
-   - Read the basic strategies carefully. Skim the advanced techniques; you'll use several of them in the Embeddings and Retrieval section.
+   - Read the basic strategies carefully. Skim the advanced techniques; you'll use several of them in the RAG section.
 1. Go hallucination hunting with any free chat app. You'll reuse your findings in the Token & Temperature Lab project.
    - Ask for things in the risky zone: three academic papers on a niche topic with authors and years; a quote from a minor historical figure; the parameters of a function in a small, less popular Python library; recent news.
    - Check every answer against a real source. Keep a log of each prompt, the answer, what was actually true, and how you verified it.
