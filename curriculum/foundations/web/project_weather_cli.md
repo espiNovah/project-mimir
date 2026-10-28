@@ -18,7 +18,7 @@ This is the same shape as a huge amount of AI engineering work: call an external
 
 - Create a new public GitHub repository named `mimir-weather-cli` and clone it.
 - Inside it, run `uv init --package` so you get a `src/` layout, then `uv add httpx` and `uv add --dev pytest`.
-- `uv init --package` creates a command named after the project. To run it as `uv run weather`, edit the `[project.scripts]` table in `pyproject.toml` to read `weather = "tap_weather_cli:main"`.
+- `uv init --package` creates a command named after the project. To run it as `uv run weather`, edit the `[project.scripts]` table in `pyproject.toml` to read `weather = "mimir_weather_cli:main"`.
 - Read the [Open-Meteo forecast API docs](https://open-meteo.com/en/docs) and the [geocoding API docs](https://open-meteo.com/en/docs/geocoding-api). Use the interactive form on the forecast page to build a URL, then call it with `curl` to see the response.
 - Try these two requests with `curl` and save each response into a `tests/fixtures/` folder as a JSON file. You'll use them as test data:
   - `https://geocoding-api.open-meteo.com/v1/search?name=Lagos&count=1`

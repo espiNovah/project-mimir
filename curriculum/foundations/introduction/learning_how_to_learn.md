@@ -74,3 +74,14 @@ Over 12–18 months, the people who finish aren't the ones who study 12 hours on
    - Set a timer for 25 minutes and work through the next lesson, "Asking for Help", without your phone nearby. Afterward, write one sentence about how it went.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How does a growth mindset change the way you react to an error message?](#confusion-is-part-of-the-job)
+- [What is tutorial hell, and what is the way out of it?](#avoiding-tutorial-hell)
+- [Why is stepping away from a problem you're stuck on a strategy rather than a failure?](#how-your-brain-learns)
+- [Why does testing yourself work better than rereading your notes?](#how-your-brain-learns)
+- [Why do five one-hour sessions across a week beat one five-hour session?](#how-your-brain-learns)
+- [Why does showing up regularly matter more than occasional long study sessions?](#consistency-beats-intensity)

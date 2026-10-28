@@ -35,9 +35,9 @@ This section contains a general overview of topics that you will learn in this l
 
 <div class="lesson-content__panel" markdown="1">
 
-1. Work through the [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart) to create your first workflow.
+1. Work through the [GitHub Actions quickstart](https://docs.github.com/en/actions/get-started/quickstart) to create your first workflow.
    - Then browse the [GitHub Actions docs](https://docs.github.com/en/actions) for the pages on events (`pull_request`) and workflow syntax.
-1. Read [Using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) so your eval job can call a model without exposing your key.
+1. Read [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) so your eval job can call a model without exposing your key.
 1. Read the [promptfoo GitHub Action guide](https://www.promptfoo.dev/docs/integrations/github-action/) to see a complete eval-on-every-PR setup.
    - If you haven't used promptfoo before, skim the [promptfoo introduction](https://www.promptfoo.dev/docs/intro/) first. You can also run your own eval script in CI instead; the idea is the same.
 1. Read the [Langfuse prompt management overview](https://langfuse.com/docs/prompt-management/overview) to see what a dedicated prompt tool adds over files in Git.

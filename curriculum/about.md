@@ -25,16 +25,16 @@ Heading to a master's degree or a research role? The elective Research Track cov
 
 | Path | What you'll be able to do | Hours |
 | --- | --- | --- |
-| Foundations | Use the terminal, Git and Python, and call your first language model | ~200 |
-| AI Engineering Core | Build reliable LLM apps: prompting, structured outputs, backends, RAG, evals | ~300 |
+| Foundations | Use the terminal, Git, Python and data tools, work with AI coding assistants, and call your first language model | ~260 |
+| AI Engineering Core | Build reliable LLM apps: prompting, evals, structured outputs, classic ML, backends, RAG and a TypeScript frontend | ~380 |
 | Agentic Systems | Build, connect, secure and evaluate agents | ~300 |
-| Production & LLMOps | Deploy, observe and scale what you build | ~120 |
-| ML Foundations (elective) | Understand how models work and fine-tune one | ~150 |
-| Research Track (elective) | Learn the theory a master's expects: math, RL, planning, multi-agent systems, research skills | ~200 |
-| Final Capstone | Solve a real problem for real users | ~100 |
-| Getting Hired | Turn your portfolio into a job | ~80 |
+| Production & LLMOps | Deploy, observe and scale what you build | ~180 |
+| ML Foundations (elective) | Understand how models work, serve open models and fine-tune them | ~120 |
+| Research Track (elective, requires ML Foundations) | Learn the theory a master's expects: math, RL, planning, multi-agent systems, research skills | ~500 |
+| Final Capstone | Solve a real problem for real users | ~120 |
+| Getting Hired | Turn your portfolio into a job | ~100 |
 
-The core paths take about 1,100 hours. At 15–20 hours a week that's roughly 12–18 months, and the two electives add about 350 hours. Treat the hours as guides, not deadlines.
+The core paths take about 1,340 hours. At 15–20 hours a week that's roughly 16–21 months. ML Foundations adds about 120 hours, and the Research Track about 500. Treat the hours as guides, not deadlines.
 
 ### How to succeed
 

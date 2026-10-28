@@ -38,7 +38,7 @@ This section contains a general overview of topics that you will learn in this l
 1. Skim the [Streamlit documentation home](https://docs.streamlit.io/) and read the "Get started" fundamentals.
    - Focus on the basic concepts page that explains the rerun model, and on session state and caching.
 1. Follow the [Streamlit conversational apps tutorial](https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps).
-   - Build the echo bot, then the streaming chatbot. Use the `anthropic` SDK with `claude-haiku-5-5` instead of the provider used in the tutorial; the structure is the same.
+   - Build the echo bot, then the streaming chatbot. Use the `anthropic` SDK with the [cheap model](#/models) instead of the provider used in the tutorial; the structure is the same.
    - Keep the [chat elements API reference](https://docs.streamlit.io/develop/api-reference/chat) open as you work.
 1. Follow the [Gradio quickstart](https://www.gradio.app/guides/quickstart), then the [guide to creating a chatbot fast](https://www.gradio.app/guides/creating-a-chatbot-fast).
    - Build a streaming `gr.ChatInterface` that calls a model.

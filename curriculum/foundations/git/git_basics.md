@@ -128,10 +128,21 @@ GitHub lets you edit files in the browser. For now, avoid it: if the GitHub copy
    - Do these three pages in order: [generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account), and [testing your SSH connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Choose the Linux tab if you're on WSL.
 1. Read GitHub's page on [ignoring files](https://docs.github.com/en/get-started/git-basics/ignoring-files), then browse [GitHub's collection of .gitignore templates](https://github.com/github/gitignore) and open `Python.gitignore` to see what a full one looks like.
 1. Put your `mimir-hello-uv` project from the previous section on GitHub.
-   - It's already a Git repo, because `uv init` ran `git init` for you. Run `git status`, check that `.venv` is not listed (the `.gitignore` handles that), then stage, commit with a clear message, create an empty `mimir-hello-uv` repo on GitHub, add it as `origin` and push.
+   - It's probably already a Git repo, because `uv init` runs `git init` for you when Git is installed. Run `git status`. If it says "not a git repository" (Git wasn't installed yet when you ran `uv init`), run `git init` first. Then run `git branch -M main` so your branch is named `main` either way. Check that `.venv` is not listed (the `.gitignore` handles that), then stage, commit with a clear message, create an empty `mimir-hello-uv` repo on GitHub, add it as `origin` and push.
    - Make one more small improvement to the README, commit and push it, and confirm on GitHub that both commits appear in the history.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What are the three places a change can live, and how does a change move between them?](#the-basic-workflow)
+- [How do you see what changed since your last commit, and what's in your history?](#seeing-what-changed)
+- [What makes a commit message useful?](#seeing-what-changed)
+- [What belongs in a .gitignore file?](#ignoring-files)
+- [Why must you never commit a secret, even if you delete it in a later commit?](#ignoring-files)
+- [Why connect to GitHub with SSH, and why should you edit locally rather than on GitHub?](#pushing-to-github-with-ssh)
 
 ### Additional resources
 

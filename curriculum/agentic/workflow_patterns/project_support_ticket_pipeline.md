@@ -7,7 +7,7 @@ You will build a router, a prompt chain with a code gate, and an evaluator-optim
 ### Before you start
 
 - Create a new GitHub repository named `mimir-support-pipeline` and set it up as a `uv` project with the `anthropic` package.
-- Use `claude-haiku-5-5` for routing and drafting. You may use `claude-sonnet-5-5` for the evaluator if you want a stronger judge; record which model each step uses.
+- Use the [cheap model](#/models) for routing and drafting. You may use the [capable model](#/models) for the evaluator if you want a stronger judge; record which model each step uses.
 - Invent a small fictional company (for example, a meal-kit delivery service). Write a `policies.md` file with 8 to 12 short policies, each with an ID like `POL-REFUND-01` or `POL-SHIP-03`. Cover at least four categories, such as billing, shipping, account and technical issues.
 - Write 20 sample tickets in `tickets.jsonl`. For each one, record the correct category and the policy ID or IDs a good reply should cite. Include a few tricky ones: a ticket that mixes two issues, an angry one, and one that fits no category.
 - Reuse what you learned in the Evals section: these 20 labeled tickets are your eval set.

@@ -95,6 +95,16 @@ Keep this picture in mind, because it explains a lot of behavior. A model's know
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What does it mean that a model is a function with knobs, and what are its parameters?](#a-model-is-a-function-with-knobs)
+- [What are the steps of the training loop?](#learning-is-guess-measure-adjust)
+- [What is gradient descent, in plain words?](#learning-is-guess-measure-adjust)
+- [Why can't anyone point to the rule inside a model that produces a particular answer?](#learning-is-guess-measure-adjust)
+- [Which stages turn a raw next-word predictor into a helpful assistant?](#from-next-word-prediction-to-assistant)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

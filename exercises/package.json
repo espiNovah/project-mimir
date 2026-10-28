@@ -1,0 +1,12 @@
+{
+  "name": "mimir-exercises",
+  "private": true,
+  "type": "module",
+  "description": "JavaScript and TypeScript exercises for Project Mímir. No dependencies: tests use Node's built-in node:test runner, and TypeScript runs through Node's built-in type stripping.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node run-node-tests.mjs"
+  }
+}

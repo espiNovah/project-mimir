@@ -168,6 +168,17 @@ A good rule: handle errors at the place where you know what to do about them. A 
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Why should you read a traceback from the bottom up?](#reading-a-traceback)
+- [What do KeyError, TypeError and ValueError each tell you about what went wrong?](#common-exceptions)
+- [When do the else and finally blocks of a try statement run?](#handling-exceptions)
+- [Why is catching every exception with a bare except a bad idea?](#handling-exceptions)
+- [When should your own code raise an exception, and why define a custom one?](#raising-exceptions)
+- [How do you decide whether to recover from an error, retry or fail loudly?](#recover-retry-or-fail)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

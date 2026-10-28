@@ -111,6 +111,16 @@ Most teams follow a loop called the GitHub flow: create a branch from an up-to-d
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is a branch, and why do teams do new work on branches instead of on main?](#what-a-branch-is)
+- [What causes a merge conflict, and how do you resolve one?](#merging-and-merge-conflicts)
+- [What is a pull request for, and why does it matter when an AI agent writes the code?](#pull-requests)
+- [After a pull request is merged on GitHub, how do you bring the result back to your computer?](#pull-requests)
+- [What are the steps of the GitHub flow?](#pull-requests)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

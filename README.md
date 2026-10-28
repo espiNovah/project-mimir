@@ -8,12 +8,12 @@ A free, open-source, project-based curriculum that takes you from zero coding ex
 
 | Path | Focus |
 | --- | --- |
-| 00 · Foundations | Terminal, Git, Python, HTTP/APIs, how LLMs work, your first LLM app |
-| 01 · AI Engineering Core | Prompt & context engineering, structured outputs, FastAPI backends, RAG, evals |
+| 00 · Foundations | Terminal, Git, Python, data tools, AI coding assistants, HTTP/APIs, how LLMs work, your first LLM app |
+| 01 · AI Engineering Core | Prompt & context engineering, evals, structured outputs, classic ML, FastAPI + Postgres backends, RAG, TypeScript/React frontend |
 | 02 · Agentic Systems | Agent loops, tool design, MCP, memory, frameworks, coding/browser agents, multi-agent, safety, agent evals |
 | 03 · Production & LLMOps | Deployment, tracing, cost & latency, CI evals, security |
-| 04 · ML Foundations (elective) | Math intuition, classic ML, neural nets, fine-tuning open models |
-| 05 · Research Track (elective) | Math for research, reinforcement learning, planning, multi-agent theory, reading and reproducing papers. For a master's degree or research roles |
+| 04 · ML Foundations (elective) | Math intuition, neural nets, serving and fine-tuning open models |
+| 05 · Research Track (elective) | Math for research, reinforcement learning, planning, multi-agent theory, reading and reproducing papers. For a master's degree or research roles. Requires ML Foundations |
 | 06 · Final Capstone | A real system for real users |
 | 07 · Getting Hired | Portfolio, open source, interviews |
 

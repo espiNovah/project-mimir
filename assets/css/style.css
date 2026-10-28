@@ -277,3 +277,4 @@ main { flex: 1; padding-block: 44px 80px; outline: none; }
   .hero { box-shadow: 5px 5px 0 var(--shadow); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+.requires { color: var(--muted); margin: 10px 0 0; font-size: .9375rem; }

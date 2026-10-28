@@ -68,6 +68,7 @@
         <div class="eyebrow">Path ${String(manifest.paths.indexOf(path)).padStart(2, "0")}${path.optional ? " · Elective" : ""}</div>
         <h1>${esc(path.title)}</h1>
         <p class="lead">${esc(path.description)}</p>
+        ${(path.requires || []).length ? `<p class="requires">Requires: ${path.requires.map((id) => { const r = findPath(id); return r ? `<a href="#/paths/${r.id}">${esc(r.title)}</a>` : ""; }).join(", ")}</p>` : ""}
         <div class="path-stats"><span>~${path.hours} hours</span><span>${path.sections.length} sections</span><span>${c.total} lessons</span><span>${c.projects} projects</span><span>${c.done}/${c.total} complete</span></div>
         <div class="progress"><i style="width:${pct(c.done, c.total)}%"></i></div>
       </header>
@@ -136,6 +137,10 @@
 
     const heads = [...body.querySelectorAll("h3")];
     heads.forEach((h) => { h.id = slug(h.textContent); });
+    // In-lesson anchors such as knowledge-check links ("#chunking") must go through the router.
+    body.querySelectorAll("a[href^='#']:not([href^='#/'])").forEach((a) => {
+      a.setAttribute("href", `#/lessons/${path.id}/${lesson.id}/${a.getAttribute("href").slice(1)}`);
+    });
     if (heads.length > 1) {
       document.getElementById("toc").innerHTML = `<div class="eyebrow">On this page</div><ol>${heads.map((h) => `<li><a href="#/lessons/${path.id}/${lesson.id}/${h.id}" data-anchor="${h.id}">${esc(h.textContent)}</a></li>`).join("")}</ol>`;
     }
@@ -151,18 +156,21 @@
     });
   }
 
-  async function viewAbout() {
-    setTitle("About"); setNav("about");
+  // Standalone Markdown pages outside the paths (curriculum/<name>.md).
+  const PAGES = { about: "About", models: "Current Models" };
+  async function viewPage(name) {
+    setTitle(PAGES[name]); setNav(name);
     try {
-      const res = await fetch("curriculum/about.md");
+      const res = await fetch(`curriculum/${name}.md`);
+      if (!res.ok) throw new Error(res.status);
       const md = await res.text();
       main.innerHTML = `<article class="about"><div class="prose">${DOMPurify.sanitize(marked.parse(md))}</div></article>`;
       main.querySelectorAll(".prose a[href^='http']").forEach((a) => { a.target = "_blank"; a.rel = "noopener"; });
-    } catch (e) { showError("Couldn't load the About page."); }
+    } catch (e) { showError(`Couldn't load the ${PAGES[name]} page.`); }
   }
 
   // ---------- router ----------
-  // Routes: #/  ·  #/about  ·  #/paths/:path  ·  #/lessons/:path/:lesson[/:anchor]
+  // Routes: #/  ·  #/about  ·  #/models  ·  #/paths/:path  ·  #/lessons/:path/:lesson[/:anchor]
   async function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     if (parts[0] === "paths" && parts[1]) viewPath(parts[1]);
@@ -171,7 +179,7 @@
       if (!sameLesson) { await viewLesson(parts[1], parts[2]); main.dataset.lesson = `${parts[1]}/${parts[2]}`; }
       if (parts[3]) { document.getElementById(parts[3])?.scrollIntoView(); return; }
     }
-    else if (parts[0] === "about") viewAbout();
+    else if (PAGES[parts[0]]) viewPage(parts[0]);
     else viewHome();
     if (parts[0] !== "lessons") delete main.dataset.lesson;
     window.scrollTo(0, 0);

@@ -20,8 +20,8 @@ This section contains a general overview of topics that you will learn in this l
 An API key is usually sent in a request header. Different APIs use different header names, so always check the docs:
 
 ```text
-Authorization: Bearer ghp_abc123...     # the most common style (GitHub, OpenAI, Anthropic and many others)
-x-api-key: abc123...                    # some APIs use a custom header instead
+Authorization: Bearer ghp_abc123...     # the most common style (GitHub, OpenAI and many others)
+x-api-key: abc123...                    # a custom header (Anthropic and some other APIs)
 ```
 
 The word "Bearer" means "whoever bears (holds) this token is allowed in." That's exactly why leaking one is so dangerous: the API has no way to tell your program apart from a thief's.
@@ -148,6 +148,17 @@ If a real key ever ends up in a commit, a screenshot, a chat or a public paste, 
    - When you're done, revoke the token in GitHub's settings. Practicing revocation now means you'll know where the button is when it matters.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How do APIs usually receive your key?](#how-apis-receive-keys)
+- [Why must a secret never appear in your source code?](#never-put-secrets-in-code)
+- [How do you read an environment variable from Python, and what should happen if it's missing?](#environment-variables)
+- [What does python-dotenv do with a .env file?](#env-files-and-python-dotenv)
+- [How do you make sure .env never gets committed?](#keep-env-out-of-git)
+- [What is the first thing to do if you leak a key?](#keep-env-out-of-git)
 
 ### Additional resources
 

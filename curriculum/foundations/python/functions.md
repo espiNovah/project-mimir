@@ -148,6 +148,17 @@ The `if __name__ == "__main__":` line means "only call `main()` when this file i
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between a function returning a value and printing it?](#return-versus-print)
+- [How do default values and keyword arguments make a function easier to call?](#parameters-with-defaults-and-keyword-arguments)
+- [Why should you never use a list or dict as a default parameter value?](#parameters-with-defaults-and-keyword-arguments)
+- [Can code outside a function see a variable created inside it? Why or why not?](#scope)
+- [What should a docstring tell the reader, and what makes a good function name?](#docstrings-and-good-names)
+- [Why structure a script around a main() function?](#structuring-a-script-with-main)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

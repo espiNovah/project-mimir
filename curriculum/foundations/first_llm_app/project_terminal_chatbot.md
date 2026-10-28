@@ -25,7 +25,7 @@ It might look like a small program, but the problems it solves are the same ones
 - Create a new public GitHub repository named `mimir-terminal-chatbot` and clone it.
 - Run `uv init --package`, then `uv add anthropic python-dotenv` and `uv add --dev pytest`. Point a `chatbot` command at your main function in the `[project.scripts]` table of `pyproject.toml`, as you did for the Weather CLI.
 - Set up your API key exactly as in API Keys and Secrets: `.env` in `.gitignore` *before* you create it, plus a committed `.env.example`. Check with `git status` before every commit.
-- Use `claude-haiku-5-5` while developing. A full day of testing should cost well under a dollar, but set a spend limit in the Console anyway.
+- Use the [cheap model](#/models) while developing. A full day of testing should cost well under a dollar, but set a spend limit in the Console anyway.
 - No budget for API credit? Use Ollama as described in Your First API Call. Your chatbot should then work with local models too; report "$0.00 (local)" for cost.
 
 <div class="lesson-note lesson-note--tip" markdown="1">

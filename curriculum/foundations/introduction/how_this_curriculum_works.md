@@ -19,15 +19,15 @@ This section contains a general overview of topics that you will learn in this l
 
 The curriculum is a single route, divided into **paths**. Each path is a large chunk of skill, and they are meant to be done in order:
 
-1. **Foundations** (about 200 hours): the terminal, Git, Python, how the web works, how language models work, and your first app that calls a model.
-1. **AI Engineering Core** (about 300 hours): prompting, structured outputs, backends, retrieval (often called RAG), and evals, which are tests that measure whether an AI system actually works.
+1. **Foundations** (about 260 hours): the terminal, Git, Python, working with data, working with AI coding assistants, how the web works, how language models work, and your first app that calls a model.
+1. **AI Engineering Core** (about 380 hours): prompting, evals (tests that measure whether an AI system actually works), structured outputs, the machine learning basics every AI engineer needs, backends, retrieval (often called RAG) and a real frontend.
 1. **Agentic Systems** (about 300 hours): building agents, giving them tools, connecting them to other systems, securing them and evaluating them.
-1. **Production & LLMOps** (about 120 hours): deploying, observing and scaling what you build.
-1. **ML Foundations** (about 150 hours, elective): how models are trained, and fine-tuning one yourself.
-1. **Final Capstone** (about 100 hours): a real project for real users.
-1. **Getting Hired** (about 80 hours): turning your portfolio into a job.
+1. **Production & LLMOps** (about 180 hours): deploying, observing and scaling what you build.
+1. **ML Foundations** (about 120 hours, elective): how models are trained, serving open models, and fine-tuning one yourself.
+1. **Final Capstone** (about 120 hours): a real project for real users.
+1. **Getting Hired** (about 100 hours): turning your portfolio into a job.
 
-Each path is split into **sections**, such as "Git & GitHub" or "Python Fundamentals", and each section contains a handful of **lessons** followed by a **project**. At 15–20 hours a week, the whole thing takes roughly 12–18 months. Those numbers are guides, not deadlines. Some lessons will take you an evening; some will take a week. Both are normal.
+Each path is split into **sections**, such as "Git & GitHub" or "Python Fundamentals", and each section contains a handful of **lessons** followed by a **project**. At 15–20 hours a week, the required paths take roughly 16–21 months. Those numbers are guides, not deadlines. Some lessons will take you an evening; some will take a week. Both are normal.
 
 If you already code, you don't have to read every Foundations lesson. Try the Foundations projects instead. If you can build them comfortably, move on to the next path.
 

@@ -188,6 +188,17 @@ Need order and duplicates? Use a list. Need to look things up by name? Use a dic
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [When would you reach for a dictionary instead of a list?](#dictionaries)
+- [What is the difference between d[key] and d.get(key) when the key is missing?](#dictionaries)
+- [How do you dig a value out of a list of dictionaries?](#nesting-the-shape-of-real-data)
+- [What are sets good at, and what is tuple unpacking?](#sets-and-tuples)
+- [How can a comprehension replace a loop that builds a list?](#comprehensions)
+- [Why can changing one list also change what another variable shows?](#mutability-and-shared-references)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

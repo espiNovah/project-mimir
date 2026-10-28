@@ -116,6 +116,16 @@ Manual pages are dense at first. Skim for the option you need, and when they don
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Why should Windows users keep their work inside the Linux file system in WSL?](#getting-a-terminal)
+- [What is the difference between an absolute path and a relative path?](#paths-and-navigation)
+- [How do you create, copy, move and delete files from the terminal, and why should you be careful with deleting?](#working-with-files)
+- [What does a pipe do, and how is it different from redirecting output to a file?](#pipes-and-redirection)
+- [How can you find out what a command does and which options it accepts?](#getting-help)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

@@ -1,0 +1,24 @@
+# Dev dependencies for the Python exercise sets.
+# From this folder, `uv run pytest <set>/<exercise>` installs them on first run.
+[project]
+name = "mimir-exercises"
+version = "0.1.0"
+description = "Practice exercises for Project Mímir"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pandas>=2.2",
+    "pydantic>=2.9",
+    "jsonschema>=4.23",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+# Never collect the reference solutions or the JS/TS sets.
+norecursedirs = ["solution", "javascript", "typescript", "node_modules", ".venv", ".*"]
+addopts = "-q"

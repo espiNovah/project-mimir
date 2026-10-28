@@ -168,6 +168,17 @@ JSON Lines lets you add records one at a time and read huge files line by line w
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Why use pathlib instead of building paths out of strings?](#paths)
+- [Why open files with a with block?](#reading-and-writing-text)
+- [Why should you always pass encoding="utf-8" when opening text files?](#reading-and-writing-text)
+- [How do JSON's types map onto Python's types?](#what-json-looks-like)
+- [What is the difference between json.load() and json.loads(), and when would you use each with an LLM?](#loading-and-saving-json)
+- [What is JSON Lines, and why is it popular for datasets?](#json-lines)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

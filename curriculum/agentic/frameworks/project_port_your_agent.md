@@ -9,7 +9,7 @@ The goal is not to crown a winner. It is to have real numbers and real experienc
 - Create a new GitHub repository named `mimir-port-your-agent`. Copy in (or link to) your agent from "Agent Loop From Scratch".
 - Use `uv` to manage dependencies. Put each version in its own folder, such as `raw/`, `claude_sdk/` and `other/`, sharing one `tools/` package and one `tasks/` folder.
 - Read your API keys from environment variables (`ANTHROPIC_API_KEY`, plus whatever your second framework's provider needs). Never commit a key.
-- Use the same model in every version where you can, such as `claude-sonnet-5-5`, so model choice doesn't muddy the comparison. If your second framework runs on a different provider, say so in the README.
+- Use the same model in every version where you can, such as the [capable model](#/models), so model choice doesn't muddy the comparison. If your second framework runs on a different provider, say so in the README.
 
 <div class="lesson-note lesson-note--tip" markdown="1">
 
@@ -43,7 +43,7 @@ Write each tool once as a plain Python function with type hints and a docstring.
 
 - Add a fourth version using a framework you skipped, and add it to the table.
 - Turn on tracing in each version and include a screenshot of the same task's trace from all three.
-- Run the same tasks on a cheaper model, such as `claude-haiku-5-5`, and report how the success rate changes per version.
+- Run the same tasks on the [cheap model](#/models) and report how the success rate changes per version.
 
 </div>
 

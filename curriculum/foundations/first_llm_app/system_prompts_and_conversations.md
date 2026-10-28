@@ -151,7 +151,7 @@ For now, that's fine; a learning chat costs fractions of a cent. But it's the re
 1. Read the "Multiple conversational turns" section of [Working with the Messages API](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) to see the official examples of a multi-turn request.
 1. Read Anthropic's guide on [giving Claude a role with a system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts).
    - Read the whole page. Pay attention to the examples showing how the same question gets a very different answer depending on the role.
-1. Continue Anthropic Academy's [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course.
+1. Optional: if you enrolled, continue Anthropic Academy's [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course.
    - Complete the lessons on multi-turn conversations and system prompts, including any exercises.
 1. Build and experiment with the conversation loop from this lesson.
    - Give it a strong personality in the system prompt (a pirate, a strict editor, a cheerful gardening expert) and chat for at least ten turns. Does it stay in character?
@@ -160,6 +160,16 @@ For now, that's fine; a learning chat costs fractions of a cent. But it's the re
    - Comment out the line that appends the assistant's answer to `history`. What changes, and why?
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How is a system prompt different from a user message?](#system-prompts)
+- [What makes a good system prompt?](#system-prompts)
+- [What does it mean that the Messages API is stateless?](#the-api-is-stateless)
+- [How do you keep a conversation going, and what are the rules for ordering user and assistant messages?](#a-conversation-loop)
+- [Why does each turn of a long conversation cost more than the last?](#conversations-get-more-expensive)
 
 ### Additional resources
 

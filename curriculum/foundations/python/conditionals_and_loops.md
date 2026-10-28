@@ -156,6 +156,17 @@ Python also has a `match` statement for comparing one value against many pattern
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How does Python decide which branch of an if/elif/else chain runs?](#making-decisions)
+- [How do and, or and not combine conditions?](#making-decisions)
+- [Which values count as falsy in Python, and how does that let you shorten a condition?](#truthy-and-falsy)
+- [How can a while loop run forever, and how do break and continue change a loop's flow?](#while-loops)
+- [How do you loop over a list or a range of numbers with for?](#for-loops)
+- [When should you choose a while loop over a for loop?](#choosing-between-while-and-for)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

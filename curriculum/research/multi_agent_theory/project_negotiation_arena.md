@@ -7,7 +7,7 @@ This is the kind of study you read about in Emergent Behavior in LLM Agents, don
 ### Before you start
 
 - Create a new repo named `mimir-negotiation-arena`. Set it up with `uv init` and add `anthropic`, `pandas`, `matplotlib` and `pytest` with `uv add`.
-- Set your `ANTHROPIC_API_KEY` environment variable. Use `claude-haiku-5-5` for development and for most runs. If your budget allows, add a second model (`claude-sonnet-5-5` or a model from another provider) so you can compare. Look up current prices on the [Claude pricing page](https://platform.claude.com/docs/en/about-claude/pricing).
+- Set your `ANTHROPIC_API_KEY` environment variable. Use the [cheap model](#/models) for development and for most runs. If your budget allows, add a second model (the [capable model](#/models) or a model from another provider) so you can compare. Look up current prices on the [Claude pricing page](https://platform.claude.com/docs/en/about-claude/pricing).
 - Set a budget before you run anything, for example 15 US dollars, and enforce it in code: track tokens for every call and stop the run if the estimated cost would exceed the budget. Estimate the cost of a full run from a 3-game pilot first.
 - Define the games precisely before writing prompts.
    - Iterated prisoner's dilemma: use the standard payoffs (both cooperate 3 each, both defect 1 each, defector against cooperator 5 and 0). Decide whether players know how many rounds there are. A known horizon and an unknown one (a random stopping chance each round) give different equilibrium predictions, so test both if you can.

@@ -95,6 +95,16 @@ Thinking makes models better at working things out, not at knowing things they n
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Why does writing out intermediate steps help a next-token predictor?](#why-thinking-out-loud-helps)
+- [How are reasoning models trained differently from ordinary chat models?](#how-reasoning-models-are-trained)
+- [Where does thinking appear in an API response, and how is it billed?](#thinking-in-an-api-response)
+- [How can you control how much a model thinks?](#controlling-how-much-a-model-thinks)
+- [Which problems does extra reasoning not fix?](#what-reasoning-doesn-t-fix)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

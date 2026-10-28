@@ -147,6 +147,16 @@ When you open a uv project with `code .`, run **Python: Select Interpreter** and
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is a virtual environment, and why does every project need its own?](#packages-and-virtual-environments)
+- [What does uv do for you that venv and pip don't?](#why-uv)
+- [What happens when you run uv add, and why don't you need to activate the environment before uv run?](#a-uv-project)
+- [What is the difference between what pyproject.toml records and what uv.lock records?](#the-lockfile-and-reproducibility)
+- [Why should you commit uv.lock to Git but not the .venv folder?](#the-lockfile-and-reproducibility)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

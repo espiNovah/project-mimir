@@ -7,7 +7,7 @@ Your agent will be able to search the web, read and write files, do math and at 
 ### Before you start
 
 - Create a new GitHub repository named `mimir-agent-loop` and set it up as a `uv` project with the `anthropic` package. Keep your API key in `ANTHROPIC_API_KEY`.
-- Use `claude-haiku-5-5` while developing to keep costs low. Switch to `claude-sonnet-5-5` if you need more capability for your final demo runs, and say which one you used in your README.
+- Use the [cheap model](#/models) while developing to keep costs low. Switch to the [capable model](#/models) if you need more capability for your final demo runs, and say which one you used in your README.
 - **No agent frameworks.** You may use the provider's SDK for HTTP calls, but not its tool runner or any higher-level agent helper. The loop, tool dispatch and error handling must be your code.
 - For web search, either use your provider's server-side web search tool (for example, the Claude [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)) or call a search API with a free tier yourself. Either is fine; say which you chose.
 - Create a `workspace/` folder. Your file tools must only read and write inside it.

@@ -108,6 +108,16 @@ VS Code previews Markdown: open a `.md` file and press <kbd>Ctrl</kbd> + <kbd>Sh
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Who reads your project README, and what does each reader want from it?](#who-reads-your-readme)
+- [What sections does a good project README contain?](#what-goes-in-a-project-readme)
+- [How can a README show evidence that a project actually works?](#what-goes-in-a-project-readme)
+- [Why is being honest about a project's limits a strength rather than a weakness?](#what-goes-in-a-project-readme)
+- [How do you write headings, links, images and code blocks in Markdown?](#markdown-in-five-minutes)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

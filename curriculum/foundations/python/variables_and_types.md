@@ -167,6 +167,17 @@ If the user types `twelve`, `int()` raises a `ValueError`. For now that is fine;
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between running Python interactively and running a script with uv?](#two-ways-to-run-python)
+- [What does it mean that a variable is a name for a value?](#variables-are-names-for-values)
+- [What do // and % do, and why doesn't 0.1 + 0.2 print exactly 0.3?](#numbers)
+- [Why are f-strings usually the clearest way to build text from values?](#strings)
+- [What is None, and how is it different from False or 0?](#booleans-and-none)
+- [Why does input() always give you a string, and how do you turn it into a number?](#checking-and-converting-types)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

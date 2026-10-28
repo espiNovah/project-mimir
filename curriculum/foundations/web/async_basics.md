@@ -173,6 +173,17 @@ You'll use this pattern again when you send many prompts to a model API.
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Why does async help with I/O-bound work but not with CPU-bound work?](#waiting-versus-working)
+- [What is a coroutine, and what does await do?](#coroutines-async-and-await)
+- [How can one thread run many tasks at once?](#coroutines-async-and-await)
+- [How do you send many HTTP requests concurrently with httpx.AsyncClient?](#async-http-with-httpx)
+- [What happens when one task fails in asyncio.gather compared with a TaskGroup?](#handling-failures-in-concurrent-code)
+- [Why limit concurrency with a semaphore, and what happens if you forget to await a coroutine?](#limiting-concurrency)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

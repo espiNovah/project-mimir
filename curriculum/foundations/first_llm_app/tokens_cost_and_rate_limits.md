@@ -65,7 +65,7 @@ from dotenv import load_dotenv
 load_dotenv()
 client = anthropic.Anthropic()
 
-with open("notes.txt") as f:
+with open("notes.txt", encoding="utf-8") as f:
     document = f.read()
 
 count = client.messages.count_tokens(
@@ -185,6 +185,17 @@ One caveat for streaming: a stream can fail after it has already printed part of
    - Read the "Handling errors," "Retries" and "Timeouts" sections of the [Python SDK documentation](https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python) and compare the SDK's built-in behavior with the `create_with_retry` function above.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How do you calculate the cost of a call from its usage?](#how-pricing-works)
+- [Why do output tokens usually matter more for cost than input tokens?](#how-pricing-works)
+- [How can you count tokens before sending a request?](#counting-tokens-before-you-send)
+- [What are rate limits, and what are they measured in?](#rate-limits)
+- [Which API errors are worth retrying, and which aren't?](#which-errors-to-retry)
+- [Why retry with exponential backoff and jitter instead of retrying immediately?](#retrying-with-exponential-backoff)
 
 ### Additional resources
 

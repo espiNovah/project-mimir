@@ -153,6 +153,17 @@ Some packages are only needed while developing, such as test runners and type ch
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between import json and from json import loads?](#modules-and-imports)
+- [Why search the standard library before writing a utility yourself?](#the-standard-library)
+- [What does if __name__ == "__main__" actually do?](#splitting-your-own-code-into-modules)
+- [Why can naming your file random.py or json.py break your program?](#splitting-your-own-code-into-modules)
+- [What is a package, and how do you import from one?](#packages)
+- [What does uv add record in pyproject.toml and uv.lock?](#third-party-packages-with-uv)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

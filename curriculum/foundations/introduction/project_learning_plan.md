@@ -37,7 +37,7 @@ Here's a skeleton to start from. Replace every part of it with your own content.
 
 1. **Why I'm doing this.** Write two to four sentences about why you want to build AI systems. Be honest and specific. "I want a better-paid job where I build things" is more useful on a hard day than "AI is the future."
 1. **My goal.** Pick one target role from the About page (for example, AI Engineer or Agent / Automation Engineer) and a target date to finish the curriculum.
-   - Work out the date from your weekly hours: the main paths total roughly 1,100 hours, plus about 150 if you take the ML Foundations elective. At 15 hours a week, 1,100 hours is about 73 weeks. Show this calculation in your plan.
+   - Work out the date from your weekly hours: the main paths total roughly 1,340 hours, plus about 120 if you take the ML Foundations elective. At 15 hours a week, 1,340 hours is about 89 weeks. Show this calculation in your plan.
 1. **Weekly schedule.** Write a table or list with the specific days and times you'll study each week, and the total hours.
    - Include at least four study sessions per week.
    - Be realistic. A plan of 8 hours you'll actually do beats 25 hours you won't.

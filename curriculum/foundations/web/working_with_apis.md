@@ -169,6 +169,16 @@ def test_parse_repos():
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How do you make a request from Python and turn the JSON response into Python data?](#your-first-request-from-python)
+- [When do you send data as query parameters, and when as a JSON body?](#parameters-headers-and-bodies)
+- [What failures can every API call hit, and how does each one show up in your code?](#when-things-go-wrong)
+- [Why should every request have a timeout you've chosen on purpose?](#when-things-go-wrong)
+- [Why separate the code that fetches data from the code that parses it?](#separating-fetching-from-parsing)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

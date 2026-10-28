@@ -133,6 +133,17 @@ You should see a `404` and a small JSON error body. Finally, `-v` (verbose) show
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What do the client and the server each do in an HTTP exchange?](#clients-servers-and-http)
+- [What are the parts of a URL?](#anatomy-of-a-url)
+- [What goes into an HTTP request and an HTTP response?](#requests-and-responses)
+- [What is the difference between a 4xx and a 5xx status code, and why does it matter for retrying?](#status-codes)
+- [Why should you read the body of an error response?](#status-codes)
+- [How can curl show you the headers and status code of a response?](#making-requests-with-curl)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

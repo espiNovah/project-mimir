@@ -86,6 +86,17 @@ You don't need the internals to build things, but a few practical consequences f
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What steps take your text to a next-token prediction?](#from-text-to-prediction)
+- [Why do models generate text one token at a time, and what does that mean for speed and cost?](#from-text-to-prediction)
+- [What is an embedding?](#embeddings-meaning-as-numbers)
+- [What does attention let one token do with the other tokens in a prompt?](#attention-tokens-looking-at-each-other)
+- [Why do long prompts cost more to process?](#attention-tokens-looking-at-each-other)
+- [What practical lessons does the transformer design hold for someone building LLM apps?](#what-this-means-for-you-as-a-builder)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

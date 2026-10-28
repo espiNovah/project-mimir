@@ -45,7 +45,7 @@ Write the correct answer for each example by hand, in `data/expected/`, before y
 #### Extra credit
 
 - Add a command-line interface so you can run `uv run extract path/to/file.txt` and get JSON on standard output.
-- Compare a cheap model (`claude-haiku-5-5`) with a stronger one (`claude-sonnet-5-5`) on accuracy and cost per document.
+- Compare the [cheap model](#/models) with the capable one on accuracy and cost per document.
 - Add a confidence or `source_quote` field for each extracted value, and check whether low-confidence fields are more often wrong.
 
 </div>

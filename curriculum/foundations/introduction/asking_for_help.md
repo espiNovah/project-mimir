@@ -96,6 +96,16 @@ The same five-part question works for both. A clear question gets better answers
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What should you try on your own before asking someone for help?](#before-you-ask)
+- [What are the parts of a good question, and why does each one help the person answering?](#the-parts-of-a-good-question)
+- [Why should you share code and errors as text instead of screenshots?](#the-parts-of-a-good-question)
+- [What is the XY problem, and how can you avoid falling into it?](#the-xy-problem)
+- [When is a person a better source of help than an AI, and the other way around?](#asking-an-ai-versus-asking-a-person)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

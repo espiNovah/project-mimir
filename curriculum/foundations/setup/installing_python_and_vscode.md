@@ -112,6 +112,16 @@ For now, pick the Python 3 you just installed. In the next lesson each project w
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What does the Python interpreter do with a .py file?](#python-and-the-interpreter)
+- [Why should you leave your operating system's built-in Python alone?](#installing-python)
+- [How do you check which version of Python you're running?](#installing-python)
+- [How do you run a Python file from the terminal and from VS Code?](#your-first-program)
+- [What does selecting an interpreter in VS Code mean, and what goes wrong if the wrong one is selected?](#selecting-an-interpreter)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

@@ -173,6 +173,17 @@ This is the trick behind a lot of AI tooling. A framework can take your function
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [How do you annotate a function's parameters and return value?](#basic-annotations)
+- [How do you write the type of a list of strings or a dictionary from strings to integers?](#collections)
+- [What does str | None mean, and when would you use it?](#optional-values-and-unions)
+- [If Python doesn't enforce type hints at runtime, what catches the mistakes?](#checking-your-code-with-mypy)
+- [When are Literal or TypedDict better than plain str or dict?](#aliases-literal-and-typeddict)
+- [Why does it matter that code can read type hints, especially for LLM tools and schemas?](#code-can-read-your-type-hints)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

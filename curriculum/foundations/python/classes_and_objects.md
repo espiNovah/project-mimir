@@ -161,6 +161,17 @@ Reach for a class when several pieces of data belong together and travel togethe
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between a class and an instance?](#classes-and-instances)
+- [What is self, and where does its value come from?](#understanding-self)
+- [What is the difference between __repr__ and __str__?](#making-objects-readable)
+- [What does the @dataclass decorator write for you?](#dataclasses)
+- [What is inheritance, and why should you use it sparingly?](#inheritance-briefly)
+- [When is a class the right tool, and when is a function or a dictionary enough?](#when-to-use-a-class)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

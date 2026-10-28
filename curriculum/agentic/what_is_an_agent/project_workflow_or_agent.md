@@ -8,7 +8,7 @@ The loop is deliberately tiny. The point is not to build something useful yet, b
 
 - Create a new GitHub repository named `mimir-workflow-or-agent` and set it up as a `uv` project (`uv init`, then `uv add anthropic`), just as you did in Project: Hello, uv.
 - Make sure your API key is in the `ANTHROPIC_API_KEY` environment variable, as in Project: Terminal Chatbot. Never commit it.
-- Use a cheap model such as `claude-haiku-5-5` for this project. Any provider with tool calling works the same way if you prefer another one.
+- Use the [cheap model](#/models) for this project. Any provider with tool calling works the same way if you prefer another one.
 - Pick one simple tool for your loop. Good choices: a calculator that evaluates basic arithmetic safely (parse the numbers and operator yourself; do not use Python's `eval`), a function that returns the current date and time, or a lookup in a small dictionary of facts you write yourself.
 - You will need the list of five tasks you wrote in the Workflows vs Agents assignment.
 

@@ -99,6 +99,16 @@ print([enc.decode([i]) for i in ids])       # ['The', ' cat', ' sat', ' on', ' t
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is a token?](#what-a-token-is)
+- [Why do models use subword tokens instead of letters or whole words?](#why-not-letters-or-words)
+- [How does byte-pair encoding build its vocabulary?](#why-not-letters-or-words)
+- [Why can the same message cost different amounts in different languages or formats?](#why-tokens-matter-to-you)
+- [Why won't a tiktoken count exactly match what another provider bills you for?](#counting-tokens-with-tiktoken)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

@@ -12,7 +12,7 @@ The habit you build here, measure before you believe, is the foundation of the E
   - Classify support emails into categories such as `billing`, `bug`, `feature_request`, `account_access` and `other`.
   - Label product reviews as `positive`, `negative` or `mixed`.
   - Decide whether a job posting is remote, hybrid or on-site.
-- Use `claude-haiku-5-5` for your runs. It is cheap, and small models make prompt differences easier to see.
+- Use the [cheap model](#/models) for your runs. It is cheap, and small models make prompt differences easier to see.
 
 <div class="lesson-note lesson-note--tip" markdown="1">
 
@@ -40,7 +40,7 @@ If every variant scores 100%, your test set is too easy to tell them apart. Incl
 #### Extra credit
 
 - Add a fourth variant of your own design, and explain the hypothesis behind it before you run it.
-- Run your best variant with `claude-sonnet-5-5` or a model from another provider, and compare accuracy against cost.
+- Run your best variant with the [capable model](#/models) or a model from another provider, and compare accuracy against cost.
 - Grow the test set to 50 inputs and see whether the ranking of variants holds.
 
 </div>

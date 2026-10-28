@@ -127,7 +127,7 @@ You can loop over the raw events yourself with `for event in stream:` instead of
 
 1. Read Anthropic's [streaming documentation](https://platform.claude.com/docs/en/build-with-claude/streaming).
    - Read "Streaming with SDKs" (Python tab), "Get the final message without handling events," "Event types" and "Content block delta types." Skim the full HTTP stream examples, and skip the tool use examples for now.
-1. Continue Anthropic Academy's [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course and complete its lesson on streaming.
+1. Optional: if you enrolled, continue Anthropic Academy's [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course and complete its lesson on streaming.
 1. Measure the difference streaming makes.
    - Write a script that asks for a 300-word story twice: once with `messages.create()` and once with `messages.stream()`. Use `time.perf_counter()` to measure time to first token for the streamed version (the time when the first chunk arrives) and total time for both.
    - Record the numbers in your learning journal. Which number changed and which didn't?
@@ -136,6 +136,16 @@ You can loop over the raw events yourself with `for event in stream:` instead of
    - Print the token usage from the final message after each reply.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between total response time and time to first token, and why does streaming improve one but not the other?](#why-stream)
+- [How do you stream text with the SDK and still get the complete message, with usage, at the end?](#streaming-with-the-sdk)
+- [How do you add a streamed reply to the conversation history?](#streaming-in-a-conversation)
+- [What are server-sent events, and which event types make up a stream?](#what-s-underneath-server-sent-events)
+- [Why must your error handling wrap the whole streaming loop, not just the line that starts it?](#what-s-underneath-server-sent-events)
 
 ### Additional resources
 

@@ -134,18 +134,28 @@ When a call fails and you paste your code or terminal output into a forum or cha
 
 1. Work through Anthropic's [Get started guide](https://platform.claude.com/docs/en/get-started) using the Python tab.
    - It installs the SDK with `pip`; use `uv add anthropic` in your project instead.
-   - The guide uses a larger model in its example. Use `claude-haiku-5-5` while you're learning to keep costs tiny.
+   - The guide uses a larger model in its example. Use the [cheap model](#/models) while you're learning to keep costs tiny.
 1. Read the "Basic request and response" section of [Working with the Messages API](https://platform.claude.com/docs/en/build-with-claude/working-with-messages) to see the full request and response shapes. You'll read the rest of this page in the next lesson.
 1. Skim the [models overview](https://platform.claude.com/docs/en/about-claude/models/overview) and note the current model families, their relative speed and cost, and their context window sizes.
-1. Enroll in Anthropic Academy's free [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course. It requires creating a free Skilljar account. You'll use it throughout this section.
+1. Optional: enroll in Anthropic Academy's free [Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api) course. It requires a free Skilljar account, so it's optional; this lesson and the [Claude API docs](https://platform.claude.com/docs/en/get-started) cover everything you need. If you take it, you'll use it throughout this section.
    - Complete the opening lessons that cover setting up and making your first request. Stop when the course moves on to multi-turn conversations; that's the next lesson here.
 1. Experiment with your `main.py`:
    - Print `response.stop_reason` and `response.usage`. Then set `max_tokens=20` and ask for a long story. What happens to `stop_reason` and to the text?
    - Run the same prompt three times. Are the answers identical? Connect what you see to the Context Windows and Sampling lesson.
-   - Change `model` to `"claude-sonnet-5-5"` and compare the answer, the speed and the `usage` numbers.
+   - Change `model` to the [capable model](#/models) and compare the answer, the speed and the `usage` numbers.
    - Make the same call with `curl` and find each field from this lesson in the raw JSON.
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [Where should your API key live, and how does the SDK find it?](#getting-an-api-key)
+- [What do you have to pass to client.messages.create?](#your-first-call)
+- [Why is a response's content a list of blocks rather than a single string?](#reading-the-response)
+- [What do stop_reason and usage tell you about a response?](#reading-the-response)
+- [What HTTP request does the SDK send for you?](#what-s-underneath)
 
 ### Additional resources
 

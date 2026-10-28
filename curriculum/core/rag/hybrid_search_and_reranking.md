@@ -41,7 +41,7 @@ This section contains a general overview of topics that you will learn in this l
 1. Return to [Introducing Contextual Retrieval](https://www.anthropic.com/research/contextual-retrieval) and read the rest of the post.
    - Pay attention to the results charts showing how each technique reduces failed retrievals.
 1. Read the [Sentence Transformers cross-encoder usage guide](https://sbert.net/docs/cross_encoder/usage/usage.html) to learn how to run a free reranker locally.
-1. Practice: add BM25 to your ingestion project from the last lesson with the [rank_bm25 library](https://github.com/dorianbrown/rank_bm25). Implement RRF over the BM25 and vector results, then rerank the top 20 with a cross-encoder. Write 15 questions with known source chunks (include some with exact names or codes) and report hit rate at 5 for vector only, BM25 only, hybrid, and hybrid with reranking.
+1. Practice: add BM25 to your ingestion project from the last lesson with the [bm25s library](https://github.com/xhluca/bm25s) (fast and maintained; Postgres full-text search, covered later, is the other common option). Implement RRF over the BM25 and vector results, then rerank the top 20 with a cross-encoder. Write 15 questions with known source chunks (include some with exact names or codes) and report hit rate at 5 for vector only, BM25 only, hybrid, and hybrid with reranking.
 
 </div>
 

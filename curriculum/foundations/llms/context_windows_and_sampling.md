@@ -126,6 +126,17 @@ Even at temperature 0, most hosted models aren't perfectly repeatable: tiny diff
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What counts toward the context window?](#the-context-window)
+- [Why doesn't a model remember your previous requests?](#the-context-window)
+- [Why can adding more context make answers worse?](#the-context-window)
+- [How does a model turn a list of probabilities into one chosen token?](#from-probabilities-to-a-token)
+- [What do temperature and top-p each change about the output?](#temperature-top-p-and-top-k)
+- [How should you design an app knowing the same prompt can give different answers?](#designing-for-non-determinism)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
