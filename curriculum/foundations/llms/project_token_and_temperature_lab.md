@@ -11,7 +11,8 @@ Along the way you'll write a small token-counting tool. The result is a public r
 ### Before you start
 
 - Create a new public GitHub repository named `mimir-token-lab` and clone it.
-- Run `uv init`, then `uv add tiktoken` and `uv add --dev pytest`.
+- Run `uv init`, then `uv add tiktoken` and `uv add --dev pytest ruff`.
+- Add the `[tool.ruff]` and `[tool.ruff.lint]` settings and the `.github/workflows/ci.yml` file from Linting, Formatting and CI, as you did for the Expense Tracker and Weather CLI. GitHub's runners have internet access, so `tiktoken` can download its vocabulary files there the same way it did on your machine.
 - Your write-up will live in `README.md`, with your raw notes and data in a `data/` or `notes/` folder.
 - Have these tools open: [Tiktokenizer](https://tiktokenizer.vercel.app/) and the [Transformer Explainer](https://poloclub.github.io/transformer-explainer/).
 - Find your hallucination log from the Why Models Hallucinate assignment.
@@ -33,6 +34,8 @@ Along the way you'll write a small token-counting tool. The result is a public r
    - Add a `--show` flag that prints the file with a visible separator (such as `|`) between tokens.
    - Print a clear error, not a traceback, if the file doesn't exist.
    - Put the counting logic in a function that takes a string, and write at least three pytest tests for it (for example: an empty string has zero tokens; a known short sentence has the count you measured; the counts for `o200k_base` and `cl100k_base` can differ).
+   - Give the script the `main(argv=None)` shape from Command-Line Apps and add one test that calls it with a path that doesn't exist (inside `tmp_path`) and checks the exit code and error message with `capsys`, as in Testing with pytest.
+1. **Lint, format and CI.** `uv run ruff check .` and `uv run ruff format --check .` must both pass, and a GitHub Actions workflow runs `uv sync --locked`, both ruff commands and `uv run pytest` on every push and pull request.
 1. **Run the language and format experiment.** Choose one paragraph of English prose (about 100 words). Create at least four versions of the same content in `data/` and count each with your script using both encodings:
    - The original English.
    - A translation into a second language (one you know, or use a translation tool and say so). Bonus points for a language that doesn't use the Latin alphabet.
@@ -49,6 +52,15 @@ Along the way you'll write a small token-counting tool. The result is a public r
    - Your explanation of *why* it happened, using ideas from this section (rare facts, knowledge cutoff, plausible-sounding patterns, rewards for guessing, tokenization).
    - One design change from the Why Models Hallucinate lesson that would have prevented or caught it.
 1. Push your project to GitHub with a README that summarizes your three experiments, includes the tables, screenshots and hallucination write-ups, explains how to run your script and its tests, and ends with a short "What I learned" section.
+
+#### Evidence
+
+- `uv run pytest` passes with at least four tests, including the missing-file test, and the README includes its output.
+- The GitHub Actions workflow runs ruff and pytest on every push, and the latest run on `main` passes. Show its status badge at the top of the README. (Linting, Formatting and CI)
+- The README includes the command and real output of `count_tokens.py` on at least one of your `data/` files, with and without `--show`.
+- The token-count table names the tokenizer for every number, and the raw files it was measured on are in `data/`.
+- The three temperature screenshots are committed and shown in the README next to the tokens you recorded.
+- Each hallucination write-up includes the date, the model and app, and a link to the source that shows the true answer.
 
 #### Extra credit
 

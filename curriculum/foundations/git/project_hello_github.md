@@ -30,6 +30,17 @@ It practices everything in the section: creating a repo, staging and committing 
    - Pull the merged `main` back to your computer and delete the branch locally.
 1. Check your work with `git log --oneline --graph`. You should see at least four commits, including the merge, and local `main` should match GitHub's.
 
+#### Evidence
+
+The repo is most of the evidence, because GitHub records it for you. Make sure a reviewer can check each of these from the repo page alone:
+
+- The repo link works for someone who isn't logged in, which proves it's public.
+- The README links to `learning-plan.md` (and the link works on GitHub), and its "Progress" section links to `mimir-hello-uv` if you've pushed it.
+- The commit history shows at least three commits made before the pull request, each with a clear message, including one that adds only `.gitignore`.
+- The "Pull requests" tab shows one merged pull request with a description that explains what changed and why. Add its link to the README's "Progress" section.
+- The README, or a short `NOTES.md` linked from it, includes two pasted terminal outputs: `git status` with the test `.env` file present but not listed, and `git log --oneline --graph` after the merge, showing the merge commit.
+- The calendar screenshot from the "Learning Plan" project is committed next to `learning-plan.md`, if you took one.
+
 #### Extra credit
 
 - Create a GitHub profile README: a special repo named exactly the same as your username, whose README appears on your profile page. Introduce yourself in two or three sentences and link to `mimir-learning-journal`.

@@ -516,7 +516,7 @@
             {
               "id": "project-messy-text-extractor",
               "title": "Project: Messy-Text Extractor",
-              "description": "Turn unstructured text into clean, validated JSON, and measure accuracy.",
+              "description": "Turn messy text, images and PDFs into clean, validated JSON, and measure accuracy.",
               "file": "core/structured_outputs/project_messy_text_extractor.md",
               "project": true
             }
@@ -542,7 +542,7 @@
             {
               "id": "project-beat-the-baseline",
               "title": "Project: Beat the Baseline",
-              "description": "A TF-IDF classifier you'll compare against later.",
+              "description": "A classic classifier vs an LLM classifier on macro-F1, cost and latency.",
               "file": "core/ml_essentials/project_beat_the_baseline.md",
               "project": true
             }
@@ -867,7 +867,7 @@
             {
               "id": "agent-tracing-and-debugging",
               "title": "Agent Tracing and Debugging",
-              "description": "Trace every step with OpenTelemetry, view runs in a trace UI and replay failures.",
+              "description": "Spans, trace IDs, reading a run to find the bad step, replay, and OpenTelemetry.",
               "file": "agentic/tool_use/agent_tracing_and_debugging.md"
             },
             {
@@ -879,7 +879,7 @@
             {
               "id": "scaling-to-many-tools",
               "title": "Scaling to Many Tools",
-              "description": "Tool search and programmatic tool calling.",
+              "description": "Token costs, routing, tool search, programmatic tool calling and measuring tool selection.",
               "file": "agentic/tool_use/scaling_to_many_tools.md"
             },
             {

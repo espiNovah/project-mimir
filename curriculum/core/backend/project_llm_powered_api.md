@@ -48,7 +48,7 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
 
 - A GitHub Actions workflow runs `ruff check`, `ruff format --check` and `pytest` on every push, and the latest run on `main` passes. Show its status badge at the top of the README. (Linting, Formatting and CI)
 - Traces: every model call, from the API and the worker, writes one trace as in Why Evals Matter, as a JSONL line or a row in a `trace` table. Each trace has a trace ID, the prompt version ID, the model, the input, the output, token counts, latency, and the retry attempt number. Commit a sample of at least 20 traces with any private data removed.
-- An eval score: run your 20 labeled examples from the Messy-Text Extractor through the deployed API with an `evaluate.py` script, and report overall field accuracy with a 95% bootstrap confidence interval, as in Eval Statistics. Record the prompt version the score belongs to.
+- An eval score: run the text examples from your 20 labeled Messy-Text Extractor examples (the API accepts text, so leave out the image and PDF ones) through the deployed API with an `evaluate.py` script, and report overall field accuracy with a 95% bootstrap confidence interval, as in Eval Statistics. Record the prompt version the score belongs to.
 - A transcript against the deployed URL: `curl` to `/health`, registering and logging in, a `POST /jobs` polled until `done`, a request without a token getting `401`, and a burst of requests getting `429`.
 - The output of `alembic upgrade head` on an empty database, showing every migration applying in order.
 

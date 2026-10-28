@@ -64,7 +64,16 @@ Before writing any Python, write out the steps of one game in plain English, in 
 1. After each game, ask whether the player wants to play again. Accept `y`/`yes` and `n`/`no` in any case. If they type anything else, ask again rather than guessing.
 1. Organize the code into functions with clear names and docstrings, with a `main()` function and an `if __name__ == "__main__":` block at the bottom. At least one function must `return` a value that another function uses, rather than printing it.
 1. Make the game run with `uv run main.py` (or whatever you name your file) from a fresh clone of your repo.
-1. Push your project to GitHub with a README that explains what it does, how to run it, how to add your own questions, and what you learned. Include a short transcript of a real game session copied from your terminal, in a fenced code block, as evidence that it works.
+1. Push your project to GitHub with a README that explains what it does, how to run it, how to add your own questions, and what you learned. Include the evidence listed below.
+
+#### Evidence
+
+You'll start writing automated tests in Testing with pytest later in this section. For now, prove the game works with real output copied from your terminal into fenced code blocks in the README:
+
+- A transcript of one complete game, from the first question to the final score line, that includes at least one right answer, one wrong answer showing the correct answer, and one right answer typed with different capitals or extra spaces.
+- A transcript of the play-again prompt rejecting an unexpected reply (such as `maybe`), asking again, and then starting a second game whose questions come in a different order.
+- A short REPL session that shows your answer-checking function returning a value rather than printing it. Start the REPL in the project folder with `uv run python`, then import and call your function, for example `from main import is_correct` and `is_correct(" Dict ", "dict")` (use your own file and function names). This works because of your `if __name__ == "__main__":` block, which stops the game from starting on import.
+- The repo link, and a fresh clone that runs with the single command in your README.
 
 #### Extra credit
 

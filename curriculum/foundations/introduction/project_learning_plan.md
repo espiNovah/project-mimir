@@ -51,6 +51,15 @@ Here's a skeleton to start from. Replace every part of it with your own content.
    - Add one sentence explaining what the XY problem would have looked like for this question.
 1. Keep the file in your `mimir-learning-journal` folder. You'll put it on GitHub with a README in the "Hello, GitHub" project. For now, show it to your study partner or someone you trust and ask whether the schedule looks realistic for your life.
 
+#### Evidence
+
+There's no code to test yet, so the evidence is the plan itself, plus proof that you've started using it:
+
+- `learning-plan.md` has all six sections from the skeleton, filled in with your own content, including the target-date calculation with the numbers written out.
+- The check-in log has a first entry with today's date.
+- Your calendar holds the study sessions as recurring events. Take a screenshot of one week and save it in the `mimir-learning-journal` folder; you'll publish it with the plan in "Hello, GitHub".
+- A line under the check-in log records who reviewed your schedule and what, if anything, you changed because of their feedback.
+
 #### Extra credit
 
 - Track your actual study hours for the first two weeks in the check-in log, then compare them with your plan and adjust the schedule. Note what you changed and why.

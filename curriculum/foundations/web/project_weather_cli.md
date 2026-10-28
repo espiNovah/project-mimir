@@ -17,8 +17,9 @@ This is the same shape as a huge amount of AI engineering work: call an external
 ### Before you start
 
 - Create a new public GitHub repository named `mimir-weather-cli` and clone it.
-- Inside it, run `uv init --package` so you get a `src/` layout, then `uv add httpx` and `uv add --dev pytest`.
+- Inside it, run `uv init --package` so you get a `src/` layout, then `uv add httpx` and `uv add --dev pytest ruff`.
 - `uv init --package` creates a command named after the project. To run it as `uv run weather`, edit the `[project.scripts]` table in `pyproject.toml` to read `weather = "mimir_weather_cli:main"`.
+- Set up the checks before you write any features, as in the Project: Expense Tracker: add the `[tool.ruff]` and `[tool.ruff.lint]` settings from Linting, Formatting and CI to `pyproject.toml`, copy that lesson's `.github/workflows/ci.yml` into the repo, commit `uv.lock`, and push. The first run fails until your first test exists; that's expected.
 - Read the [Open-Meteo forecast API docs](https://open-meteo.com/en/docs) and the [geocoding API docs](https://open-meteo.com/en/docs/geocoding-api). Use the interactive form on the forecast page to build a URL, then call it with `curl` to see the response.
 - Try these two requests with `curl` and save each response into a `tests/fixtures/` folder as a JSON file. You'll use them as test data:
   - `https://geocoding-api.open-meteo.com/v1/search?name=Lagos&count=1`
@@ -53,9 +54,18 @@ The forecast API returns daily data as parallel lists: `daily.time`, `daily.temp
    - `parse_location` with your saved Lagos fixture returns the right name and coordinates.
    - `parse_location` with your saved not-found fixture returns `None`.
    - `parse_forecast` with your saved forecast fixture returns the right number of days with the right highs and lows.
+   - At least one test of the command layer. Give your program the `main(argv=None)` shape from Command-Line Apps, returning an exit code. Keep `main` a normal function that calls `asyncio.run(...)` on your async code, so tests can call it without any async test plugin. Then call `main(["Atlantisville"])` in a test with your fetch functions replaced by fakes using `monkeypatch`, and check the printed "city not found" with `capsys`. A fake for an async function is just a small `async def` that returns your saved fixture data. The Testing with pytest lesson shows both fixtures.
    - Your tests must pass without an internet connection. Run `uv run pytest` with Wi-Fi off to prove it.
+1. **Lint, format and CI**: `uv run ruff check .` and `uv run ruff format --check .` must both pass with the rule set from Linting, Formatting and CI. A GitHub Actions workflow in `.github/workflows/ci.yml` runs `uv sync --locked`, both ruff commands and `uv run pytest` on every push and pull request. Because your tests never touch the network, they pass on GitHub's machines too.
 1. Measure the benefit of concurrency. Add a `--sequential` flag that looks cities up one at a time, then time both modes for at least five cities and record the numbers in your README.
 1. Push your project to GitHub with a README that explains what it does, how to install and run it, an example of its output, your timing measurements, and what you learned.
+
+#### Evidence
+
+- `uv run pytest` passes with at least four meaningful tests, including the command-layer test, and the README includes its output from a run with Wi-Fi off.
+- The GitHub Actions workflow runs ruff and pytest on every push, and the latest run on `main` passes. Show its status badge at the top of the README. (Linting, Formatting and CI)
+- The README includes real output for at least three cities, one of which isn't found, plus the output of running with no city names and of a run with Wi-Fi off showing your network error.
+- The README includes a table of sequential and concurrent timings for at least five cities.
 
 #### Extra credit
 
@@ -68,4 +78,4 @@ The forecast API returns daily data as parallel lists: `daily.time`, `daily.temp
 
 ### Submitting your work
 
-A strong submission is one a stranger can clone and run in under a minute. Your README should show the exact commands to install and run the tool, a copy of real output (including a "city not found" line), a screenshot or text capture of `uv run pytest` passing, and a small table comparing sequential and concurrent timings. Mention one thing that went wrong while you built it and how you figured it out. That kind of reflection is exactly what reviewers and employers look for.
+A strong submission is one a stranger can clone and run in under a minute. Your README should open with a green CI badge and show the exact commands to install and run the tool, a copy of real output (including a "city not found" line), a screenshot or text capture of `uv run pytest` passing, and a small table comparing sequential and concurrent timings. Mention one thing that went wrong while you built it and how you figured it out. That kind of reflection is exactly what reviewers and employers look for.

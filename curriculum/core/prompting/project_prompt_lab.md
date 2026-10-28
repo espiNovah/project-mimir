@@ -2,11 +2,11 @@
 
 Most people tweak a prompt, look at one or two outputs, and decide it "feels better." In this project you will do what professionals do instead: build a small labelled test set, run several prompt variants against it, and let a score decide. You will pick one task, write at least three prompt variants using the techniques from this section, measure each one with code, and then try a two-step chain on an input that every variant gets wrong.
 
-The habit you build here, measure before you believe, is the foundation of the Evals section later in this path.
+The habit you build here, measure before you believe, is the foundation of the Measuring Quality section that comes next, where you'll return to this project to read its traces and put confidence intervals on its scores.
 
 ### Before you start
 
-- Create a new GitHub repository called `mimir-prompt-lab` and set it up as a `uv` project, as you did in the Hello, uv project. Add the `anthropic` package with `uv add anthropic`.
+- Create a new GitHub repository called `mimir-prompt-lab` and set it up as a `uv` project, as you did in the Hello, uv project. Add the `anthropic` package with `uv add anthropic`, and `pytest` and `ruff` as dev dependencies with `uv add --dev pytest ruff`.
 - Make sure `ANTHROPIC_API_KEY` is set in your environment and that `.env` is in your `.gitignore` (see the API Keys and Secrets lesson).
 - Choose a task with a clear right answer that code can check. Good options:
   - Classify support emails into categories such as `billing`, `bug`, `feature_request`, `account_access` and `other`.
@@ -35,7 +35,15 @@ If every variant scores 100%, your test set is too easy to tell them apart. Incl
 1. Print and save a results table, with one row per variant, showing at least: accuracy (correct out of 15), number of invalid outputs, total input and output tokens, and average latency in seconds. Save the raw model outputs to `results/` so you can inspect failures.
 1. Run each variant at least twice and report whether scores changed between runs. Explain in one or two sentences why they might.
 1. Pick one input that most variants got wrong. Build a two-step prompt chain for it (for example, step one lists the topics the email mentions, step two picks the label from that list). Run it on that input and on the rest of the test set, and write a short note on whether the chain helped, hurt, or made no difference, and what it cost in extra tokens.
+1. Write pytest tests that never call a model, as in Testing with pytest. At minimum, test the function that pulls a label out of a response: a clean label, a label inside `<answer>` tags, extra whitespace or capitalization, and an invalid label. Then test `run.py`'s scoring with a fake client swapped in with `monkeypatch` or passed in as an argument, so a fixed set of fake responses produces a known accuracy and invalid count.
 1. Push your project to GitHub with a README that explains what it does, how to run it, and what you learned.
+
+#### Evidence
+
+- A GitHub Actions workflow runs `ruff check`, `ruff format --check` and `pytest` on every push, and the latest run on `main` passes. Show its status badge at the top of the README. The tests use fakes, so CI needs no API key. (Linting, Formatting and CI)
+- The README shows the results table from requirement 4 for both runs of every variant, produced by `run.py`, and the raw outputs behind it are committed in `results/`.
+- One command, given in the README, reproduces the table from a fresh clone with only an API key set.
+- No confidence interval is required yet. Scores out of 15 are rough, and you'll add intervals and a paired comparison to this table in the Eval Statistics assignment, so keep `run.py` easy to extend.
 
 #### Extra credit
 
