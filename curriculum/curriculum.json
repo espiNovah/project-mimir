@@ -1,0 +1,1409 @@
+{
+  "title": "Project Mímir",
+  "tagline": "A free, project-based curriculum that takes you from zero coding experience to a career building AI agents.",
+  "paths": [
+    {
+      "id": "foundations",
+      "title": "Foundations",
+      "hours": 200,
+      "optional": false,
+      "description": "Set up a real developer environment, learn Python, Git and how the web works, then build your first app on a language model.",
+      "sections": [
+        {
+          "id": "introduction",
+          "title": "Introduction",
+          "description": "How this curriculum works, how to learn effectively, and how to get unstuck.",
+          "lessons": [
+            {
+              "id": "how-this-curriculum-works",
+              "title": "How This Curriculum Works",
+              "description": "The lay of the land: paths, lessons, projects and how to use them.",
+              "file": "foundations/introduction/how_this_curriculum_works.md"
+            },
+            {
+              "id": "learning-how-to-learn",
+              "title": "Learning How to Learn",
+              "description": "Motivation, mindset, and how to avoid tutorial hell.",
+              "file": "foundations/introduction/learning_how_to_learn.md"
+            },
+            {
+              "id": "asking-for-help",
+              "title": "Asking for Help",
+              "description": "How to ask questions that get good answers, and when to ask an AI.",
+              "file": "foundations/introduction/asking_for_help.md"
+            },
+            {
+              "id": "project-learning-plan",
+              "title": "Project: Learning Plan",
+              "description": "Write the study plan you'll follow for the next year.",
+              "file": "foundations/introduction/project_learning_plan.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "setup",
+          "title": "Your Setup",
+          "description": "Get comfortable in the terminal and set up Python the way working engineers do.",
+          "lessons": [
+            {
+              "id": "command-line-basics",
+              "title": "Command Line Basics",
+              "description": "Navigate your computer and manage files from the terminal.",
+              "file": "foundations/setup/command_line_basics.md"
+            },
+            {
+              "id": "installing-python-and-vscode",
+              "title": "Installing Python and VS Code",
+              "description": "Install the tools you'll use every day.",
+              "file": "foundations/setup/installing_python_and_vscode.md"
+            },
+            {
+              "id": "virtual-environments-and-uv",
+              "title": "Virtual Environments and uv",
+              "description": "Isolate each project's dependencies and manage them with uv.",
+              "file": "foundations/setup/virtual_environments_and_uv.md"
+            },
+            {
+              "id": "project-hello-uv",
+              "title": "Project: Hello, uv",
+              "description": "Create, run and inspect a tiny Python project entirely from the terminal.",
+              "file": "foundations/setup/project_hello_uv.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "git",
+          "title": "Git & GitHub",
+          "description": "Version control is how every team works and how employers will see your work.",
+          "lessons": [
+            {
+              "id": "introduction-to-git",
+              "title": "Introduction to Git",
+              "description": "What version control is and why you'll use it every day.",
+              "file": "foundations/git/introduction_to_git.md"
+            },
+            {
+              "id": "git-basics",
+              "title": "Git Basics",
+              "description": "Commits, staging, history and pushing to GitHub.",
+              "file": "foundations/git/git_basics.md"
+            },
+            {
+              "id": "branches-and-pull-requests",
+              "title": "Branches and Pull Requests",
+              "description": "Work safely on branches and merge through code review.",
+              "file": "foundations/git/branches_and_pull_requests.md"
+            },
+            {
+              "id": "writing-a-good-readme",
+              "title": "Writing a Good README",
+              "description": "The front page of every project you build.",
+              "file": "foundations/git/writing_a_good_readme.md"
+            },
+            {
+              "id": "project-hello-github",
+              "title": "Project: Hello, GitHub",
+              "description": "Publish your learning journal as your first public repository.",
+              "file": "foundations/git/project_hello_github.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "python",
+          "title": "Python Fundamentals",
+          "description": "Python is the language of AI engineering. This is the biggest section in Foundations, so take your time.",
+          "lessons": [
+            {
+              "id": "variables-and-types",
+              "title": "Variables and Types",
+              "description": "Store and work with numbers, strings and booleans.",
+              "file": "foundations/python/variables_and_types.md"
+            },
+            {
+              "id": "conditionals-and-loops",
+              "title": "Conditionals and Loops",
+              "description": "Make decisions and repeat work.",
+              "file": "foundations/python/conditionals_and_loops.md"
+            },
+            {
+              "id": "functions",
+              "title": "Functions",
+              "description": "Package logic into reusable, testable pieces.",
+              "file": "foundations/python/functions.md"
+            },
+            {
+              "id": "data-structures",
+              "title": "Lists, Dicts, Sets and Tuples",
+              "description": "The four collections you'll use constantly.",
+              "file": "foundations/python/data_structures.md"
+            },
+            {
+              "id": "files-and-json",
+              "title": "Files and JSON",
+              "description": "Read and write files, and work with JSON, the language of APIs.",
+              "file": "foundations/python/files_and_json.md"
+            },
+            {
+              "id": "project-cli-quiz-game",
+              "title": "Project: CLI Quiz Game",
+              "description": "A terminal quiz that loads questions from JSON and keeps score.",
+              "file": "foundations/python/project_cli_quiz_game.md",
+              "project": true
+            },
+            {
+              "id": "errors-and-exceptions",
+              "title": "Errors and Exceptions",
+              "description": "Read tracebacks, handle failures and fail loudly when you should.",
+              "file": "foundations/python/errors_and_exceptions.md"
+            },
+            {
+              "id": "modules-and-packages",
+              "title": "Modules and Packages",
+              "description": "Split code across files and use other people's code.",
+              "file": "foundations/python/modules_and_packages.md"
+            },
+            {
+              "id": "classes-and-objects",
+              "title": "Classes and Objects",
+              "description": "Model things with classes and dataclasses.",
+              "file": "foundations/python/classes_and_objects.md"
+            },
+            {
+              "id": "type-hints",
+              "title": "Type Hints",
+              "description": "Describe your data so tools (and models) can check it.",
+              "file": "foundations/python/type_hints.md"
+            },
+            {
+              "id": "testing-with-pytest",
+              "title": "Testing with pytest",
+              "description": "Prove your code works and keep it working.",
+              "file": "foundations/python/testing_with_pytest.md"
+            },
+            {
+              "id": "project-expense-tracker",
+              "title": "Project: Expense Tracker",
+              "description": "A tested, typed command-line app that saves data to CSV.",
+              "file": "foundations/python/project_expense_tracker.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "web",
+          "title": "The Web for AI Builders",
+          "description": "Every model you'll use is reached over HTTP. Learn how APIs, JSON and secrets work.",
+          "lessons": [
+            {
+              "id": "how-the-web-works",
+              "title": "How the Web Works",
+              "description": "Requests, responses, URLs and status codes.",
+              "file": "foundations/web/how_the_web_works.md"
+            },
+            {
+              "id": "working-with-apis",
+              "title": "Working with APIs",
+              "description": "Call REST APIs from Python with httpx.",
+              "file": "foundations/web/working_with_apis.md"
+            },
+            {
+              "id": "api-keys-and-secrets",
+              "title": "API Keys and Secrets",
+              "description": "Keep credentials out of your code and out of Git.",
+              "file": "foundations/web/api_keys_and_secrets.md"
+            },
+            {
+              "id": "async-basics",
+              "title": "Async Basics",
+              "description": "Do many slow things at once with asyncio.",
+              "file": "foundations/web/async_basics.md"
+            },
+            {
+              "id": "project-weather-cli",
+              "title": "Project: Weather CLI",
+              "description": "Fetch forecasts for several cities at once from a free API.",
+              "file": "foundations/web/project_weather_cli.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "llms",
+          "title": "How LLMs Work",
+          "description": "No math required. Build the mental model you need to reason about what models can and can't do.",
+          "lessons": [
+            {
+              "id": "neural-networks-intuitively",
+              "title": "Neural Networks, Intuitively",
+              "description": "What it means for a model to learn.",
+              "file": "foundations/llms/neural_networks_intuitively.md"
+            },
+            {
+              "id": "tokens-and-tokenization",
+              "title": "Tokens and Tokenization",
+              "description": "How models see text, and why it affects cost and behavior.",
+              "file": "foundations/llms/tokens_and_tokenization.md"
+            },
+            {
+              "id": "transformers-and-attention",
+              "title": "Transformers and Attention",
+              "description": "The architecture behind every modern LLM, at a high level.",
+              "file": "foundations/llms/transformers_and_attention.md"
+            },
+            {
+              "id": "context-windows-and-sampling",
+              "title": "Context Windows and Sampling",
+              "description": "What a model can see, and how it picks the next token.",
+              "file": "foundations/llms/context_windows_and_sampling.md"
+            },
+            {
+              "id": "reasoning-models",
+              "title": "Reasoning Models",
+              "description": "Models that think before they answer, and when that helps.",
+              "file": "foundations/llms/reasoning_models.md"
+            },
+            {
+              "id": "why-models-hallucinate",
+              "title": "Why Models Hallucinate",
+              "description": "Where confident wrong answers come from and how to design around them.",
+              "file": "foundations/llms/why_models_hallucinate.md"
+            },
+            {
+              "id": "project-token-and-temperature-lab",
+              "title": "Project: Token & Temperature Lab",
+              "description": "Investigate tokenization, sampling and hallucination hands-on.",
+              "file": "foundations/llms/project_token_and_temperature_lab.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "first-llm-app",
+          "title": "Your First LLM App",
+          "description": "Call a model API, hold a conversation, stream responses and track what each call costs.",
+          "lessons": [
+            {
+              "id": "your-first-api-call",
+              "title": "Your First API Call",
+              "description": "Get an API key and send your first message to a model.",
+              "file": "foundations/first_llm_app/your_first_api_call.md"
+            },
+            {
+              "id": "system-prompts-and-conversations",
+              "title": "System Prompts and Conversations",
+              "description": "Give a model a role and hold a multi-turn conversation.",
+              "file": "foundations/first_llm_app/system_prompts_and_conversations.md"
+            },
+            {
+              "id": "streaming-responses",
+              "title": "Streaming Responses",
+              "description": "Show output as it's generated.",
+              "file": "foundations/first_llm_app/streaming_responses.md"
+            },
+            {
+              "id": "tokens-cost-and-rate-limits",
+              "title": "Tokens, Cost and Rate Limits",
+              "description": "Count tokens, estimate cost and handle API errors gracefully.",
+              "file": "foundations/first_llm_app/tokens_cost_and_rate_limits.md"
+            },
+            {
+              "id": "project-terminal-chatbot",
+              "title": "Project: Terminal Chatbot",
+              "description": "A streaming chatbot with memory, a personality and a cost meter.",
+              "file": "foundations/first_llm_app/project_terminal_chatbot.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "core",
+      "title": "AI Engineering Core",
+      "hours": 300,
+      "optional": false,
+      "description": "The everyday skills of an AI engineer: prompting, structured outputs, backends, retrieval, and, most important, evals.",
+      "sections": [
+        {
+          "id": "prompting",
+          "title": "Prompt & Context Engineering",
+          "description": "Prompting is writing a precise spec. Context engineering is deciding what the model sees at all.",
+          "lessons": [
+            {
+              "id": "prompting-fundamentals",
+              "title": "Prompting Fundamentals",
+              "description": "Clear instructions, examples and structure with XML tags.",
+              "file": "core/prompting/prompting_fundamentals.md"
+            },
+            {
+              "id": "thinking-and-prompt-chaining",
+              "title": "Thinking and Prompt Chaining",
+              "description": "Let the model reason, and split hard tasks into steps.",
+              "file": "core/prompting/thinking_and_prompt_chaining.md"
+            },
+            {
+              "id": "long-context-and-context-engineering",
+              "title": "Long Context and Context Engineering",
+              "description": "Decide what goes into the context window and where.",
+              "file": "core/prompting/long_context_and_context_engineering.md"
+            },
+            {
+              "id": "project-prompt-lab",
+              "title": "Project: Prompt Lab",
+              "description": "Measure which prompt variant actually works best.",
+              "file": "core/prompting/project_prompt_lab.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "structured-outputs",
+          "title": "Structured Outputs",
+          "description": "Real software needs data, not prose. Get models to return JSON you can trust.",
+          "lessons": [
+            {
+              "id": "json-schema-and-pydantic",
+              "title": "JSON Schema and Pydantic",
+              "description": "Define the shape of your data in code.",
+              "file": "core/structured_outputs/json_schema_and_pydantic.md"
+            },
+            {
+              "id": "getting-structured-output",
+              "title": "Getting Structured Output",
+              "description": "Native structured outputs, libraries, validation and retries.",
+              "file": "core/structured_outputs/getting_structured_output.md"
+            },
+            {
+              "id": "project-messy-text-extractor",
+              "title": "Project: Messy-Text Extractor",
+              "description": "Turn unstructured text into clean, validated JSON, and measure accuracy.",
+              "file": "core/structured_outputs/project_messy_text_extractor.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "backend",
+          "title": "Backend for AI Apps",
+          "description": "Wrap your AI logic in a real web API backed by a database.",
+          "lessons": [
+            {
+              "id": "sql-fundamentals",
+              "title": "SQL Fundamentals",
+              "description": "Query and shape data with SQL.",
+              "file": "core/backend/sql_fundamentals.md"
+            },
+            {
+              "id": "fastapi-basics",
+              "title": "FastAPI Basics",
+              "description": "Build a typed web API in Python.",
+              "file": "core/backend/fastapi_basics.md"
+            },
+            {
+              "id": "persisting-data",
+              "title": "Persisting Data with SQLModel",
+              "description": "Store and retrieve results in a database.",
+              "file": "core/backend/persisting_data.md"
+            },
+            {
+              "id": "auth-and-background-jobs",
+              "title": "Auth and Background Jobs",
+              "description": "Protect your API and move slow model calls off the request path.",
+              "file": "core/backend/auth_and_background_jobs.md"
+            },
+            {
+              "id": "project-llm-powered-api",
+              "title": "Project: LLM-Powered API",
+              "description": "Expose your extractor as an authenticated API with background jobs.",
+              "file": "core/backend/project_llm_powered_api.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "rag",
+          "title": "Embeddings & Retrieval (RAG)",
+          "description": "Give models knowledge they weren't trained on by retrieving the right documents at the right time.",
+          "lessons": [
+            {
+              "id": "what-embeddings-are",
+              "title": "What Embeddings Are",
+              "description": "Turning meaning into numbers you can search.",
+              "file": "core/rag/what_embeddings_are.md"
+            },
+            {
+              "id": "chunking-and-vector-databases",
+              "title": "Chunking and Vector Databases",
+              "description": "Split documents well and store them for fast search.",
+              "file": "core/rag/chunking_and_vector_databases.md"
+            },
+            {
+              "id": "hybrid-search-and-reranking",
+              "title": "Hybrid Search and Reranking",
+              "description": "Combine keyword and vector search, then rerank.",
+              "file": "core/rag/hybrid_search_and_reranking.md"
+            },
+            {
+              "id": "citations-and-grounding",
+              "title": "Citations and Grounding",
+              "description": "Make answers traceable to sources, and say \"I don't know\".",
+              "file": "core/rag/citations_and_grounding.md"
+            },
+            {
+              "id": "project-chat-with-your-docs",
+              "title": "Project: Chat With Your Docs",
+              "description": "A cited question-answering system over documents you care about.",
+              "file": "core/rag/project_chat_with_your_docs.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "evals",
+          "title": "Evals",
+          "description": "This is the skill that separates professionals from hobbyists. If you can't measure it, you can't improve it.",
+          "lessons": [
+            {
+              "id": "why-evals-matter",
+              "title": "Why Evals Matter",
+              "description": "Golden datasets, error analysis and reading your traces.",
+              "file": "core/evals/why_evals_matter.md"
+            },
+            {
+              "id": "code-checks-and-llm-as-judge",
+              "title": "Code Checks and LLM-as-Judge",
+              "description": "Choose the right grader, and check the judge.",
+              "file": "core/evals/code_checks_and_llm_as_judge.md"
+            },
+            {
+              "id": "evaluating-rag-and-regressions",
+              "title": "Evaluating RAG and Catching Regressions",
+              "description": "Measure retrieval and answers, and test prompts like code.",
+              "file": "core/evals/evaluating_rag_and_regressions.md"
+            },
+            {
+              "id": "project-rag-eval-harness",
+              "title": "Project: RAG Eval Harness",
+              "description": "Measure and improve your docs chatbot with numbers.",
+              "file": "core/evals/project_rag_eval_harness.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "frontend",
+          "title": "Minimal Frontend",
+          "description": "Enough UI to demo your work. A UI is often what gets someone to try your project.",
+          "lessons": [
+            {
+              "id": "html-css-js-essentials",
+              "title": "HTML, CSS and JavaScript Essentials",
+              "description": "The minimum web skills to put a face on your app.",
+              "file": "core/frontend/html_css_js_essentials.md"
+            },
+            {
+              "id": "rapid-uis",
+              "title": "Rapid UIs with Streamlit and Gradio",
+              "description": "Ship a usable interface in an afternoon.",
+              "file": "core/frontend/rapid_uis.md"
+            },
+            {
+              "id": "streaming-in-the-browser",
+              "title": "Streaming in the Browser",
+              "description": "Show model output token by token with server-sent events.",
+              "file": "core/frontend/streaming_in_the_browser.md"
+            },
+            {
+              "id": "project-docs-chatbot-ui",
+              "title": "Project: Docs Chatbot UI",
+              "description": "A shareable web interface for your docs chatbot.",
+              "file": "core/frontend/project_docs_chatbot_ui.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agentic",
+      "title": "Agentic Systems",
+      "hours": 300,
+      "optional": false,
+      "description": "The heart of the curriculum. Build agents from scratch, learn when not to, connect them to the world with tools and MCP, and make them safe and measurable.",
+      "sections": [
+        {
+          "id": "what-is-an-agent",
+          "title": "What Is an Agent?",
+          "description": "An agent is a model using tools in a loop. Know when to use one, and when not to.",
+          "lessons": [
+            {
+              "id": "workflows-vs-agents",
+              "title": "Workflows vs Agents",
+              "description": "The spectrum from a single call to full autonomy.",
+              "file": "agentic/what_is_an_agent/workflows_vs_agents.md"
+            },
+            {
+              "id": "the-agent-loop",
+              "title": "The Agent Loop",
+              "description": "Think, act, observe, repeat, and knowing when to stop.",
+              "file": "agentic/what_is_an_agent/the_agent_loop.md"
+            },
+            {
+              "id": "project-workflow-or-agent",
+              "title": "Project: Workflow or Agent?",
+              "description": "Hand-build a tiny loop and write a decision memo.",
+              "file": "agentic/what_is_an_agent/project_workflow_or_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "tool-use",
+          "title": "Tool Use",
+          "description": "Tools are how agents touch the world. Well-designed tools matter more than clever prompts.",
+          "lessons": [
+            {
+              "id": "function-calling",
+              "title": "Function Calling",
+              "description": "How a model asks your code to do something.",
+              "file": "agentic/tool_use/function_calling.md"
+            },
+            {
+              "id": "designing-tools-for-agents",
+              "title": "Designing Tools for Agents",
+              "description": "Names, descriptions, schemas and outputs that agents use well.",
+              "file": "agentic/tool_use/designing_tools_for_agents.md"
+            },
+            {
+              "id": "tool-errors-and-parallel-calls",
+              "title": "Tool Errors and Parallel Calls",
+              "description": "Return errors the model can recover from, and run tools concurrently.",
+              "file": "agentic/tool_use/tool_errors_and_parallel_calls.md"
+            },
+            {
+              "id": "scaling-to-many-tools",
+              "title": "Scaling to Many Tools",
+              "description": "Tool search and programmatic tool calling.",
+              "file": "agentic/tool_use/scaling_to_many_tools.md"
+            },
+            {
+              "id": "project-agent-loop-from-scratch",
+              "title": "Project: Agent Loop From Scratch",
+              "description": "An agent with no framework: just the API and a while loop.",
+              "file": "agentic/tool_use/project_agent_loop_from_scratch.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "workflow-patterns",
+          "title": "Workflow Patterns",
+          "description": "The composable building blocks most production \"agents\" actually use.",
+          "lessons": [
+            {
+              "id": "chaining-and-routing",
+              "title": "Chaining and Routing",
+              "description": "Fixed pipelines with gates, and sending inputs to the right handler.",
+              "file": "agentic/workflow_patterns/chaining_and_routing.md"
+            },
+            {
+              "id": "parallelization-and-orchestrators",
+              "title": "Parallelization and Orchestrator-Workers",
+              "description": "Split work up, and let a model decide how.",
+              "file": "agentic/workflow_patterns/parallelization_and_orchestrators.md"
+            },
+            {
+              "id": "evaluator-optimizer",
+              "title": "Evaluator-Optimizer",
+              "description": "Generate, critique, improve.",
+              "file": "agentic/workflow_patterns/evaluator_optimizer.md"
+            },
+            {
+              "id": "project-support-ticket-pipeline",
+              "title": "Project: Support Ticket Pipeline",
+              "description": "The same system built three ways, measured against a baseline.",
+              "file": "agentic/workflow_patterns/project_support_ticket_pipeline.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "mcp",
+          "title": "Model Context Protocol (MCP)",
+          "description": "The open standard for connecting agents to tools and data. Build once, use in any MCP client.",
+          "lessons": [
+            {
+              "id": "mcp-architecture",
+              "title": "MCP Architecture",
+              "description": "Hosts, clients, servers; tools, resources and prompts.",
+              "file": "agentic/mcp/mcp_architecture.md"
+            },
+            {
+              "id": "building-an-mcp-server",
+              "title": "Building an MCP Server",
+              "description": "Write a server with the Python SDK and test it with the Inspector.",
+              "file": "agentic/mcp/building_an_mcp_server.md"
+            },
+            {
+              "id": "mcp-transports-and-security",
+              "title": "MCP Transports and Security",
+              "description": "stdio vs Streamable HTTP under the stateless 2026 spec, and securing servers.",
+              "file": "agentic/mcp/mcp_transports_and_security.md"
+            },
+            {
+              "id": "project-your-own-mcp-server",
+              "title": "Project: Your Own MCP Server",
+              "description": "Wrap a real API or dataset as an MCP server others can install.",
+              "file": "agentic/mcp/project_your_own_mcp_server.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "memory",
+          "title": "Memory & Context Management",
+          "description": "Long tasks overflow context windows. Learn what to keep, what to summarize and what to store.",
+          "lessons": [
+            {
+              "id": "short-and-long-term-memory",
+              "title": "Short- and Long-Term Memory",
+              "description": "What an agent remembers within a task and across tasks.",
+              "file": "agentic/memory/short_and_long_term_memory.md"
+            },
+            {
+              "id": "compaction-and-context-editing",
+              "title": "Compaction and Context Editing",
+              "description": "Keep long conversations inside the window.",
+              "file": "agentic/memory/compaction_and_context_editing.md"
+            },
+            {
+              "id": "long-running-agents",
+              "title": "Long-Running Agents",
+              "description": "Harnesses, progress files and handoffs across sessions.",
+              "file": "agentic/memory/long_running_agents.md"
+            },
+            {
+              "id": "project-the-agent-that-remembers",
+              "title": "Project: The Agent That Remembers",
+              "description": "Finish a task too big for one context window.",
+              "file": "agentic/memory/project_the_agent_that_remembers.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "frameworks",
+          "title": "Frameworks, SDKs & Skills",
+          "description": "Now that you've built a loop by hand, see what frameworks give you and what they hide.",
+          "lessons": [
+            {
+              "id": "claude-agent-sdk",
+              "title": "The Claude Agent SDK",
+              "description": "The harness behind Claude Code, as a library.",
+              "file": "agentic/frameworks/claude_agent_sdk.md"
+            },
+            {
+              "id": "other-agent-frameworks",
+              "title": "Other Agent Frameworks",
+              "description": "OpenAI Agents SDK, LangGraph, Pydantic AI and Google ADK.",
+              "file": "agentic/frameworks/other_agent_frameworks.md"
+            },
+            {
+              "id": "agent-skills",
+              "title": "Agent Skills",
+              "description": "Package procedural knowledge with SKILL.md and progressive disclosure.",
+              "file": "agentic/frameworks/agent_skills.md"
+            },
+            {
+              "id": "when-frameworks-help",
+              "title": "When Frameworks Help (and Hurt)",
+              "description": "Choosing between a raw loop, a framework and a managed runtime.",
+              "file": "agentic/frameworks/when_frameworks_help.md"
+            },
+            {
+              "id": "project-port-your-agent",
+              "title": "Project: Port Your Agent",
+              "description": "Rebuild your agent in two frameworks and compare.",
+              "file": "agentic/frameworks/project_port_your_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "coding-and-browser-agents",
+          "title": "Coding, Browser & Computer-Use Agents",
+          "description": "Agents that write code, drive browsers and operate desktops.",
+          "lessons": [
+            {
+              "id": "how-coding-agents-work",
+              "title": "How Coding Agents Work",
+              "description": "Inside the loop of a coding agent, and how to work with one.",
+              "file": "agentic/coding_and_browser_agents/how_coding_agents_work.md"
+            },
+            {
+              "id": "sandboxing-agents",
+              "title": "Sandboxing Agents",
+              "description": "Filesystem and network isolation for agents that run code.",
+              "file": "agentic/coding_and_browser_agents/sandboxing_agents.md"
+            },
+            {
+              "id": "browser-and-computer-use",
+              "title": "Browser and Computer Use",
+              "description": "Accessibility snapshots, screenshots and actions.",
+              "file": "agentic/coding_and_browser_agents/browser_and_computer_use.md"
+            },
+            {
+              "id": "project-sandboxed-coding-agent",
+              "title": "Project: Sandboxed Coding & Browser Agent",
+              "description": "Fix a failing test, verify it in a browser, and ask before pushing.",
+              "file": "agentic/coding_and_browser_agents/project_sandboxed_coding_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "multi-agent",
+          "title": "Multi-Agent Systems",
+          "description": "Splitting work across agents can help, and it can also multiply failures. Learn the trade-offs.",
+          "lessons": [
+            {
+              "id": "subagents-and-orchestration",
+              "title": "Subagents and Orchestration",
+              "description": "Delegation, condensed results and when parallel agents pay off.",
+              "file": "agentic/multi_agent/subagents_and_orchestration.md"
+            },
+            {
+              "id": "handoffs-and-a2a",
+              "title": "Handoffs and A2A",
+              "description": "Passing control between agents, and agent-to-agent protocols vs MCP.",
+              "file": "agentic/multi_agent/handoffs_and_a2a.md"
+            },
+            {
+              "id": "project-research-agent",
+              "title": "Project: Research Agent, One vs Many",
+              "description": "A cited research agent built single-agent and multi-agent, compared.",
+              "file": "agentic/multi_agent/project_research_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "safety",
+          "title": "Human-in-the-Loop & Safety",
+          "description": "Agents act in the real world. Build them so mistakes are cheap and attacks are hard.",
+          "lessons": [
+            {
+              "id": "prompt-injection",
+              "title": "Prompt Injection and the Lethal Trifecta",
+              "description": "Why agents with tools are uniquely attackable.",
+              "file": "agentic/safety/prompt_injection.md"
+            },
+            {
+              "id": "secure-design-patterns",
+              "title": "Secure Design Patterns",
+              "description": "Least privilege, sandboxing, plan-then-execute and guardrails.",
+              "file": "agentic/safety/secure_design_patterns.md"
+            },
+            {
+              "id": "approvals-and-permissions",
+              "title": "Approvals and Permissions",
+              "description": "When and how to ask a human.",
+              "file": "agentic/safety/approvals_and_permissions.md"
+            },
+            {
+              "id": "project-break-your-own-agent",
+              "title": "Project: Break Your Own Agent",
+              "description": "Red-team your agent, then harden it with structural defenses.",
+              "file": "agentic/safety/project_break_your_own_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "agent-evals",
+          "title": "Evaluating Agents",
+          "description": "Agents take many steps, so you need to evaluate the path as well as the answer.",
+          "lessons": [
+            {
+              "id": "agent-eval-fundamentals",
+              "title": "Agent Eval Fundamentals",
+              "description": "Graders, transcripts, environment state, and pass@k vs pass^k.",
+              "file": "agentic/agent_evals/agent_eval_fundamentals.md"
+            },
+            {
+              "id": "simulated-users-and-benchmarks",
+              "title": "Simulated Users and Benchmarks",
+              "description": "Test agents against simulated people and standard tasks.",
+              "file": "agentic/agent_evals/simulated_users_and_benchmarks.md"
+            },
+            {
+              "id": "project-workflow-automation-agent",
+              "title": "Project: Workflow Automation Agent",
+              "description": "Path capstone: a real multi-step agent with an eval suite.",
+              "file": "agentic/agent_evals/project_workflow_automation_agent.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "production",
+      "title": "Production & LLMOps",
+      "hours": 120,
+      "optional": false,
+      "description": "Take your work from \"runs on my laptop\" to \"runs for real users\": deployed, observable, affordable and secure.",
+      "sections": [
+        {
+          "id": "deployment",
+          "title": "Deployment",
+          "description": "Containerize your app and put it on the internet.",
+          "lessons": [
+            {
+              "id": "docker-for-python",
+              "title": "Docker for Python Apps",
+              "description": "Package your app so it runs the same everywhere.",
+              "file": "production/deployment/docker_for_python.md"
+            },
+            {
+              "id": "deploying-to-the-cloud",
+              "title": "Deploying to the Cloud",
+              "description": "Free hosting, config and secrets in production.",
+              "file": "production/deployment/deploying_to_the_cloud.md"
+            },
+            {
+              "id": "project-hello-production",
+              "title": "Project: Hello, Production",
+              "description": "Your API, containerized and live on the internet.",
+              "file": "production/deployment/project_hello_production.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "observability",
+          "title": "Observability & Tracing",
+          "description": "You can't fix what you can't see. Trace every model call and tool step.",
+          "lessons": [
+            {
+              "id": "logging-and-tracing",
+              "title": "Logging and Tracing",
+              "description": "Spans, traces and OpenTelemetry for GenAI.",
+              "file": "production/observability/logging_and_tracing.md"
+            },
+            {
+              "id": "traces-to-evals",
+              "title": "From Traces to Evals",
+              "description": "Turn production failures into test cases.",
+              "file": "production/observability/traces_to_evals.md"
+            },
+            {
+              "id": "project-trace-detective",
+              "title": "Project: Trace Detective",
+              "description": "Trace your agent, find failures, and turn them into tests.",
+              "file": "production/observability/project_trace_detective.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "cost-and-latency",
+          "title": "Cost & Latency",
+          "description": "Make it fast and affordable without losing quality.",
+          "lessons": [
+            {
+              "id": "caching-and-model-choice",
+              "title": "Caching and Model Choice",
+              "description": "Prompt caching, and the right model for each step.",
+              "file": "production/cost_and_latency/caching_and_model_choice.md"
+            },
+            {
+              "id": "batching-rate-limits-and-fallbacks",
+              "title": "Batching, Rate Limits and Fallbacks",
+              "description": "Throughput, retries and graceful degradation.",
+              "file": "production/cost_and_latency/batching_rate_limits_and_fallbacks.md"
+            },
+            {
+              "id": "project-cut-the-bill",
+              "title": "Project: Cut the Bill",
+              "description": "Make an app 40% cheaper or faster with no loss in quality.",
+              "file": "production/cost_and_latency/project_cut_the_bill.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "reliability",
+          "title": "Reliability, Security & CI",
+          "description": "Version your prompts, run evals on every change and harden what you ship.",
+          "lessons": [
+            {
+              "id": "prompt-versioning-and-ci-evals",
+              "title": "Prompt Versioning and CI Evals",
+              "description": "Treat prompts like code and gate merges on evals.",
+              "file": "production/reliability/prompt_versioning_and_ci_evals.md"
+            },
+            {
+              "id": "security-review",
+              "title": "Security Review for AI Apps",
+              "description": "A practical checklist against the OWASP LLM Top 10.",
+              "file": "production/reliability/security_review.md"
+            },
+            {
+              "id": "project-ship-it",
+              "title": "Project: Ship It",
+              "description": "Your agent in production, with tracing, CI evals and a runbook.",
+              "file": "production/reliability/project_ship_it.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ml",
+      "title": "ML Foundations",
+      "hours": 150,
+      "optional": true,
+      "description": "Optional, but recommended. Understand what's under the hood. It makes you better at debugging, at choosing between fine-tuning and prompting, and in interviews.",
+      "sections": [
+        {
+          "id": "math",
+          "title": "Just Enough Math",
+          "description": "Vectors, matrices and probability, taught visually.",
+          "lessons": [
+            {
+              "id": "vectors-and-similarity",
+              "title": "Vectors and Similarity",
+              "description": "Why cosine similarity works.",
+              "file": "ml/math/vectors_and_similarity.md"
+            },
+            {
+              "id": "matrices-and-probability",
+              "title": "Matrices and Probability",
+              "description": "Transformations and distributions, intuitively.",
+              "file": "ml/math/matrices_and_probability.md"
+            },
+            {
+              "id": "project-similarity-by-hand",
+              "title": "Project: Similarity by Hand",
+              "description": "Implement cosine similarity and rank real embeddings.",
+              "file": "ml/math/project_similarity_by_hand.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "classic-ml",
+          "title": "Classic Machine Learning",
+          "description": "Splits, overfitting and baselines still apply to every LLM project.",
+          "lessons": [
+            {
+              "id": "supervised-learning",
+              "title": "Supervised Learning",
+              "description": "Features, labels, training and evaluation.",
+              "file": "ml/classic_ml/supervised_learning.md"
+            },
+            {
+              "id": "overfitting-and-baselines",
+              "title": "Overfitting and Baselines",
+              "description": "Why a simple baseline comes first.",
+              "file": "ml/classic_ml/overfitting_and_baselines.md"
+            },
+            {
+              "id": "project-beat-the-baseline",
+              "title": "Project: Beat the Baseline",
+              "description": "A TF-IDF classifier you'll compare against later.",
+              "file": "ml/classic_ml/project_beat_the_baseline.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "neural-networks",
+          "title": "Neural Networks & Transformers",
+          "description": "Build a tiny GPT yourself. Afterwards, models stop feeling like magic.",
+          "lessons": [
+            {
+              "id": "backpropagation-and-pytorch",
+              "title": "Backpropagation and PyTorch",
+              "description": "How networks learn, and the library that trains them.",
+              "file": "ml/neural_networks/backpropagation_and_pytorch.md"
+            },
+            {
+              "id": "building-a-tiny-gpt",
+              "title": "Building a Tiny GPT",
+              "description": "Attention and the transformer, from scratch.",
+              "file": "ml/neural_networks/building_a_tiny_gpt.md"
+            },
+            {
+              "id": "project-your-own-tiny-gpt",
+              "title": "Project: Your Own Tiny GPT",
+              "description": "Train a character-level GPT on a corpus you choose.",
+              "file": "ml/neural_networks/project_your_own_tiny_gpt.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "fine-tuning",
+          "title": "Open Models & Fine-Tuning",
+          "description": "Run open models, and know when fine-tuning beats prompting or RAG.",
+          "lessons": [
+            {
+              "id": "running-open-models",
+              "title": "Running Open Models",
+              "description": "Hugging Face and local inference with Ollama.",
+              "file": "ml/fine_tuning/running_open_models.md"
+            },
+            {
+              "id": "fine-tune-prompt-or-rag",
+              "title": "Fine-Tune, Prompt or RAG?",
+              "description": "Choosing the right tool for the problem.",
+              "file": "ml/fine_tuning/fine_tune_prompt_or_rag.md"
+            },
+            {
+              "id": "lora-fine-tuning",
+              "title": "LoRA Fine-Tuning",
+              "description": "Parameter-efficient fine-tuning on a free GPU.",
+              "file": "ml/fine_tuning/lora_fine_tuning.md"
+            },
+            {
+              "id": "project-fine-tune-a-small-model",
+              "title": "Project: Fine-Tune a Small Model",
+              "description": "Compare fine-tuned, prompted and classic models on one task.",
+              "file": "ml/fine_tuning/project_fine_tune_a_small_model.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "title": "Research Track",
+      "hours": 200,
+      "optional": true,
+      "description": "Optional, and recommended for anyone heading to a master's or a research role. The theory behind agents: math, reinforcement learning, planning, multi-agent systems, and how to read, run and write research.",
+      "sections": [
+        {
+          "id": "research-math",
+          "title": "Math for Research",
+          "description": "Exam-level linear algebra, calculus, optimization and probability: the math a master's program expects.",
+          "lessons": [
+            {
+              "id": "linear-algebra-in-depth",
+              "title": "Linear Algebra in Depth",
+              "description": "Vector spaces, eigenvectors and decompositions, with proofs and practice.",
+              "file": "research/research_math/linear_algebra_in_depth.md"
+            },
+            {
+              "id": "calculus-and-optimization",
+              "title": "Calculus and Optimization",
+              "description": "Gradients, the chain rule, convexity and how optimizers actually work.",
+              "file": "research/research_math/calculus_and_optimization.md"
+            },
+            {
+              "id": "probability-and-statistics",
+              "title": "Probability and Statistics",
+              "description": "Distributions, expectation, Bayes, estimation and hypothesis tests.",
+              "file": "research/research_math/probability_and_statistics.md"
+            },
+            {
+              "id": "project-math-from-scratch",
+              "title": "Project: Math From Scratch",
+              "description": "Derive and implement gradient descent and logistic regression with no ML libraries.",
+              "file": "research/research_math/project_math_from_scratch.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "reinforcement-learning",
+          "title": "Reinforcement Learning",
+          "description": "How agents learn from reward, the theory behind RLHF and reasoning models.",
+          "lessons": [
+            {
+              "id": "mdps-and-bandits",
+              "title": "MDPs and Bandits",
+              "description": "The formal language of sequential decision-making.",
+              "file": "research/reinforcement_learning/mdps_and_bandits.md"
+            },
+            {
+              "id": "value-based-methods",
+              "title": "Value-Based Methods",
+              "description": "Dynamic programming, Monte Carlo, TD learning and Q-learning.",
+              "file": "research/reinforcement_learning/value_based_methods.md"
+            },
+            {
+              "id": "policy-gradients",
+              "title": "Policy Gradients",
+              "description": "REINFORCE, actor-critic and PPO.",
+              "file": "research/reinforcement_learning/policy_gradients.md"
+            },
+            {
+              "id": "rl-for-llms",
+              "title": "RL for Language Models",
+              "description": "RLHF, DPO and RL from verifiable rewards.",
+              "file": "research/reinforcement_learning/rl_for_llms.md"
+            },
+            {
+              "id": "project-train-an-rl-agent",
+              "title": "Project: Train an RL Agent",
+              "description": "Implement tabular Q-learning and REINFORCE, and compare them on standard environments.",
+              "file": "research/reinforcement_learning/project_train_an_rl_agent.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "title": "Planning & Classical AI",
+          "description": "Search, planning and the classical theory of agents that LLM agents are rediscovering.",
+          "lessons": [
+            {
+              "id": "search-and-planning",
+              "title": "Search and Planning",
+              "description": "Uninformed and heuristic search, A*, and classical planning (STRIPS/PDDL).",
+              "file": "research/planning/search_and_planning.md"
+            },
+            {
+              "id": "classical-agent-theory",
+              "title": "Classical Agent Theory",
+              "description": "Rational agents, environments, and belief-desire-intention architectures.",
+              "file": "research/planning/classical_agent_theory.md"
+            },
+            {
+              "id": "llm-planning-and-reasoning",
+              "title": "LLM Planning and Reasoning",
+              "description": "ReAct, Tree of Thoughts, LLM+P and where LLMs still fail at planning.",
+              "file": "research/planning/llm_planning_and_reasoning.md"
+            },
+            {
+              "id": "project-llm-vs-classical-planner",
+              "title": "Project: LLM vs Classical Planner",
+              "description": "Pit an LLM planner against A* and a PDDL planner on the same puzzles.",
+              "file": "research/planning/project_llm_vs_classical_planner.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "multi-agent-theory",
+          "title": "Multi-Agent Systems Theory",
+          "description": "Game theory, coordination and what happens when many agents interact.",
+          "lessons": [
+            {
+              "id": "game-theory-basics",
+              "title": "Game Theory Basics",
+              "description": "Strategies, Nash equilibria and repeated games.",
+              "file": "research/multi_agent_theory/game_theory_basics.md"
+            },
+            {
+              "id": "coordination-and-mechanism-design",
+              "title": "Coordination and Mechanism Design",
+              "description": "Voting, auctions, negotiation and designing the rules agents play by.",
+              "file": "research/multi_agent_theory/coordination_and_mechanism_design.md"
+            },
+            {
+              "id": "emergent-behavior-in-llm-agents",
+              "title": "Emergent Behavior in LLM Agents",
+              "description": "Generative agents, agent societies and simulation studies.",
+              "file": "research/multi_agent_theory/emergent_behavior_in_llm_agents.md"
+            },
+            {
+              "id": "project-negotiation-arena",
+              "title": "Project: Negotiation Arena",
+              "description": "Run LLM agents through repeated negotiation games and analyze the outcomes.",
+              "file": "research/multi_agent_theory/project_negotiation_arena.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "research-skills",
+          "title": "Reading & Doing Research",
+          "description": "Read papers efficiently, design experiments, reproduce results and write them up.",
+          "lessons": [
+            {
+              "id": "reading-papers",
+              "title": "Reading Papers",
+              "description": "The three-pass method and keeping up with arXiv.",
+              "file": "research/research_skills/reading_papers.md"
+            },
+            {
+              "id": "agentic-ai-reading-list",
+              "title": "The Agentic AI Reading List",
+              "description": "The papers every agentic AI student should know.",
+              "file": "research/research_skills/agentic_ai_reading_list.md"
+            },
+            {
+              "id": "experiment-design",
+              "title": "Experiment Design and Reproducibility",
+              "description": "Baselines, ablations, seeds, statistics and honest reporting.",
+              "file": "research/research_skills/experiment_design.md"
+            },
+            {
+              "id": "writing-up-research",
+              "title": "Writing Up Research",
+              "description": "Structure, figures and writing a paper or thesis chapter.",
+              "file": "research/research_skills/writing_up_research.md"
+            },
+            {
+              "id": "project-reproduce-a-paper",
+              "title": "Project: Reproduce a Paper",
+              "description": "Reproduce a key result from an agentic AI paper and write a short report.",
+              "file": "research/research_skills/project_reproduce_a_paper.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "capstone",
+      "title": "Final Capstone",
+      "hours": 100,
+      "optional": false,
+      "description": "Pick a real problem for a real user, then build, evaluate, deploy and write it up. This becomes the centerpiece of your portfolio.",
+      "sections": [
+        {
+          "id": "capstone",
+          "title": "Capstone",
+          "description": "Find a real problem, solve it with an agent, and prove that it works.",
+          "lessons": [
+            {
+              "id": "finding-a-real-problem",
+              "title": "Finding a Real Problem",
+              "description": "Talk to users and find a workflow worth automating.",
+              "file": "capstone/capstone/finding_a_real_problem.md"
+            },
+            {
+              "id": "writing-a-spec",
+              "title": "Writing a Spec",
+              "description": "A one-page design doc with measurable success criteria.",
+              "file": "capstone/capstone/writing_a_spec.md"
+            },
+            {
+              "id": "project-capstone",
+              "title": "Project: Capstone",
+              "description": "A deployed agentic system solving a real problem for real users.",
+              "file": "capstone/capstone/project_capstone.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hired",
+      "title": "Getting Hired",
+      "hours": 80,
+      "optional": false,
+      "description": "Turn your skills into a job. Learn the roles, build a portfolio that proves you can do them, and prepare for interviews.",
+      "sections": [
+        {
+          "id": "job-landscape",
+          "title": "The AI Job Landscape",
+          "description": "Learn the roles, what each does day to day, and what employers actually ask for.",
+          "lessons": [
+            {
+              "id": "ai-roles-explained",
+              "title": "AI Roles Explained",
+              "description": "AI engineer, agent engineer, forward-deployed engineer and more.",
+              "file": "hired/job_landscape/ai_roles_explained.md"
+            },
+            {
+              "id": "reading-job-postings",
+              "title": "Reading Job Postings",
+              "description": "Find the skills that are really in demand, and stay current without drowning in hype.",
+              "file": "hired/job_landscape/reading_job_postings.md"
+            },
+            {
+              "id": "project-role-map",
+              "title": "Project: Role Map",
+              "description": "Map real job postings to your projects and close the gaps.",
+              "file": "hired/job_landscape/project_role_map.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "portfolio",
+          "title": "Portfolio & Writing",
+          "description": "Three excellent projects with write-ups beat ten tutorial clones.",
+          "lessons": [
+            {
+              "id": "learning-in-public",
+              "title": "Learning in Public",
+              "description": "Why writing about your work gets you hired.",
+              "file": "hired/portfolio/learning_in_public.md"
+            },
+            {
+              "id": "case-studies-and-demos",
+              "title": "Case Studies and Demo Videos",
+              "description": "Show the problem, the solution and the evidence.",
+              "file": "hired/portfolio/case_studies_and_demos.md"
+            },
+            {
+              "id": "project-portfolio-site",
+              "title": "Project: Portfolio Site",
+              "description": "Your portfolio on GitHub Pages with three case studies.",
+              "file": "hired/portfolio/project_portfolio_site.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "open-source",
+          "title": "Open Source",
+          "description": "Contributing to AI tooling is visible proof that you can work in a real codebase.",
+          "lessons": [
+            {
+              "id": "your-first-contribution",
+              "title": "Your First Contribution",
+              "description": "Find a good first issue and get a PR merged.",
+              "file": "hired/open_source/your_first_contribution.md"
+            },
+            {
+              "id": "project-first-merged-pr",
+              "title": "Project: First Merged PR",
+              "description": "Land a contribution in an AI or agent library.",
+              "file": "hired/open_source/project_first_merged_pr.md",
+              "project": true
+            }
+          ]
+        },
+        {
+          "id": "interviews",
+          "title": "Resume & Interviews",
+          "description": "Prepare for AI system design, take-homes and the questions you'll be asked.",
+          "lessons": [
+            {
+              "id": "resume-for-ai-roles",
+              "title": "Resume for AI Roles",
+              "description": "A one-page resume that leads with evidence.",
+              "file": "hired/interviews/resume_for_ai_roles.md"
+            },
+            {
+              "id": "ai-system-design",
+              "title": "AI System Design",
+              "description": "How to design \"a support agent\" in 45 minutes.",
+              "file": "hired/interviews/ai_system_design.md"
+            },
+            {
+              "id": "project-mock-interview-loop",
+              "title": "Project: Mock Interview Loop",
+              "description": "Resume, timed design, mock interview and take-home.",
+              "file": "hired/interviews/project_mock_interview_loop.md",
+              "project": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
