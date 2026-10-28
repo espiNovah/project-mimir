@@ -580,9 +580,9 @@ Each batch takes about 20–30 minutes of agent time plus review.
 
 ### Open decisions
 
-- [ ] **Lesson length.** The brief targets 1,000–1,600 words of explanation, but most finished lessons run 1,800–2,500. Proposal: raise the target to 1,500–2,200 rather than trimming.
-- [ ] **One Real Cloud vs Deploying to the Cloud.** These may overlap now that Core teaches Render. The Batch 8 agent recommends merging or splitting them before writing either.
-- [ ] **Electives.** Write them after the required paths, or leave them as outlines for contributors?
+- [x] **Lesson length.** Decided: the target for a lesson's own explanation is now 1,500–2,200 words, which matches the finished lessons. No trimming.
+- [x] **One Real Cloud vs Deploying to the Cloud.** Decided: the Batch 8 agent first recommends whether to merge or split them, then writes them.
+- [x] **Electives.** Decided: write them after the required paths (Batches 12–13).
 
 ### Deferred verification
 
