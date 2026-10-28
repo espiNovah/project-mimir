@@ -109,6 +109,18 @@ Self-paced study is lonely, and loneliness is a common reason people stop. Proje
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is the difference between a path, a section and a lesson?](#paths-sections-and-lessons)
+- [If you already know how to code, how can you decide whether to skip Foundations lessons?](#paths-sections-and-lessons)
+- [Why does the Assignment matter more than the lesson text?](#how-a-lesson-works)
+- [What two rules apply to every project?](#how-projects-work)
+- [What is the test for whether you have used AI as a tutor rather than a ghostwriter?](#using-ai-as-a-tutor-not-a-ghostwriter)
+- [Where does the curriculum start costing money, and how can you keep that cost near zero?](#what-it-costs)
+- [Why is your GitHub history a better progress record than the "Mark as complete" button?](#tracking-progress-and-staying-accountable)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

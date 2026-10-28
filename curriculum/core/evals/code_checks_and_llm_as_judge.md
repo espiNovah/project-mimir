@@ -254,7 +254,7 @@ None of these biases is a reason to avoid judges. They're the reason you measure
 1. Read the grading section of [Develop tests](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) in the Claude docs.
    - Compare code-based, human and model-based grading, and read the tips for model-based grading.
 1. Practice with the [evals exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/evals).
-   - Do the exercises on code graders and on confusion-matrix rates. They're tested offline with `uv run pytest exercises/evals/<exercise>`, so no API key is needed.
+   - Do the exercises on code graders and on confusion-matrix rates. They're tested offline with `uv run pytest evals/<exercise>` from the `exercises/` folder, so no API key is needed.
 1. Practice on your own system: collect 40 traces from your Chat With Your Docs project (question, retrieved sources and answer).
    - Label each one PASS or FAIL for faithfulness yourself first, and save them as JSONL. Split them into 20 dev and 20 test.
    - Write two code checks (for example, "has at least one citation" and "every cited number was retrieved") and run them on all 40.

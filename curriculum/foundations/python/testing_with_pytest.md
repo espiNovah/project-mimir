@@ -208,6 +208,18 @@ What should you test? Start with your pure functions: parsing, validation, calcu
 
 </div>
 
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What does Python's `assert` statement do when its condition is false?](#assert)
+- [How do you test that a function raises the right exception?](#your-first-tests)
+- [What information does pytest show you when an assertion fails?](#when-a-test-fails)
+- [Why should you deliberately break your code after writing a new test?](#when-a-test-fails)
+- [What does `parametrize` do, and how does it relate to an eval dataset?](#many-cases-one-test)
+- [Why is it better to pass a file path into a function than to hard-code it, and how does `tmp_path` help?](#testing-code-that-uses-files)
+- [What should you add to `pyproject.toml` when you move tests into a `tests/` folder?](#organizing-tests)
+
 ### Additional resources
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.

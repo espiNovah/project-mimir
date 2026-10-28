@@ -1,0 +1,11 @@
+{"trace_id": "a1f3", "timestamp": "2026-10-27T09:00:01+00:00", "prompt_version": "few-shot-v1", "model": "claude-haiku-5-5", "input": "I was charged twice this month.", "output": "billing", "error": null, "latency_s": 0.82}
+{"trace_id": "a2c9", "timestamp": "2026-10-27T09:00:04+00:00", "prompt_version": "few-shot-v1", "model": "claude-haiku-5-5", "input": "The app logs me out every hour.", "output": null, "error": "APITimeoutError('Request timed out.')", "latency_s": 30.0}
+{"trace_id": "a3b0", "timestamp": "2026-10-27T09:00:40+00:00", "prompt_version": "few-shot-v1", "model": "claude-haiku-5-5", "input": "Can you add dark mode?", "output": "feature_request", "error": null, "latency_s": 0.64}
+{"trace_id": "a4d2", "timestamp": "2026-10-27T09:00:42+00:00", "prompt_version": "few-shot-v1", "model": "claude-haiku-5-5", "input": "Refund please, and also I can't log in.", "output": "billing", "error": null, "latency_s": 1.12}
+
+{"trace_id": "b1e7", "timestamp": "2026-10-28T10:15:00+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "I was charged twice this month.", "output": "billing", "error": null, "latency_s": 0.91}
+{"trace_id": "b2a1", "timestamp": "2026-10-28T10:15:03+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "The app logs me out every hour.", "output": null, "error": "APIStatusError('overloaded')", "latency_s": 2.4}
+{"trace_id": "b3f4", "timestamp": "2026-10-28T10:15:07+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "Can you add dark mode?", "output": "feature_request", "error": null, "latency_s": 0.7}
+{"trace_id": "b4c8", "timestamp": "2026-10-28T10:15:09+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "Love paying twice!", "output": "feature_request", "error": null, "latency_s": 0.88}
+{"trace_id": "b5d6", "timestamp": "2026-10-28T10:15:12+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "Refund please, and also I can't log in.", "output": "Label: billing. The customer mentions a refund.", "error": null, "latency_s": 1.3}
+{"trace_id": "b6e2", "timestamp": "2026-10-28T10:15:20+00:00", "prompt_version": "few-shot-v2", "model": "claude-haiku-5-5", "input": "Where is my invoice?", "output": null, "error": "APITimeoutError('Request timed out.')", "latency_s": 30.0}

@@ -1,0 +1,13 @@
+trace_id,model,prompt_version,latency_ms,input_tokens,output_tokens,passed
+t01,cheap,v1,820,1200,150,True
+t02,cheap,v1,1340,3400,210,False
+t03,capable,v1,2950,9100,640,True
+t04,cheap,v2,640,800,90,True
+t05,capable,v2,,1500,,False
+t06,cheap,v2,910,2600,180,True
+t07,capable,v2,3120,4100,520,False
+t08,cheap,v2,1120,1900,160,True
+t09,capable,v1,2480,5200,410,True
+t10,cheap,v1,4020,7000,300,False
+t11,cheap,v2,,2200,,False
+t12,capable,v2,1980,3000,350,True

@@ -82,3 +82,14 @@ Question: In what year was the bridge completed?
    - Try the "permission not to know" pattern on the same questions. Did it change anything?
 
 </div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What is a hallucination, and what are some common forms it takes?](#what-hallucinations-look-like)
+- [Why is a model's fluency not the same as its knowledge?](#where-they-come-from)
+- [How can the way models are graded encourage confident guessing?](#where-they-come-from)
+- [Which kinds of questions are most likely to produce hallucinations?](#where-they-come-from)
+- [Why is giving the model the source document the most effective fix?](#designing-around-hallucinations)
+- [How can you check in code that a model's claim is supported by its source?](#designing-around-hallucinations)

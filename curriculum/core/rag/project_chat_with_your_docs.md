@@ -6,7 +6,7 @@ This is the most common AI application in industry, and you will keep improving 
 
 ### Before you start
 
-- Create a new GitHub repository called `mimir-chat-with-your-docs` as a `uv` project. Add `anthropic`, `sentence-transformers`, `rank-bm25` and a vector store (`chromadb`, or `psycopg` plus `pgvector` if you want PostgreSQL).
+- Create a new GitHub repository called `mimir-chat-with-your-docs` as a `uv` project. Add `anthropic`, `sentence-transformers`, `"psycopg[binary]"` and `pgvector`, and run Postgres with the `pgvector/pgvector` image in Docker Compose, as in Chunking and Vector Databases. Add `bm25s` only if you choose it over Postgres full-text search for keyword retrieval.
 - Choose a document set of at least 20 documents or 50 pages. It should be public or yours, so you can commit it or a script that downloads it. Avoid documents the model already knows by heart (such as famous novels), or you will not be able to tell retrieval from memory.
 - Structure the code so the pieces can be used separately, for example: `ingest.py`, `retrieve.py`, `answer.py`, and a `cli.py` that ties them together. The next two projects import these.
 
@@ -24,7 +24,7 @@ Every time you try a question while building, write it down with whether the ans
 
 1. Build an ingestion pipeline that loads your documents, cleans them, chunks them, embeds each chunk and stores it with metadata (source, title or heading, and position). Running it twice must not create duplicate chunks.
    - In the README, explain your chunking choice and the chunk size you used.
-1. Implement hybrid retrieval: BM25 and vector search, combined with reciprocal rank fusion, followed by a cross-encoder reranker that keeps the top results.
+1. Implement hybrid retrieval: keyword search (Postgres full-text search, or BM25 with `bm25s`) and pgvector search, combined with reciprocal rank fusion (RRF), as in Hybrid Search and Reranking, followed by a cross-encoder reranker that keeps the top results.
 1. Generate answers that cite their sources. Every factual claim must point to a specific retrieved passage, using either the provider's native citations feature or numbered source tags in your prompt. The output must show each cited passage's source and text.
 1. Make the system say "I don't know" when the documents do not answer the question, instead of guessing from the model's general knowledge. Use a prompt instruction, a retrieval score threshold, or both.
 1. Write code that verifies citations: every cited source must be one that was retrieved, and any quoted text must appear in that source. Flag answers that fail.

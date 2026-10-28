@@ -168,7 +168,7 @@ Together they form a loop: **log traces, read them, find failures, add them to t
    - Read the introduction and the sections on classification and extraction, summarization and factual consistency. They show which metrics hold up in practice.
 1. Read [Develop tests](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) in the Claude docs for a practical guide to designing test cases and grading methods.
 1. Practice: add `tracing.py` to your Prompt Lab project and route every model call through `traced_call`. Write 30 new, varied inputs for your task (not from your test set), run your best prompt on them, and do a full error analysis: read every trace, write a one-line note for each failure, group the notes into categories, count them, and write down your top three failure modes and a fix you would try for each.
-1. Practice: work through the trace exercises in the [evals exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/evals). Make the tests pass with `uv run pytest exercises/evals/<exercise>`.
+1. Practice: work through the trace exercises in the [evals exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/evals). Make the tests pass with `uv run pytest evals/<exercise>` from the `exercises/` folder.
 
 </div>
 

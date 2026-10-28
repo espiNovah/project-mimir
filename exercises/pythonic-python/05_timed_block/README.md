@@ -1,6 +1,6 @@
 # 05 · Timed block
 
-**Lesson:** [timed_block.py](https://espinovah.github.io/project-mimir/#/lessons/foundations pythonic-python/Pythonic Python)
+**Lesson:** [Pythonic Python](https://espinovah.github.io/project-mimir/#/lessons/foundations/pythonic-python)
 
 ## Task
 

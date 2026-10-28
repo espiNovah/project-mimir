@@ -178,7 +178,7 @@ Whatever you write, test it against real examples, including ones that should *n
 1. Work through the interactive lessons at [RegexOne](https://regexone.com/), at least lessons 1 to 12. Each one teaches a single symbol and has you write patterns against examples in the browser.
 1. Read the [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html) in the Python docs, from "Simple Patterns" through "Grouping". It's the official, careful explanation of everything in this lesson.
    - Keep [regex101](https://regex101.com/) open in another tab while you read. Choose the "Python" flavor on the left, paste a pattern and some text, and it explains each part of the pattern and highlights the matches.
-1. Do the [regex exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/regex). Make the tests pass with `uv run pytest exercises/regex/<exercise>`.
+1. Do the [regex exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/regex). Make the tests pass with `uv run pytest regex/<exercise>` from the `exercises/` folder.
 1. Write a small log analyzer. In your practice project, save the four log lines from this lesson plus at least six of your own (vary the models, latencies and statuses, and include a couple of malformed lines) to `requests.log`. Write a script that reads the file and prints the number of requests per model, the average latency per model, and every line with a status other than 200. Malformed lines should be counted and skipped, not crash the script.
 
 </div>

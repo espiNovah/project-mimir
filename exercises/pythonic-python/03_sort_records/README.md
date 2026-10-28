@@ -1,6 +1,6 @@
 # 03 · Sort records
 
-**Lesson:** [sort_records.py](https://espinovah.github.io/project-mimir/#/lessons/foundations pythonic-python/Pythonic Python)
+**Lesson:** [Pythonic Python](https://espinovah.github.io/project-mimir/#/lessons/foundations/pythonic-python)
 
 ## Task
 
