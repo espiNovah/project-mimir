@@ -10,7 +10,7 @@ This section contains a general overview of topics that you will learn in this l
 
 - What a managed platform does for you, and what Render and Fly.io honestly cost.
 - How to get an app ready for production: configuration, the port and a real health check.
-- How to describe the API, worker, Postgres and Redis in one `render.yaml` file.
+- How to describe the API and Postgres in one `render.yaml` file, and run jobs for free without a worker (or add a paid one).
 - How to handle environment variables and secrets on a host.
 - How to run `alembic upgrade head` on every release.
 - How to read logs and smoke test a deployment.
@@ -38,7 +38,7 @@ Prices change often, so check the links in the Assignment before you sign up. As
 - **Render** has a free plan for web services, Postgres and Key Value, with real limits. A free web service **spins down** (goes to sleep) after 15 minutes without traffic and takes about a minute to wake up on the next request. A free Postgres database holds 1 GB, has no backups, and **expires 30 days after you create it**, with a 14-day grace period to upgrade before it's deleted. A free Key Value instance keeps its data in memory only, so a restart erases queued jobs. **Background workers have no free plan**: the cheapest is $7 a month. The cheapest always-on web service is also $7, and the cheapest Postgres that doesn't expire is $6 a month.
 - **Fly.io** has no free plan for new accounts, only a short trial. Small machines are cheap, about $2 a month for the smallest that runs all the time, but its managed Postgres starts at $38 a month.
 
-This lesson uses Render, because it can run your whole stack for **about $7 a month** (a paid worker, everything else free) and the setup is the gentlest. Render bills paid services by the second, so if you run the worker only while you build and demo the project and then suspend it, you pay a fraction of that. To keep the database past 30 days, upgrade it to the $6 plan, which brings the total to about $13 a month. The tip at the end of [Running migrations on release](#running-migrations-on-release) covers Fly.
+This lesson uses Render, because its free plan can run your API and Postgres for **$0** and the setup is the gentlest. The one piece that's never free is a background worker, so the free deploy runs jobs inside the API process instead (see [Running jobs without a paid worker](#running-jobs-without-a-paid-worker)). Your real queue and worker still run locally in Docker Compose. If you want the real worker online too, it's about $7 a month, and keeping the database past 30 days adds about $6. Render bills paid services by the second, so running them only while you demo costs a fraction of that. The tip at the end of [Running migrations on release](#running-migrations-on-release) covers Fly.
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
@@ -119,7 +119,7 @@ def health(session: SessionDep):
 
 ### Describing the stack in render yaml
 
-You could click each service together in Render's dashboard, but then your setup lives only in your memory. A **Blueprint** is a `render.yaml` file in your repository's root that describes every service, the same way `compose.yaml` does locally. This one matches the four services in the LLM-Powered API project:
+You could click each service together in Render's dashboard, but then your setup lives only in your memory. A **Blueprint** is a `render.yaml` file in your repository's root that describes every service, the same way `compose.yaml` does locally. This one is the free deploy of the LLM-Powered API project: the API and Postgres, with jobs running inline:
 
 ```yaml
 # render.yaml
@@ -131,11 +131,6 @@ databases:
     postgresMajorVersion: "17"     # match the postgres:17 you use in Compose
 
 services:
-  - type: keyvalue                 # Redis-compatible
-    name: mimir-redis
-    plan: free                     # $0, 25 MB, in memory only
-    ipAllowList: []                # no connections from outside Render
-
   - type: web
     name: mimir-api
     runtime: docker                # build the Dockerfile in the repo root
@@ -149,15 +144,59 @@ services:
         fromDatabase:
           name: mimir-db
           property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: keyvalue
-          name: mimir-redis
-          property: connectionString
+      - key: INLINE_JOBS
+        value: "true"              # no worker on the free plan; see the next section
       - key: ANTHROPIC_API_KEY
         sync: false                # Render asks you for the value; it never goes in Git
       - key: AUTH_SECRET
         generateValue: true        # Render generates a long random value once
+```
+
+The pieces worth slowing down for:
+
+- **`runtime: docker`** makes Render build your existing Dockerfile, and **`dockerCommand`** replaces the image's `CMD` with a different start command.
+- **`fromDatabase`** fills in the connection URL for you. It's a private-network URL, so it only works from inside Render.
+- **`healthCheckPath`** tells Render to call `/health` repeatedly. A new version gets no traffic until its health check passes, and a running instance that keeps failing it is restarted.
+- The service names (`mimir-api` and so on) must be unused in your Render account. The API's name also becomes its URL, `https://mimir-api.onrender.com` unless someone already took it.
+
+### Running jobs without a paid worker
+
+Locally, `POST /jobs` puts a job on the Redis queue and your worker process picks it up. On Render's free plan there's no worker, so the deployed API needs another way to run jobs. The trick is to send every job through one small function that can take either path:
+
+```python
+# jobs.py
+import os
+
+from fastapi import BackgroundTasks
+
+INLINE_JOBS = os.environ.get("INLINE_JOBS") == "true"
+
+
+async def submit_job(job_id: int, background: BackgroundTasks, pool) -> None:
+    """Queue a job for the worker, or run it in this process when there's no worker."""
+    if INLINE_JOBS:
+        background.add_task(process_job, job_id)     # runs right after the response is sent
+    else:
+        await pool.enqueue_job("run_job", job_id)    # arq; with RQ: queue.enqueue(run_job, job_id)
+
+
+async def run_job(ctx, job_id: int) -> None:         # the worker's entry point, as in Job Queues and Workers
+    await process_job(job_id)
+```
+
+`process_job` is the function that does the real work: it marks the job `running`, calls the model and stores the result. The worker and the inline path call the same function, so your tests cover both. FastAPI's `BackgroundTasks` (a parameter your route asks for, like a dependency) runs a function after the response has gone out, so `POST /jobs` still returns `202` immediately and the client still polls `GET /jobs/{id}`.
+
+The trade-off is reliability. An inline job lives only in the API process, so if the free instance restarts or spins down mid-job, that job is lost and stays `running`. There are no queue-level retries either, though your own retry loop around the model call still works. That's acceptable for a portfolio demo, and it's exactly why real systems use a separate worker.
+
+#### Optional: deploy the real worker (about $7 a month)
+
+To run the real queue online, add a Key Value instance and a worker to `render.yaml`, add a `REDIS_URL` to the API's `envVars`, and set `INLINE_JOBS` to `"false"`:
+
+```yaml
+  - type: keyvalue                 # Redis-compatible
+    name: mimir-redis
+    plan: free                     # $0, 25 MB, in memory only
+    ipAllowList: []                # no connections from outside Render
 
   - type: worker
     name: mimir-worker
@@ -178,12 +217,7 @@ services:
         sync: false
 ```
 
-The pieces worth slowing down for:
-
-- **`runtime: docker`** makes Render build your existing Dockerfile. Both services build the same image, just as `api` and `worker` share one in your Compose file, and **`dockerCommand`** replaces the image's `CMD` with a different start command. If you use RQ instead of arq, the worker's command is your `rq worker` line instead.
-- **`fromDatabase` and `fromService`** fill in connection URLs for you. They're private-network URLs, so they only work from inside Render. `ipAllowList: []` keeps Redis completely off the internet.
-- **`healthCheckPath`** tells Render to call `/health` repeatedly. A new version gets no traffic until its health check passes, and a running instance that keeps failing it is restarted. Workers have no health check path, since they don't serve HTTP.
-- The service names (`mimir-api` and so on) must be unused in your Render account. The API's name also becomes its URL, `https://mimir-api.onrender.com` unless someone already took it.
+The worker builds the same image as the API, just as `api` and `worker` share one in your Compose file. If you use RQ, its command is your `rq worker` line instead. `ipAllowList: []` keeps Redis off the internet, and workers have no health check path, since they don't serve HTTP. The worker's plan needs a payment method on file.
 
 ### Environment variables and secrets
 
@@ -221,10 +255,10 @@ With `render.yaml` committed and pushed to GitHub:
 
 1. Create a free Render account and connect your GitHub account.
 1. In the dashboard, choose **New**, then **Blueprint**, and pick your repository. Render reads `render.yaml` and lists every service it will create, with its plan.
-1. Paste a value for each `sync: false` variable, then approve. Render creates the database and Redis, builds your image, and starts the API and the worker. The worker's plan needs a payment method on file.
+1. Paste a value for each `sync: false` variable, then approve. Render creates the database, builds your image and starts the API. On the free plan this needs no payment method.
 1. Open the `mimir-api` service. Its **Events** page shows each deploy, and its **Logs** page shows build output, then your migration output (`Running upgrade ... -> ...`), then the server starting.
 
-From now on, every push to your main branch deploys automatically. The **Logs** page streams what each service writes, and you can search it, so this is where you look first when anything misbehaves. Check the worker's logs too: a job stuck at `pending` almost always means the worker crashed or can't reach Redis, and its logs say why. Python can hold back `print` output in a buffer when it isn't writing to a terminal, so prefer `logging`, which writes to standard error straight away, or set `PYTHONUNBUFFERED=1`.
+From now on, every push to your main branch deploys automatically. The **Logs** page streams what each service writes, and you can search it, so this is where you look first when anything misbehaves. If you deployed the optional worker, check its logs too: a job stuck at `pending` almost always means the worker crashed or can't reach Redis, and its logs say why. With inline jobs, a job stuck at `running` usually means the free instance restarted or spun down mid-job. Python can hold back `print` output in a buffer when it isn't writing to a terminal, so prefer `logging`, which writes to standard error straight away, or set `PYTHONUNBUFFERED=1`.
 
 ### Smoke testing the deployment
 

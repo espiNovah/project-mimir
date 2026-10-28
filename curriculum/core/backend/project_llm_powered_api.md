@@ -30,7 +30,7 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
 1. Store every extraction in Postgres with SQLModel, including the input text, the parsed result, the raw model output, the status and any error message. Create every table with Alembic migrations, as in Migrations with Alembic, not with `create_all`. Commit the migration files, and include at least one migration that changes an existing table (for example, adding a column), so your history shows the schema evolving.
 1. Create `GET /extractions/{id}` that returns a stored extraction, and `404` if it doesn't exist.
 1. Move long inputs onto a job queue, as in Job Queues and Workers, using Redis with arq or RQ:
-   - `POST /jobs` accepts text, creates a job row with status `pending`, enqueues it, and returns `202` with the job ID immediately. The API process never runs the extraction itself.
+   - `POST /jobs` accepts text, creates a job row with status `pending`, enqueues it, and returns `202` with the job ID immediately. Send every job through one `submit_job` function, as in Deploying Your API, so a setting can switch between the queue and running inline. Locally, with the queue, the API process never runs the extraction itself.
    - The `worker` service picks up the job, sets it to `running`, runs the extraction, and stores the result.
    - `GET /jobs/{id}` returns the status (`pending`, `running`, `done` or `failed`) and, when done, the extraction result.
    - A job that errors is retried a limited number of times, then ends as `failed` with a stored error message.
@@ -39,9 +39,9 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
    - Every model call has a timeout.
    - Retry timeouts, `429` and `5xx` errors from the model provider with exponential backoff and jitter, up to a cap. Don't retry errors that won't fix themselves, such as a `400`.
    - Rate limit your own API per user, returning `429` with a `Retry-After` header when a user exceeds a limit you choose.
-1. Deploy it, as in Deploying Your API, to Render or Fly with a managed Postgres, a Redis instance and the worker running. `GET /health` is public and reports whether the API can reach the database. Run `alembic upgrade head` as part of each deploy.
+1. Deploy it for free, as in Deploying Your API, to Render's free plan with a free Postgres. Render has no free background workers, so set `INLINE_JOBS=true` on the deployed API: `submit_job` then runs the same job function in the API process instead of queuing it, and you don't deploy Redis. Locally, `docker compose up` still runs the real queue and worker. `GET /health` is public and reports whether the API can reach the database. Run `alembic upgrade head` as part of each deploy.
 1. Make sure the OpenAPI docs at `/docs` are useful: every endpoint has a summary, request and response models, and example values.
-1. Write tests with FastAPI's `TestClient`, a fake extractor, a fake queue and a throwaway database (an in-memory SQLite database via a dependency override, as in Persisting Data with Postgres), covering at least: a successful extraction, invalid input, a `404`, a missing token, a bad token, cross-user access, a `429` from your rate limiter, a retry that succeeds after a fake `429` from the model, a job being enqueued, and the worker function moving one job to `done` and another to `failed`. Call the worker function directly in tests; don't start a real worker.
+1. Write tests with FastAPI's `TestClient`, a fake extractor, a fake queue and a throwaway database (an in-memory SQLite database via a dependency override, as in Persisting Data with Postgres), covering at least: a successful extraction, invalid input, a `404`, a missing token, a bad token, cross-user access, a `429` from your rate limiter, a retry that succeeds after a fake `429` from the model, a job being enqueued, a job running inline when `INLINE_JOBS` is on, and the worker function moving one job to `done` and another to `failed`. Call the worker function directly in tests; don't start a real worker.
 1. Push your project to GitHub with a README that explains what it does, how to run it with `docker compose up`, the deployed URL, and what you learned.
 
 #### Evidence
@@ -54,6 +54,7 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
 
 #### Extra credit
 
+- Deploy the real queue: add Render Key Value and a background worker as in the optional part of Deploying Your API, and set `INLINE_JOBS=false`. This costs about $7 a month, because Render has no free worker plan; suspend the worker when you're not demoing it.
 - Run `evaluate.py` in GitHub Actions as a manual (`workflow_dispatch`) job, with your API key stored as a [repository secret](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions), and fail the job if accuracy drops below a threshold.
 - Point your test fixture at a separate Postgres test database instead of in-memory SQLite, and build its tables with `alembic upgrade head`, so your tests also exercise your migrations.
 - Add a `GET /stats` endpoint that reports, for the logged-in user, the number of extractions, failure rate and total tokens used, computed with a SQL query.
@@ -62,4 +63,4 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
 
 ### Submitting your work
 
-A strong README includes a short architecture diagram or description (client, API, Redis, worker, Postgres, model), copy-pasteable `curl` examples for each endpoint including the auth header, a screenshot of the `/docs` page, the output of your test run, and your eval score with its confidence interval. Explain one design decision you made, such as how you made the worker idempotent or chose your rate limit, and one limitation of your current setup, such as what happens to queued jobs if Redis restarts.
+A strong README includes a short architecture diagram or description (client, API, Redis, worker, Postgres, model), copy-pasteable `curl` examples for each endpoint including the auth header, a screenshot of the `/docs` page, the output of your test run, and your eval score with its confidence interval. Explain one design decision you made, such as how you made the worker idempotent or chose your rate limit, and one limitation of your current setup, such as what happens to an inline job if the free instance spins down mid-job, or to queued jobs if Redis restarts.
