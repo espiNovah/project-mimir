@@ -593,4 +593,7 @@ Agents work without API keys, Docker or a Render account, so some code has only 
 - [ ] Run the Compose `migrate` service from Migrations with Alembic.
 - [ ] Deploy the LLM-Powered API's free `render.yaml` to Render once, with inline jobs.
 - [ ] Run `uv lock` in `exercises/`; numpy was added to `uv.lock` by hand.
+- [ ] Batch 4, with a real key: `resilient.py` (Timeouts, Retries and Rate Limits), `receipt.py`, `pdf_blocks.py` and `voice_note.py` (Images, PDFs and Audio), `grounded.py`, `native.py` and `grounding_report.py` (Citations and Grounding), `llm_classify.py` (Overfitting and Baselines), the Streamlit and Gradio chat apps (Rapid UIs), and the React chat app and Next.js `useChat` route (React Essentials, Next.js and the AI SDK) in a real browser.
+- [ ] Batch 4, against real Postgres and Redis: the User Accounts and Auth and Job Queues Alembic migrations, the real `arq worker.WorkerSettings`, `redis_limit.py`, and the `worker` and `redis` Compose services.
+- [ ] Type-check the `typescript` exercise set and the TypeScript Basics examples with `tsc`; the tests only check runtime behavior.
 - [ ] Browser checks: the Meta hiring-process page says candidates use only its built-in AI assistant (Coding Interviews), and the Runestone pythonds3 chapter names match the Complexity lesson.

@@ -742,7 +742,7 @@
             {
               "id": "rapid-uis",
               "title": "Prototyping with Streamlit and Gradio",
-              "description": "Get a working demo in an afternoon, before you build the real interface.",
+              "description": "Build a working demo in an afternoon, and know when it's time for React.",
               "file": "core/frontend/rapid_uis.md"
             },
             {

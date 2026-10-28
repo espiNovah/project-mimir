@@ -29,7 +29,7 @@ This section contains a general overview of topics that you will learn in this l
 - **Fallbacks keep you up when retries run out.** After the last retry, switch to a different model (or a different provider) instead of returning an error. Fallbacks need their own evals, since a backup model may behave differently, and they should be logged so you know how often they fire.
 - **Degrade gracefully.** If nothing works, return a clear message, a cached answer or a simpler non-LLM response. A friendly "try again in a minute" is better than a stack trace.
 - **Batch work that can wait.** Batch APIs accept thousands of requests at once and return results within hours at a large discount (on the Claude API, half the normal price). They are ideal for nightly evals, bulk classification or backfilling data, not for chat.
-- **Limit your own concurrency.** Sending 500 requests at once just turns into 500 rate-limit errors. A semaphore or a worker queue (from Auth and Background Jobs) keeps you under the limit.
+- **Limit your own concurrency.** Sending 500 requests at once just turns into 500 rate-limit errors. A semaphore or a worker queue (from Job Queues and Workers) keeps you under the limit.
 
 ### Assignment
 
