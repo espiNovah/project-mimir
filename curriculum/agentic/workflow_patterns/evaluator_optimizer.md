@@ -162,7 +162,6 @@ def refine(source: str, facts: list[str], max_rounds: int = 3,
                 model_passed = verdict.no_jargon.passed + verdict.clear_action.passed
                 if model_passed < 2:
                     problems = [verdict.feedback or "Fix the failed criteria."]
-        code_passed = total - 2 - len(problems) if model_passed or not problems else 0
         score = (len(facts) + 2 - len(code_checks(draft, facts))) + model_passed
         record = {"round": n, "score": score, "of": total, "passed": score == total,
                   "feedback": " ".join(problems), "tokens": used, "draft": draft}
@@ -269,6 +268,28 @@ A few failure patterns show up again and again in evaluator-optimizer loops. Eac
 - **Feedback the generator can't act on.** "Improve clarity" leads to random edits. Make the feedback field's description demand specific, quoted problems and concrete fixes.
 
 The same ideas reach well beyond writing. A coding agent that runs the tests, reads the failures and edits the code is an evaluator-optimizer loop where the evaluator is a test suite, and the guardrails you'll build in the Safety section are evaluators that check output before a user sees it.
+
+### On other providers
+
+The pattern itself is provider-neutral: two prompts, a structured verdict per criterion, code checks first and a loop your code controls work the same with any model. What changes is the structured-output call. With OpenAI's SDK you pass the same Pydantic model as `response_format` to `client.chat.completions.parse`, put the evaluator's instructions in a message with the `system` role instead of a `system=` argument, and read the result from `.choices[0].message.parsed`; OpenAI's [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs) covers the details. The same code runs against open models through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) once you change `base_url`, but small local models follow schemas and criteria less reliably, so check the evaluator against your labels again before you trust it. Using a different provider for the evaluator than for the generator is also a cheap way to reduce the "grading its own homework" problem, because the two models don't share the same blind spots. Prices and usage field names differ by provider (OpenAI's Chat Completions API reports `prompt_tokens` and `completion_tokens`), so update `PRICE_IN`, `PRICE_OUT` and the `tokens` helper to match. Here is the evaluator through the OpenAI SDK; save it as `openai_evaluate.py` after `uv add openai`:
+
+```python
+import os
+
+from openai import OpenAI
+
+from refine import Evaluation  # the same Pydantic model as before
+
+client = OpenAI()  # reads OPENAI_API_KEY; for Ollama: OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+MODEL = os.environ["OPENAI_MODEL"]  # pick one from the provider's model list
+
+
+def evaluate(draft: str) -> Evaluation | None:
+    response = client.chat.completions.parse(model=MODEL, response_format=Evaluation, messages=[
+        {"role": "system", "content": "You review school notices strictly. Judge only the listed criteria."},
+        {"role": "user", "content": f"<notice>\n{draft}\n</notice>"}])
+    return response.choices[0].message.parsed
+```
 
 ### Assignment
 

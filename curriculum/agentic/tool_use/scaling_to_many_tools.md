@@ -108,7 +108,7 @@ Namespacing is what makes this easy: `t["name"].split("_")[0]` turns `crm_log_ca
 
 Keyword matching is the simplest router and a fine start. Two common upgrades are a call to the [cheap model](#/models) that classifies the request into namespaces, and an embedding search that compares the request with each tool description, using the embeddings you learned in the RAG section. A third kind of routing uses the application's state: an agent in "billing mode" only gets billing tools.
 
-Routing has costs of its own. A router that guesses wrong hides the right tool, which is worse than a long menu, so routing needs its own eval. It also decides once, up front, which doesn't suit a multi-step run that drifts from email into the calendar. And it changes the tool list from request to request, which defeats **prompt caching**, a feature most providers offer that makes repeated prompt prefixes cheaper. Because tool definitions sit at the very front of the prompt, a different tool list means a different prefix. You'll learn caching properly in the Production path.
+Routing has costs of its own. A router that guesses wrong hides the right tool, which is worse than a long menu, so routing needs its own eval. It also decides once, up front, which doesn't suit a multi-step run that drifts from email into the calendar. And it changes the tool list from request to request, which defeats **prompt caching**, a feature most providers offer that makes repeated prompt prefixes cheaper. Because tool definitions sit at the very front of the prompt, a different tool list means a different prefix. Caching was introduced in Core, and Agent Cost and Latency shows how it applies to agent runs.
 
 ### Tool search and deferred loading
 

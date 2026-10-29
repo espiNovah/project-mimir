@@ -1019,7 +1019,7 @@
             {
               "id": "other-agent-frameworks",
               "title": "LangGraph and the Wider Ecosystem",
-              "description": "LangGraph in depth, and how the other agent frameworks compare.",
+              "description": "LangGraph in depth (state, checkpointers, interrupts) and a dated survey of other agent frameworks.",
               "file": "agentic/frameworks/other_agent_frameworks.md"
             },
             {
