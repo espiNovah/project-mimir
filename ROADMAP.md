@@ -10,7 +10,7 @@ This roadmap turns the October 2026 curriculum review into work that can ship in
 1. **Practice every lesson.** Each lesson gets a knowledge check, and most get an exercise with tests.
 1. **Thread core habits through every project.** Tests, CI, traces and a small eval appear from Foundations onward. From the first agent project on, add one prompt-injection test.
 1. **Teach a skill before a project needs it.** A project may only require skills taught earlier in the path.
-1. **Stay provider-neutral where it matters.** Use Claude for examples, but name provider-specific features as such, and have learners run at least one project on a second provider or an open model.
+1. **Stay provider-neutral where it matters.** Use Claude for code examples so the API stays consistent, but every lesson with model-calling code has an "On other providers" section, provider-specific features are labeled as such, and several projects require a second provider or an open model (see the provider-neutrality batch in the Finishing plan).
 1. **Give honest hours.** Every path's estimate is checked against what it actually assigns.
 
 ## Phases at a glance
@@ -573,6 +573,7 @@ Phases 0–3 are done, and Phase 4 is partly done. This plan finishes the requir
 | 8. Agentic briefs, Production I | One Real Cloud, Deploying to the Cloud, Managed Postgres and Backups, Feature Flags and A/B Tests, Logging and Tracing, Traces to Evals, Alerting and Incidents, Load Testing (8) | Evidence for all 10 Agentic briefs, each with a prompt-injection test |
 | 9. Production II, Capstone | Caching and Model Choice, Batching/Rate Limits/Fallbacks, Security Review, Code Review, A Server of Your Own (optional), Finding a Real Problem, Writing a Spec, Working in a Team, Resume for AI Roles, Case Studies and Demos (10) | Evidence for 4 Production briefs and the Capstone |
 | 10. Getting Hired | Your First Contribution, Networking and Referrals, Running a Job Search, Freelance and Contract Work, Behavioral Interviews, Offers and Negotiation, System Design Basics, AI System Design (8) | Write the Outreach Sprint project. Evidence for 3 Hired briefs |
+| P. Provider neutrality (before 11) | none | Added after a bias audit on 2026-10-29: 38 lessons had Anthropic code and none had code for another provider. Backfill an "On other providers" section into every earlier lesson with model-calling code (lessons written from Batch 6 on include one already). Your First API Call shows the same request with the OpenAI SDK and a local open model via Ollama. Add a provider comparison page next to the Current Models page (messages, tool calls, structured output, streaming, caching). Prompt Lab and Messy-Text Extractor compare models across two providers; Port Your Agent requires an open model; the Capstone allows any provider. |
 | 11. Final review | none | Expand Writing a Good README (863 words). Make chunk IDs stable across re-ingestion (Chat With Your Docs vs the RAG Eval Harness dataset). A consistency pass across the curriculum. Recheck each path's hour estimate against what it assigns. Tick off the checkboxes in this roadmap |
 | 12–13. Electives (optional) | ML: 8 lessons. Research: 17 lessons | ML: 4 briefs. Research: 5 briefs |
 
