@@ -8,8 +8,8 @@ This combines everything from this section: the coding agent loop, sandboxing an
 
 - Create a GitHub repository named `mimir-sandboxed-coding-agent` for the agent itself.
 - Create a second, small target repository, such as `mimir-buggy-todo-app`. It should be a tiny web app (for example FastAPI or Flask with one HTML page) with a `pytest` test suite. Plant one bug that makes a test fail and that is visible in the browser, such as a todo list that shows items in the wrong order or a counter that is off by one.
-- Install Docker. You'll run the agent's work inside a container. If you prefer an OS-level sandbox, [sandbox-runtime](https://github.com/anthropics/sandbox-runtime) is an acceptable alternative.
-- Install Playwright for Python (`uv add playwright`, then `uv run playwright install chromium`) or set up [Playwright MCP](https://github.com/microsoft/playwright-mcp).
+- Make sure Docker is running (you set it up in Core's Docker and Docker Compose lesson). You'll run the agent's work inside a container, as in Sandboxing Agents. If you prefer an OS-level sandbox, [sandbox-runtime](https://github.com/anthropics/sandbox-runtime) is an acceptable alternative.
+- Install Playwright for Python (`uv add playwright`, then `uv run playwright install chromium`) or set up [Playwright MCP](https://github.com/microsoft/playwright-mcp). The app runs on the sandbox's internal network, so run the browser inside the sandbox or in a second container on the same network, not on your host.
 - Keep your `ANTHROPIC_API_KEY` (or other provider key) on the host. Only the process that calls the model needs it. Never copy it into the target repository.
 
 <div class="lesson-note lesson-note--critical" markdown="1">
@@ -27,7 +27,7 @@ The agent must not be able to push on its own. Keep your Git credentials outside
 1. Write a sandbox setup (a `Dockerfile` plus a run script, or a sandbox-runtime config) that:
    - mounts only a copy of the target repository, read-write,
    - has no access to your home directory or any other host folder,
-   - blocks all network traffic except an allowlist you define, such as the model API host, your package registry and `localhost`.
+   - blocks all network traffic except an allowlist you define, such as your package registry and `localhost`. The agent harness and your API key stay on the host, so the sandbox doesn't need to reach the model API.
 1. Prove the sandbox works with a script `sandbox_check.sh` that tries to read a file in your home directory, write outside the project and reach a non-allowlisted domain. All three attempts must fail, and the script output goes in your README.
 1. Give the agent tools to read files, edit files, run shell commands inside the sandbox and drive a browser with Playwright or Playwright MCP.
 1. Make the agent complete this task from a single instruction such as "The test suite is failing. Fix the bug and confirm the fix in the browser.":

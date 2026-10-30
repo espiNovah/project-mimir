@@ -1031,7 +1031,7 @@
             {
               "id": "running-open-models",
               "title": "Running Open Models",
-              "description": "Hugging Face and local inference with Ollama.",
+              "description": "Choose an open model, run it locally with Ollama, and plug it into your agent loop.",
               "file": "agentic/frameworks/running_open_models.md"
             },
             {
@@ -1069,7 +1069,7 @@
             {
               "id": "browser-and-computer-use",
               "title": "Browser and Computer Use",
-              "description": "Accessibility snapshots, screenshots and actions.",
+              "description": "Playwright, accessibility snapshots, screenshots and computer use.",
               "file": "agentic/coding_and_browser_agents/browser_and_computer_use.md"
             },
             {
@@ -1095,7 +1095,7 @@
             {
               "id": "subagents-and-orchestration",
               "title": "Subagents and Orchestration",
-              "description": "Orchestrators, subagents and handoffs: when splitting work helps and when it hurts.",
+              "description": "Orchestrators, subagents, handoffs and A2A: when splitting work helps and when it hurts.",
               "file": "agentic/multi_agent/subagents_and_orchestration.md"
             },
             {
@@ -1115,7 +1115,7 @@
             {
               "id": "secure-design-patterns",
               "title": "Secure Design Patterns",
-              "description": "Least privilege, sandboxing, plan-then-execute and guardrails.",
+              "description": "Least privilege, plan-then-execute, dual LLMs and taint tracking.",
               "file": "agentic/safety/secure_design_patterns.md"
             },
             {
@@ -1127,7 +1127,7 @@
             {
               "id": "approvals-and-permissions",
               "title": "Approvals and Permissions",
-              "description": "When and how to ask a human.",
+              "description": "When and how to ask a human: permission rules, scoped credentials, and pausing for approval.",
               "file": "agentic/safety/approvals_and_permissions.md"
             },
             {
