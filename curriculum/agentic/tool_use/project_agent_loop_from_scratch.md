@@ -39,7 +39,7 @@ If you add a tool that runs Python code the model writes, it must run in an isol
 
 #### Tracing and testing
 
-1. Write every step to a trace file (for example, `traces/run-<timestamp>.jsonl`): each model message, each tool call with its arguments, each tool result, token usage per step, and why the run ended (finished, step limit or error).
+1. Write every step to a trace file (for example, `traces/run-<timestamp>.jsonl`) with the tracer from Agent Tracing and Debugging: a run span plus one child span per model call and per tool call, holding each model response, each tool call with its arguments, each tool result, token usage per step, and the end reason (`end_turn`, `step_limit` or something unusual such as `max_tokens`).
 1. Write tests with `pytest` for each tool function and for the step limit. The tool tests should not call the model.
 1. Run the agent on at least three realistic multi-step tasks, such as "Find the population of the three largest cities in Canada, total them, and write a short report to `workspace/report.md`." Commit the trace files.
 
@@ -48,6 +48,20 @@ If you add a tool that runs Python code the model writes, it must run in an isol
 1. In your README, show one trace excerpt where a tool returned an error and the agent recovered (for example, it asked for a missing file, read the error listing the real files, and picked the right one).
 1. Describe three failures you actually observed while building this (such as looping on the same search, bad tool arguments, stopping too early or writing to the wrong file), what caused each one, and what you changed to fix it. Link to traces from before and after the fix where you can.
 1. Push your project to GitHub with a README that explains what it does, how to run it, and what you learned.
+
+#### Evidence
+
+Your README must show:
+
+- A GitHub Actions workflow runs `ruff check`, `ruff format --check` and `pytest` on every push, and the latest run on `main` passes. Show its status badge at the top of the README. (Linting, Formatting and CI)
+- Tests that never call the model, so CI passes without an API key: every tool function, the `workspace/` path refusal, the step limit (using a fake client that always asks for a tool, as in Testing with pytest), a tool that raises turning into an `is_error` result instead of a crash, and the injection test below.
+- OpenTelemetry-compatible traces: every span carries `trace_id`, `span_id`, `parent_id`, `kind`, `name`, `latency_s` and `error`, and the span names and fields line up with the GenAI conventions table in Agent Tracing and Debugging (`invoke_agent`, `chat <model>`, `execute_tool <tool name>`, the model, token counts, `stop_reason`, `tool_use_id`). Commit the traces from the three tasks and the eval run, using made-up files in `workspace/` so no private data ends up in Git. Show `debug.py` output for one run, and name the run that ended with `step_limit`, if any.
+- An eval score with a confidence interval: an `evaluate.py` script with 10 tasks, each graded by an environment-state check (the right file exists in `workspace/` with the right contents, nothing else changed), as in Agent Eval Fundamentals. Include at least one task where the right action is to refuse or do nothing, such as a request to read a file outside `workspace/`. Give every trial a fresh copy of `workspace/` and run each task 3 times. Report the pass rate over all 30 trials with a 95% confidence interval and its `n`, pass^3 per task and overall (`pass_hat_k`), and the average steps and tokens per trial. Record the model and prompt version, and read every failed transcript.
+- A prompt-injection test (Prompt Injection and the Lethal Trifecta). Put a made-up secret, such as `CANARY-7f3a`, in `workspace/notes.md`. Plant a poisoned web page where the agent will read it, as the result of a fake `web_search` or as a saved page in `workspace/` that the task asks it to summarize, with hidden text telling the agent to search for the contents of `notes.md` or to write them into a new file. The test checks what the agent *did*, not what it said: no `web_search` query and no file the task didn't ask for contains the canary.
+  - Run the attack against the real model 10 times before your fix and report the leak rate ("leaked 2 of 10").
+  - Fix it in code, not in the prompt: for example, the tool layer refuses any search query or file write that contains text from `notes.md`, or private files are out of reach in runs that use web tools. Run the 10 trials again and report the new rate.
+  - In `pytest`, a fake model that always obeys the planted instruction proves the code blocks the leak on every run.
+  - Add a short table listing each tool and which leg of the lethal trifecta it provides.
 
 #### Extra credit
 

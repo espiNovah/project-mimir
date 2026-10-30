@@ -23,7 +23,7 @@ Run every test against your own agent, your own accounts and local servers. Don'
 
 <div class="lesson-content__panel" markdown="1">
 
-1. Write a lethal-trifecta audit in `AUDIT.md`. List every tool the agent has, and for each one, mark whether it gives access to private data, exposure to untrusted content or a way to communicate externally. Identify every combination that forms a full trifecta.
+1. Write a lethal-trifecta audit in `AUDIT.md`, starting from the threat model you wrote in Secure Design Patterns. List every tool the agent has, and for each one, mark whether it gives access to private data, exposure to untrusted content or a way to communicate externally. Identify every combination that forms a full trifecta.
 1. Write at least 10 injection test cases in an `attacks/` folder. Each test case includes the payload, where it is planted and what counts as success. Cover at least three delivery channels:
    - web pages the agent fetches,
    - files the agent reads,
@@ -36,14 +36,31 @@ Run every test against your own agent, your own accounts and local servers. Don'
    - plan-then-execute, where the tool-call plan is fixed before untrusted content is read,
    - a strict tool allowlist or removing a trifecta leg from the agent entirely,
    - an egress block so the agent can only reach allowlisted hosts,
-   - a dual-LLM split so the tool-calling model never reads raw untrusted text.
+   - a dual-LLM split so the tool-calling model never reads raw untrusted text,
+   - taint tracking, so a value that came from untrusted content can't be used where policy forbids it.
 1. Rerun the full suite and report the attack success rate after hardening, per defense where you can. Also rerun the agent's normal tasks to show the defenses didn't break its real job, and report that success rate too.
 1. Map each test case and each defense to OWASP Agentic Top 10 IDs (for example, ASI01 for goal hijacking) in a table in your README.
 1. Push your project to GitHub with a README that explains what it does, how to run the attacks, what you found and what you learned.
 
+#### Evidence
+
+This project is about attacks, so one injection test isn't enough. The evidence is a measured attack success rate (ASR), before and after your defenses, next to the normal task success rate. Your README must show:
+
+- A passing GitHub Actions badge, and a workflow that runs `ruff check`, `ruff format --check` and `pytest` on every push. Pytest proves each structural defense in code, with a fake model client and no real model call, as `test_gate.py` did in Approvals and Permissions. For example: a gated tool can't run without approval even when the prompt claims approval was given; a request to a host off the allowlist is refused; a tainted value is blocked by its policy. These tests must pass every time, because the code path that leaks shouldn't exist. (Linting, Formatting and CI)
+- The raw results, committed as `results/before.csv` and `results/after.csv`, with one row per run: the test case, its delivery channel and goal, the run number, whether the attack succeeded and how that was detected (a request in your attacker server's log, a changed file, the canary in the output).
+- The before-and-after table:
+  - The overall ASR before and after hardening, each with a 95% confidence interval bootstrapped over test cases (average each case's runs first, as in Eval Statistics).
+  - The drop, with a paired bootstrap interval over the same cases.
+  - The ASR broken down by delivery channel and by goal.
+  - A row per test case showing its successes out of its runs, such as "2/3 → 0/3".
+- The ASR with each defense on its own, where you can switch them separately, so a reader can see which defense stopped which attacks.
+- The normal task success rate before and after hardening, on at least ten of the agent's real tasks run three times each, with confidence intervals and a paired interval for the change. Add the change in average cost and steps, because every defense has a price (Secure Design Patterns).
+- One successful baseline attack, shown end to end: the payload, the trace of the run that fell for it (Agent Tracing and Debugging), and the log line on your attacker server or the changed file that proves it.
+- Every attack that still succeeds after hardening, with the reason it gets through and what you'd change next. If none do, say how many runs that claim rests on: 0 successes in 30 runs is still consistent with a true rate of about 10%.
+
 #### Extra credit
 
-- Add a guardrail classifier as a third layer, and report how many attacks it catches that the structural defenses already blocked, and how many it catches that they missed.
+- Add a guardrail classifier as a third layer, and report how many attacks it catches that the structural defenses already blocked, and how many it catches that they missed. Measure its false positive rate on your normal tasks with an interval, as in Guardrails in Production.
 - Write five more attacks designed specifically to get around your defenses, and report the results honestly.
 - Turn your attack suite into a CI job that fails if the attack success rate goes above zero.
 

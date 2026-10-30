@@ -1,12 +1,12 @@
 ### Introduction
 
-You have read about the difference between workflows and agents. Now you will feel it. In this project you will hand-build the smallest agent loop you can, with nothing but the raw model API, and watch it think, act and observe one step at a time. Then you will step back and write a short decision memo that sorts five real tasks into "no LLM," "workflow" or "agent," with reasons.
+You have read about the difference between workflows and agents. Now you will feel it. In this project you will hand-build the smallest agent loop you can, with nothing but the raw model API, and watch it think, act and observe one step at a time. Then you will step back and write a short decision memo that sorts five real tasks into "no LLM," "single call," "workflow" or "agent," with reasons.
 
 The loop is deliberately tiny. The point is not to build something useful yet, but to see that an agent really is "a model using tools in a loop," and to practice the judgment call that comes before every agent project: does this task need one at all?
 
 ### Before you start
 
-- Create a new GitHub repository named `mimir-workflow-or-agent` and set it up as a `uv` project (`uv init`, then `uv add anthropic`), just as you did in Project: Hello, uv.
+- Create a new GitHub repository named `mimir-workflow-or-agent` and set it up as a `uv` project (`uv init`, then `uv add anthropic`, plus `uv add --dev pytest ruff`), just as you did in Project: Hello, uv.
 - Make sure your API key is in the `ANTHROPIC_API_KEY` environment variable, as in Project: Terminal Chatbot. Never commit it.
 - Use the [cheap model](#/models) for this project. Any provider with tool calling works the same way if you prefer another one.
 - Pick one simple tool for your loop. Good choices: a calculator that evaluates basic arithmetic safely (parse the numbers and operator yourself; do not use Python's `eval`), a function that returns the current date and time, or a lookup in a small dictionary of facts you write yourself.
@@ -35,8 +35,8 @@ You have not had the full tool-use lessons yet, and that is fine. The "Agents" s
 
 #### Part 2: The decision memo
 
-1. Write `MEMO.md` classifying five real tasks (from your own life, job or a business you know) as **no LLM**, **workflow** or **agent**.
-1. Include at least one task in each category.
+1. Write `MEMO.md` classifying five real tasks (from your own life, job or a business you know) as **no LLM**, **single call**, **workflow** or **agent**, the four rungs from Workflows vs Agents.
+1. Include at least one **no LLM**, one **workflow** and one **agent** task.
 1. For each task, give two or three sentences of reasoning: Is the path predictable? How many steps, and are they known in advance? What does a mistake cost? Could plain code do it?
 1. For the task you labeled "agent," sketch the tools it would need and its stop conditions.
 
@@ -47,6 +47,17 @@ You have not had the full tool-use lessons yet, and that is fine. The "Agents" s
 1. Notice that input tokens grow on every step because the whole history is resent. In one or two sentences, estimate how the cost would change if the same task took 20 steps instead of 2.
 
 1. Push your project to GitHub with a README that explains what it does, how to run it, and what you learned.
+
+#### Evidence
+
+Your README must show:
+
+- A GitHub Actions workflow runs `ruff check`, `ruff format --check` and `pytest` on every push, and the latest run on `main` passes. Show its status badge at the top of the README. (Linting, Formatting and CI)
+- Tests that never call the model: the tool's normal cases and its errors (for a calculator, division by zero and input it can't parse), and a test that the loop stops at `MAX_STEPS` with the cap message. For the cap test, pass the client into your loop as a parameter and hand it a fake that always asks for the tool, the dependency injection pattern from Testing with pytest. CI must pass without an API key.
+- Traces: every model call writes one JSONL line, as `traced_call` did in Why Evals Matter, with a trace ID shared by all the steps of one run, the step number, the prompt version, the model, the stop reason, token counts and latency. Keep the tracing code in its own file, such as `tracing.py`, so `loop.py` stays within 20 lines. Commit the traces for `sample_run.txt`, `capped_run.txt` and the eval run below. The token totals in Part 3 should come from these traces.
+- An eval score with a confidence interval: `tasks.jsonl` holds at least 20 questions for your tool whose right answers code can check (an exact number, a date, a fact from your dictionary), at least 5 of which need two or more tool calls. An `evaluate.py` script runs the loop once on each, grades the final answer in code, and reports the pass rate with a 95% confidence interval and its `n` (use the bootstrap or the Wilson interval from Eval Statistics, since `n` is small and the rate may be near 100%), plus the average steps and tokens per question. Record the prompt version the score belongs to, and list every failed question with one line on what went wrong.
+
+This project doesn't need a prompt-injection test yet. Your loop has one tool that reads nothing an attacker could write, so there is no untrusted content to attack it with. Prompt Injection and the Lethal Trifecta, in the next section, shows why that changes once an agent reads files and the web, and every project from Project: Agent Loop From Scratch on includes an injection test.
 
 #### Extra credit
 
