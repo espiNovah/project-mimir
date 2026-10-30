@@ -557,7 +557,7 @@ Phases 0–3 are done, and Phase 4 is partly done. This plan finishes the requir
 
 ### How each batch runs
 
-- About 6 writer agents per batch, usually 2 lessons each, all following the writer brief.
+- About 6 writer agents per batch, usually 2 lessons each, all following the [writer brief](templates/writer_brief.md).
 - Each agent saves a complete draft to disk before checking links, so an interrupted run never loses work.
 - After each batch: audit (validator, exercise checker, scope, consistency between lessons), then commit, merge to `main` and push.
 - Order follows the learner's path. Lessons are written before the project briefs that depend on them, so each brief matches what was taught.
