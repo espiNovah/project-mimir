@@ -240,6 +240,25 @@ Real systems are rarely pure. A common shape is a workflow with one agentic step
 
 </div>
 
+### On other providers
+
+The spectrum, the "who decides the next step" test and the costs of autonomy are the same on every provider; nothing in this lesson's argument depends on Claude. Only the code changes. `client.messages.parse` with a Pydantic model as `output_format` is the Anthropic SDK's structured-output helper, and the OpenAI SDK has an equivalent, `client.chat.completions.parse` with `response_format`, described in OpenAI's [Structured model outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs). The `track` tally reads Claude's `usage.input_tokens` and `usage.output_tokens`; OpenAI calls them `usage.prompt_tokens` and `usage.completion_tokens`. The agent version's loop uses Claude's `stop_reason` values and `tool_use`/`tool_result` blocks, and The Agent Loop shows how those map onto OpenAI's `tool_calls` and `role: "tool"` messages. Open models can run the workflow too: Ollama supports [structured outputs](https://docs.ollama.com/capabilities/structured-outputs), so this triage step works with Qwen3 on your own machine. Small local models are a good stress test of the lesson's point, because they tend to slip more often on long agent loops than on short, fixed workflow steps.
+
+```python
+from openai import OpenAI  # uv add openai
+
+oa = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # drop both args for OpenAI itself
+
+
+def triage_openai(email: str) -> Triage | None:
+    completion = oa.chat.completions.parse(
+        model="qwen3:4b", response_format=Triage,             # the same Pydantic model as before
+        messages=[{"role": "user", "content": f"Triage this support email:\n\n{email}"}],
+    )
+    print("tokens:", completion.usage.prompt_tokens + completion.usage.completion_tokens)
+    return completion.choices[0].message.parsed               # None if the model refused
+```
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">

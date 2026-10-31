@@ -173,6 +173,10 @@ Because model output varies, one passing run proves little for the vulnerable ve
 
 When you describe a risk in a project README or an interview as "ASI01: an indirect injection in fetched pages could hijack the agent's goal," you're speaking the same language as the security reviewer across the table.
 
+### On other providers
+
+Prompt injection doesn't depend on the provider. Every model, hosted or open, reads instructions and data as one stream of tokens, so the trifecta, the exfiltration routes, the code-level allowlist and the "test what it did" pattern apply unchanged. To run the walkthrough elsewhere, you only change the loop's plumbing: OpenAI-style tool definitions, `tool_calls` and `role: "tool"` messages, as shown in The Agent Loop, with the refusal sent back as text starting `Error:` because those APIs have no `is_error` field. What differs between providers is how hard the model resists and which extra mitigations the platform offers, and both are provider-specific layers, not fixes. OpenAI, for example, gives its `developer` messages priority over user messages, so untrusted text should never be pasted into a developer message (or a system prompt, on any provider); its [Safety best practices](https://developers.openai.com/api/docs/guides/safety-best-practices) page lists its general advice. Provider-hosted server tools, such as Claude's web fetch, are an exfiltration route your code can't wrap in an allowlist, so use whatever domain restrictions that provider offers for them, or replace them with your own client tool. Small open models, such as Qwen3 run through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), usually follow planted instructions more often than large hosted ones, which makes them a useful way to see the vulnerable agent leak and the fixed one hold.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">

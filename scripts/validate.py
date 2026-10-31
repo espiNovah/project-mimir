@@ -19,7 +19,7 @@ MODEL_ID_RE = re.compile(r"claude-(haiku|sonnet|opus|fable)-\d")
 HEADING_RE = re.compile(r"^### (.+)$", re.M)
 ANCHOR_LINK_RE = re.compile(r"\]\(#([a-z0-9-]+)\)")
 OUTLINE_MARK = "#### Outline lesson"
-PAGES = ("about.md", "models.md")  # standalone pages, not listed in curriculum.json
+PAGES = ("about.md", "models.md", "providers.md")  # standalone pages, not listed in curriculum.json
 # Sites that block automated requests but are known to exist.
 BOT_BLOCKERS = ("realpython.com", "openai.com", "medium.com", "coursera.org", "runestone.academy")
 

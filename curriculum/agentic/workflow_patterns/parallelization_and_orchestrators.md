@@ -41,7 +41,7 @@ Starting everything at once has a catch. If you fan out over 500 documents, `gat
 
 The tool for this is a **semaphore**: a counter that lets at most *n* tasks into a block of code at a time. `asyncio.Semaphore(5)` lets five calls run; the sixth waits at `async with` until one of the five finishes. Your code still starts all 500 tasks, but only five talk to the API at any moment.
 
-A semaphore limits **concurrency**, not **rate**. Providers set rate limits as requests per minute and tokens per minute (input and output are often counted separately). Five concurrent calls that each finish in one second add up to 300 requests a minute, which can still exceed a small limit. So keep two defenses, both from Timeouts, Retries and Rate Limits: a concurrency cap you tune to your account's limits, and retries with backoff that respect the `retry-after` header on a `429`. The `anthropic` SDK already does the second one for you; the code below raises its retry count.
+A semaphore limits **concurrency**, not **rate**. Providers set rate limits as requests per minute and tokens per minute (input and output are often counted separately). Five concurrent calls that each finish in one second add up to 300 requests a minute, which can still exceed a small limit. So keep two defenses, both from Timeouts, Retries and Rate Limits: a concurrency cap you tune to your account's limits, and retries with backoff that respect the `retry-after` header on a `429`. The `anthropic` SDK already does the second one for you, as the OpenAI SDK does; the code below raises its retry count.
 
 One more habit: by default, if any call inside `gather` raises an exception, `gather` raises it too, and you lose the other results. Pass `return_exceptions=True` to get exceptions back as values in the result list instead, so one failed call doesn't sink the other nine.
 
@@ -231,7 +231,7 @@ asyncio.run(main())
 
 The numbered comments mark the four things that make this safe enough to run:
 
-1. **A structured plan.** `Plan` is the contract. The orchestrator can't return a vague paragraph; it must return a list of `{file, instructions}` objects.
+1. **A structured plan.** `Plan` is the contract, enforced with the Anthropic SDK's `messages.parse` helper as in Chaining and Routing. The orchestrator can't return a vague paragraph; it must return a list of `{file, instructions}` objects.
 1. **A gate on the plan.** Subtasks for files that don't exist are dropped, and the fan-out is capped. Without the cap, one odd input could launch fifty workers. You could also make the gate stricter, for example by retrying the plan with feedback when it names an unknown file.
 1. **Narrow workers.** Each worker gets only its file and its instruction, which keeps its context small and its job clear.
 1. **A synthesizer with a checking job.** Workers can't see each other, so one might name the field `phone` and another `phone_number`. The synthesizer's first instruction is to look for exactly that kind of mismatch.
@@ -269,6 +269,23 @@ The test is the same as in Chaining and Routing: run the pattern and a single-pr
 Orchestrator-workers is the last stop before agents. The orchestrator makes a real decision about the shape of the work, but only once: it plans, the workers run, and the workflow ends. If you let the orchestrator see the workers' results and plan again, as many times as it likes, you have built an agent that delegates to other model calls. That is what the Multi-Agent Systems section covers with full subagents that have their own tools and loops.
 
 The trade-offs carry over and grow: more calls, more tokens, more coordination to get right, and more ways for one piece to drift from the others. The habits from this lesson carry over too. Give the planner a structured contract, gate its plan, cap the fan-out, limit concurrency, and make failures visible.
+
+### On other providers
+
+Sectioning, voting, the semaphore, `asyncio.gather` with `return_exceptions=True`, the gated plan and the aggregation step are plain Python, so they work with any provider's async client. Rate limits work the same way on OpenAI too: requests and tokens per minute, a `429` with a `Retry-After` header, and automatic retries in its SDK, as OpenAI's [rate limits guide](https://developers.openai.com/api/docs/guides/rate-limits) explains. The Claude-specific pieces in this lesson's code are `output_config={"effort": "low"}`, which becomes `reasoning_effort` on OpenAI's reasoning models, and `messages.parse` with `output_format=Plan`, which becomes `chat.completions.parse` with `response_format=Plan`, as shown in Chaining and Routing. A local open model changes the bottleneck: Ollama has no per-minute limit, but by default each model handles one request at a time and queues the rest, so a semaphore of 5 buys no speed until you raise `OLLAMA_NUM_PARALLEL` (see the [Ollama FAQ](https://docs.ollama.com/faq)), and a full queue answers with `503` rather than `429`. Mixing providers is also the easiest way to get voters that can disagree: one Claude voter, one OpenAI voter and one local model are far more independent than three copies of the same model. Here is `ask` from `fanout.py` for a local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), using the same `LIMIT`:
+
+```python
+from openai import AsyncOpenAI  # uv add openai
+
+local = AsyncOpenAI(base_url="http://localhost:11434/v1", api_key="ollama", max_retries=4)
+
+async def ask(system: str, user: str, model: str = "qwen3:4b") -> str:
+    async with LIMIT:  # the same semaphore as before
+        response = await local.chat.completions.create(model=model, messages=[
+            {"role": "system", "content": system},  # the system prompt is a message here
+            {"role": "user", "content": user}])
+    return response.choices[0].message.content or ""
+```
 
 ### Assignment
 

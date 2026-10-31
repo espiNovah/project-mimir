@@ -97,12 +97,12 @@ From How the Web Works, you know the basic split: 4xx means *you* did something 
 | `anthropic.NotFoundError` | 404 | For example, a misspelled model ID | No, fix the request |
 | `anthropic.RateLimitError` | 429 | Too many requests or tokens per minute | Yes, after waiting |
 | `anthropic.InternalServerError` | 500+ | A problem on the server side | Yes |
-| `anthropic.OverloadedError` | 529 | The API is temporarily overloaded | Yes |
+| `anthropic.OverloadedError` | 529 | The API is temporarily overloaded (an Anthropic-specific code) | Yes |
 | `anthropic.APIConnectionError` | none | Network failure or timeout; no response at all | Yes |
 
 All the errors with a status code are subclasses of `anthropic.APIStatusError`, which has a `.status_code` and the original `.response`. All of them, including connection errors, are subclasses of `anthropic.APIError`.
 
-Here's a pleasant surprise: **the SDK already retries** connection errors, 408, 409, 429 and 5xx errors twice by default, waiting a little longer each time. You can change that with `anthropic.Anthropic(max_retries=5)`, or turn it off with `max_retries=0`. For many apps, the defaults plus good error messages are enough.
+Here's a pleasant surprise: **the SDK already retries** (OpenAI's Python SDK has the same default) connection errors, 408, 409, 429 and 5xx errors twice by default, waiting a little longer each time. You can change that with `anthropic.Anthropic(max_retries=5)`, or turn it off with `max_retries=0`. For many apps, the defaults plus good error messages are enough.
 
 ### Retrying with exponential backoff
 
@@ -168,6 +168,10 @@ Notice the two layers. `create_with_retry` handles *temporary* problems by waiti
 
 One caveat for streaming: a stream can fail after it has already printed part of the answer. If you retry, the user sees the start of the answer twice. A simple approach is to print a note like "[connection lost, retrying]" before starting again.
 
+### On other providers
+
+Almost everything here carries over: every provider bills input and output tokens separately per million, returns a `429` with a `retry-after` header when you go too fast, and deserves the same backoff-with-jitter retries. The names differ. In the OpenAI Chat Completions format, the usage fields are `usage.prompt_tokens` and `usage.completion_tokens`, so your `cost_usd` function stays the same and you just pass it different fields. OpenAI's rate-limit headers start with `x-ratelimit-` (for example `x-ratelimit-remaining-tokens`) rather than `anthropic-ratelimit-`, and its limits are counted in requests and tokens per minute (and for some limits per day), without Anthropic's split between input and output tokens; see OpenAI's [rate limits guide](https://developers.openai.com/api/docs/guides/rate-limits). The `openai` package raises errors with the same class names, such as `openai.RateLimitError`, `openai.AuthenticationError` and `openai.APIConnectionError`, so `create_with_retry` ports over almost line for line. The 529 overloaded code is Anthropic's alone; on OpenAI an overloaded server shows up as a 503 or another 5xx, which your retry list already covers. For counting tokens before you send, OpenAI has its own [token counting endpoint](https://developers.openai.com/api/docs/guides/token-counting) for its Responses API. A local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) costs nothing per token and has no rate limits, but it still reports usage, and the token counts are a good habit to log because they tell you whether a hosted model would be affordable for the same job.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
@@ -196,6 +200,7 @@ The following questions are an opportunity to reflect on key topics in this less
 - [What are rate limits, and what are they measured in?](#rate-limits)
 - [Which API errors are worth retrying, and which aren't?](#which-errors-to-retry)
 - [Why retry with exponential backoff and jitter instead of retrying immediately?](#retrying-with-exponential-backoff)
+- [What changes in cost tracking and retries when you use an OpenAI-compatible API?](#on-other-providers)
 
 ### Additional resources
 

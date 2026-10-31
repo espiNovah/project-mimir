@@ -198,6 +198,27 @@ You need a hand-built frontend, like the Next.js app from Next.js and the AI SDK
 
 In practice the two aren't rivals; they're stages. You prototype in Streamlit to learn what to build, then build it properly. That's exactly how the Docs Chatbot UI project works: a quick prototype first, then a TypeScript and React interface with login as the real deliverable. And the prototype keeps earning its place afterwards, as the internal tool where your team reads traces and labels answers.
 
+### On other providers
+
+Streamlit and Gradio don't care which model you call. Session state, caching, `st.chat_message`, `gr.ChatInterface`, the sources expander and the deployment advice all stay the same. What changes is the streaming call, plus where the system prompt goes: OpenAI's Chat Completions API and the OpenAI-compatible servers that run open models take it as the first message instead of a `system` argument. Streamlit makes the switch especially easy, because [`st.write_stream`](https://docs.streamlit.io/develop/api-reference/write-magic/st.write_stream) understands OpenAI streams directly, which is why the Streamlit tutorial in the Assignment can pass one straight in. Here are the changed parts of `app.py`, pointed at a local open model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) (set `MIMIR_MODEL` to a model you've pulled, such as `qwen3:8b`):
+
+```python
+from openai import OpenAI  # uv add openai
+
+@st.cache_resource
+def get_client():
+    return OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI() for OpenAI
+
+# Inside the try block, in place of the messages.stream(...) block:
+stream = get_client().chat.completions.create(model=MODEL, stream=True, messages=[
+    {"role": "system", "content": SYSTEM},           # the system prompt is the first message
+    {"role": "user", "content": prompt},
+])
+text = st.write_stream(stream)                       # Streamlit reads OpenAI streams directly
+```
+
+Catch `openai.APIError` instead of `anthropic.APIError`. In Gradio, loop over the same `stream`, add `chunk.choices[0].delta.content or ""` to `text` for each chunk, and yield it as before. The [Chat Completions API reference](https://developers.openai.com/api/reference/resources/chat) shows the chunk format. A provider switch is also a cheap way to compare models side by side: add a sidebar `st.selectbox` that chooses the client and model, and ask both the same questions.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
@@ -205,7 +226,7 @@ In practice the two aren't rivals; they're stages. You prototype in Streamlit to
 1. Read Streamlit's [basic concepts](https://docs.streamlit.io/get-started/fundamentals/main-concepts) from its [documentation](https://docs.streamlit.io/), then the concept pages on [caching](https://docs.streamlit.io/develop/concepts/architecture/caching) and [session state](https://docs.streamlit.io/develop/concepts/architecture/session-state).
    - These explain the rerun model in more depth. Pay attention to when to use `st.cache_resource` versus `st.cache_data`.
 1. Follow the [Streamlit conversational apps tutorial](https://docs.streamlit.io/develop/tutorials/chat-and-llm-apps/build-conversational-apps).
-   - Build the echo bot, then the streaming chatbot. Use the `anthropic` SDK with the [cheap model](#/models) instead of the provider used in the tutorial; the structure is the same, and `stream.text_stream` replaces their stream.
+   - Build the echo bot, then the streaming chatbot. The tutorial uses the OpenAI SDK. Build it once as written if you have an OpenAI key or a local Ollama model (see [On other providers](#on-other-providers)), or use the `anthropic` SDK with the [cheap model](#/models); the structure is the same, and `stream.text_stream` replaces their stream.
    - Keep the [chat elements API reference](https://docs.streamlit.io/develop/api-reference/chat) open as you work.
 1. Follow the [Gradio quickstart](https://www.gradio.app/guides/quickstart), then the [guide to creating a chatbot fast](https://www.gradio.app/guides/creating-a-chatbot-fast).
    - Read the sections on the chat function, the history format and streaming.

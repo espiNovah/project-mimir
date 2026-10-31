@@ -285,6 +285,10 @@ Tagging each case with its category lets you report a pass rate per category, so
 
 Then repeat the whole loop regularly. Every prompt or model change creates new failure modes, and the only way to find them is to read new traces.
 
+### On other providers
+
+Error analysis is about as provider-neutral as anything in this curriculum: open coding, axial coding, labeling guidelines, the labeling tool and the agreement math never touch a model API. Only `synth.py` calls a model. To run it on OpenAI's Chat Completions API, create `OpenAI()` instead of `anthropic.Anthropic()`, call `client.chat.completions.create(model=..., messages=[...])` with the same user message, and read the text from `response.choices[0].message.content`; the output cap is optional there (it's called `max_completion_tokens`), so you can drop `max_tokens`. One choice is worth making on purpose: don't let the model you're testing be the only one that writes your synthetic inputs. Inputs written by the same model family can share its habits of phrasing and miss failures that other phrasings would trigger. Generating some of the tuples with a second provider, or for free with a local open model such as [Qwen3](https://ollama.com/library/qwen3) through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), gives you more varied inputs. OpenAI's [evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) guide covers building datasets and calibrating against human feedback from OpenAI's side.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">

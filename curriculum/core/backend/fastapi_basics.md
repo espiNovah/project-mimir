@@ -191,7 +191,7 @@ This page is built from an **OpenAPI** description of your API: a standard JSON 
 
 You can write a route with `def` or with `async def`. With plain `def`, FastAPI runs your function in a pool of worker threads, so a slow function doesn't freeze the whole server, but each waiting request occupies a thread. With `async def`, the function runs on the event loop you met in Async Basics, and while it `await`s a network call, the server is free to handle other requests.
 
-Model API calls spend almost all of their time waiting for the network, so an AI endpoint is a natural fit for `async def` plus an async client, such as `anthropic.AsyncAnthropic()` or `httpx.AsyncClient()`. There is one trap: inside an `async def` route, never call something slow and blocking, such as the synchronous `anthropic.Anthropic()` client or `time.sleep()`. That blocks the event loop and stalls every other request. If a library you need only has a blocking interface, use a plain `def` route. When in doubt, plain `def` is the safe default.
+Model API calls spend almost all of their time waiting for the network, so an AI endpoint is a natural fit for `async def` plus an async client, such as `anthropic.AsyncAnthropic()`, `openai.AsyncOpenAI()` or `httpx.AsyncClient()`. There is one trap: inside an `async def` route, never call something slow and blocking, such as the synchronous `anthropic.Anthropic()` client or `time.sleep()`. That blocks the event loop and stalls every other request. If a library you need only has a blocking interface, use a plain `def` route. When in doubt, plain `def` is the safe default.
 
 ### Testing with TestClient
 
@@ -276,6 +276,10 @@ app.dependency_overrides[get_summarizer] = lambda: fake_summarizer
 ```
 
 In production, FastAPI calls `get_summarizer()` and your route gets the real function. In tests, it calls the override instead and your route gets the fake, which returns instantly and always says the same thing. The route's code doesn't change at all. You will use exactly this mechanism in the next lessons to hand each request a database session, and later to check API keys.
+
+### On other providers
+
+Nothing in FastAPI depends on the model provider, and dependency injection keeps it that way: the route asks for a `Summarizer`, and whether `summarize_with_model` calls Claude, OpenAI or a local model is a detail inside your `llm.py`. The async advice applies to every SDK. OpenAI's async client is `openai.AsyncOpenAI()`, and a blocking client inside an `async def` route stalls the event loop just the same. For a free local model, point that client at [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) with `AsyncOpenAI(base_url="http://localhost:11434/v1", api_key="ollama")` and a small model such as [Qwen3](https://ollama.com/library/qwen3). OpenAI's [text generation guide](https://developers.openai.com/api/docs/guides/text) shows the basic call to put inside your summarizer.
 
 ### Assignment
 

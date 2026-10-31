@@ -17,7 +17,7 @@ This section contains a general overview of topics that you will learn in this l
 
 ### System prompts
 
-The `system` parameter holds instructions that apply to the whole conversation: who the model should be, how it should behave, what it should and shouldn't do. It's separate from the `messages` list.
+The `system` parameter holds instructions that apply to the whole conversation: who the model should be, how it should behave, what it should and shouldn't do. It's separate from the `messages` list. A separate `system` field is how Anthropic's API does it; OpenAI-style APIs put the system prompt inside the list instead, as you'll see in [On other providers](#on-other-providers).
 
 ```python
 import anthropic
@@ -124,7 +124,7 @@ while True:
 
 Each time around the loop, you add the user's message to `history`, send the whole history, then add the model's answer. The next request includes everything.
 
-A few rules the `messages` list must follow:
+A few rules the `messages` list must follow on Anthropic's API (other providers have similar but not identical rules):
 
 - It must start with a `user` message and end with a `user` message (the one you want answered).
 - In between, roles should alternate `user`, `assistant`, `user`, `assistant`.
@@ -142,7 +142,26 @@ The loop above saves only the text of each reply. That's the simplest approach, 
 
 Watch the `input_tokens` number in the loop as you chat. It grows every turn, because every turn resends everything before it. Turn 1 might send 30 tokens; turn 20 might send 4,000. You're paying for the whole history on every request, and eventually a very long conversation would fill the context window.
 
-For now, that's fine; a learning chat costs fractions of a cent. But it's the reason real applications trim old messages, summarize long conversations or use features like prompt caching (which makes resending the same prefix much cheaper). You'll handle all of these in later sections, starting with the Memory and Context Management section of the Agentic Systems path.
+For now, that's fine; a learning chat costs fractions of a cent. But it's the reason real applications trim old messages, summarize long conversations or use features like prompt caching (which makes resending the same prefix much cheaper; most major providers offer it, but the details differ). You'll handle all of these in later sections, starting with the Memory and Context Management section of the Agentic Systems path.
+
+### On other providers
+
+Everything important in this lesson carries over unchanged: every major chat API is stateless, every chat app works by resending the whole history, and longer conversations cost more everywhere. What differs is where things go. In the OpenAI Chat Completions format, which OpenAI, Ollama and many other providers accept, there's no separate `system` argument. The system prompt is simply the first message in the list, with the role `"system"` (OpenAI's newer models also accept the name `"developer"` for the same job). Each reply is read from `response.choices[0].message.content`, and you append it to the history as an `assistant` message exactly as before. OpenAI's API is also more relaxed about ordering, so it won't reject two user messages in a row, but keeping the strict user/assistant alternation works everywhere. Here's one turn of the loop against a free local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility); see OpenAI's [conversation state guide](https://developers.openai.com/api/docs/guides/conversation-state) for the hosted version:
+
+```python
+from openai import OpenAI  # uv add openai
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # for OpenAI itself: OpenAI()
+history = [{"role": "system", "content": "You are a friendly, concise assistant."}]  # system goes first
+
+history.append({"role": "user", "content": "My name is Ada. What's a variable?"})
+response = client.chat.completions.create(model="llama3.2:3b", messages=history)
+answer = response.choices[0].message.content
+history.append({"role": "assistant", "content": answer})
+print(answer, f"({response.usage.prompt_tokens} tokens in)")
+```
+
+That conversation guide also describes an option that's specific to OpenAI: its Responses API can store the conversation on OpenAI's servers, so you send only the new message and an ID pointing at the previous one. It's a convenience, not a change in how models work. The model still reads the full history every turn, and you still pay for those input tokens.
 
 ### Assignment
 
@@ -170,6 +189,7 @@ The following questions are an opportunity to reflect on key topics in this less
 - [What does it mean that the Messages API is stateless?](#the-api-is-stateless)
 - [How do you keep a conversation going, and what are the rules for ordering user and assistant messages?](#a-conversation-loop)
 - [Why does each turn of a long conversation cost more than the last?](#conversations-get-more-expensive)
+- [Where does the system prompt go in the OpenAI Chat Completions format?](#on-other-providers)
 
 ### Additional resources
 

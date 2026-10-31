@@ -179,7 +179,7 @@ What should your app do with a failed check? For a demo, show the answer with a 
 
 Prompting for `[n]` works with any model. Some providers also offer a built-in citations feature, and Claude's is a good example. You pass your sources as structured content blocks with citations enabled, and the response comes back as a list of text blocks, where each block that makes a claim carries a list of citations. Each citation includes `cited_text`, the exact passage it came from. Because that text is copied from your source by the API rather than typed out by the model, it is guaranteed to exist in the source.
 
-For RAG chunks, the best fit is the **search result** block: each chunk becomes a `search_result` with a `source`, a `title` and its text. (For whole files, you can instead send a `document` block, and a PDF document's citations come back with page numbers.) This works on the Claude API; other providers have similar features with different shapes, so check their docs.
+For RAG chunks, the best fit is the **search result** block: each chunk becomes a `search_result` with a `source`, a `title` and its text. (For whole files, you can instead send a `document` block, and a PDF document's citations come back with page numbers.) This works on the Claude API; other providers have different features or none, and the `[n]` prompt from the last section works everywhere (see [On other providers](#on-other-providers)).
 
 ```python
 # native.py: the same question using Claude's built-in citations (a Claude API feature).
@@ -286,6 +286,30 @@ def grounding_report(client, retrieve, cases: list[dict]) -> dict:
 Track **correct refusals** and **false refusals** separately. A system that refuses everything scores perfectly on the first and terribly on the second, and a single "refusal accuracy" number would hide that. The citation pass rate only counts answers that weren't refusals, so refusing more can't make it look better.
 
 The deeper measure is **faithfulness**: is every claim actually supported by the chunks it cites? That needs a judge, and Evaluating RAG and Catching Regressions makes faithfulness, correctness and refusal accuracy the core answer metrics of your eval harness. With 15 questions, these rates move a lot by chance, so put a confidence interval on them as you learned in Eval Statistics before you celebrate an improvement.
+
+### On other providers
+
+Almost everything in this lesson is plain prompting and plain Python, so it works with any model. Numbered sources in tags, the grounded system prompt, the fixed refusal phrase, `check_answer`, the refusal threshold and `grounding_report` don't care who made the model. Only the call itself changes. In OpenAI's Chat Completions API, and in every OpenAI-compatible server, the system prompt is the first message instead of a separate `system` argument, and the reply text is in `choices[0].message.content`. The search result blocks and `cited_text` in [Native citations](#native-citations) are a Claude feature with no shared standard. OpenAI's closest equivalent is its [file search tool](https://developers.openai.com/api/docs/guides/tools-file-search), which searches files you upload to OpenAI and adds `file_citation` annotations to the answer, so it replaces your own retrieval instead of citing your chunks. Open models served through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) have no native citations at all. Small open models also break the `[n]` format more often than hosted ones, so `check_answer` and your grounding report matter even more there. Here is `answer` from `grounded.py` for any OpenAI-compatible API:
+
+```python
+import os
+
+from openai import OpenAI  # uv add openai
+
+from grounded import SYSTEM, format_sources
+
+MODEL = os.environ.get("MIMIR_MODEL", "qwen3:8b")  # a local model; use your provider's model ID
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI() for OpenAI
+
+def answer_openai(question: str, chunks: list[dict]) -> str:
+    response = client.chat.completions.create(model=MODEL, messages=[
+        {"role": "system", "content": SYSTEM},          # the system prompt is the first message
+        {"role": "user", "content": f"<sources>\n{format_sources(chunks)}\n</sources>\n\nQuestion: {question}"},
+    ])
+    return response.choices[0].message.content or ""
+```
+
+Because it returns the same kind of string, `check_answer` works on its output unchanged, and running `grounding_report` against both providers is a fair comparison.
 
 ### Assignment
 

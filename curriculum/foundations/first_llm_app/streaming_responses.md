@@ -24,7 +24,7 @@ Two measurements matter when someone is waiting for a model:
 
 Streaming doesn't make the total time any shorter. The model takes just as long to write a 500-word answer either way. What changes is TTFT: instead of staring at a blank screen for 10 seconds, the user sees text after half a second and reads along as it's written. That makes an enormous difference to how fast an app *feels*.
 
-There's a second, practical reason. Very long responses can take minutes, and long-running HTTP requests that send nothing back can hit timeouts along the way. A stream sends data continuously, which avoids that problem. For large outputs, the SDK actually requires streaming.
+There's a second, practical reason. Very long responses can take minutes, and long-running HTTP requests that send nothing back can hit timeouts along the way. A stream sends data continuously, which avoids that problem. For very large outputs, the Anthropic SDK actually requires streaming.
 
 ### Streaming with the SDK
 
@@ -90,7 +90,7 @@ When a model starts writing something long that the user doesn't want, they'll p
 
 ### What's underneath: server-sent events
 
-Streaming uses a standard web format called **server-sent events (SSE)**. Instead of one JSON response, the server keeps the HTTP connection open and sends a series of small events, each with a name and a JSON payload. Add `"stream": true` to the `curl` request from Your First API Call and you'll see them arrive:
+Streaming uses a standard web format called **server-sent events (SSE)**, and every major provider uses it. The event names below are Anthropic's own; other providers use different names, as [On other providers](#on-other-providers) shows. Instead of one JSON response, the server keeps the HTTP connection open and sends a series of small events, each with a name and a JSON payload. Add `"stream": true` to the `curl` request from Your First API Call and you'll see them arrive:
 
 ```text
 event: message_start
@@ -115,11 +115,32 @@ event: message_stop
 data: {"type": "message_stop"}
 ```
 
-The flow is always the same: a `message_start`, then for each content block a `content_block_start`, many `content_block_delta` events carrying the new text, and a `content_block_stop`. Then a `message_delta` with the stop reason and final usage, and a `message_stop`. You may also see `ping` events, which just keep the connection alive. The SDK's `text_stream` is simply picking out the `text_delta` events for you, and `get_final_message()` assembles all the pieces.
+On Anthropic's API, the flow is always the same: a `message_start`, then for each content block a `content_block_start`, many `content_block_delta` events carrying the new text, and a `content_block_stop`. Then a `message_delta` with the stop reason and final usage, and a `message_stop`. You may also see `ping` events, which just keep the connection alive. The SDK's `text_stream` is simply picking out the `text_delta` events for you, and `get_final_message()` assembles all the pieces.
 
 You can loop over the raw events yourself with `for event in stream:` instead of `stream.text_stream`, and check `event.type`. You'll need that later for showing thinking or tool calls as they stream.
 
 **Errors can happen mid-stream.** A request can start fine and then fail partway through, for example if the API becomes overloaded. In the raw stream that appears as an `error` event; in the SDK it raises an exception while you're iterating. So your error handling has to wrap the whole streaming loop, not just the line that starts it. You'll build that error handling in the next lesson.
+
+### On other providers
+
+The ideas in this lesson carry over to every provider: streaming improves time to first token but not total time, the wire format is server-sent events, you print each chunk with `flush=True`, and errors can arrive halfway through. What changes is the shape of the events. In the OpenAI Chat Completions format, which OpenAI, Ollama and many other servers accept, you pass `stream=True` to the ordinary `create()` call and loop over the result. Each chunk carries its new text in `chunk.choices[0].delta.content`, which can be `None`, so skip empty pieces. There are no named events like `message_start` here: each SSE line is just `data:` followed by a chunk, and the stream ends with `data: [DONE]`. Token usage isn't included unless you ask for it with `stream_options={"include_usage": True}`, and then it arrives in one last chunk with an empty `choices` list. OpenAI's newer Responses API streams named events instead, such as `response.output_text.delta`; see OpenAI's [streaming guide](https://developers.openai.com/api/docs/guides/streaming-responses). Here's the poem from this lesson streamed from a free local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility):
+
+```python
+from openai import OpenAI  # uv add openai
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # for OpenAI itself: OpenAI()
+stream = client.chat.completions.create(
+    model="llama3.2:3b",
+    messages=[{"role": "user", "content": "Write a four-line poem about debugging."}],
+    stream=True,
+    stream_options={"include_usage": True},  # ask for a final chunk with token counts
+)
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+    if chunk.usage:  # only on the last chunk
+        print(f"\n{chunk.usage.prompt_tokens} in, {chunk.usage.completion_tokens} out")
+```
 
 ### Assignment
 
@@ -146,6 +167,7 @@ The following questions are an opportunity to reflect on key topics in this less
 - [How do you add a streamed reply to the conversation history?](#streaming-in-a-conversation)
 - [What are server-sent events, and which event types make up a stream?](#what-s-underneath-server-sent-events)
 - [Why must your error handling wrap the whole streaming loop, not just the line that starts it?](#what-s-underneath-server-sent-events)
+- [How do you read streamed text and token usage from an OpenAI-compatible API?](#on-other-providers)
 
 ### Additional resources
 

@@ -157,7 +157,7 @@
   }
 
   // Standalone Markdown pages outside the paths (curriculum/<name>.md).
-  const PAGES = { about: "About", models: "Current Models" };
+  const PAGES = { about: "About", models: "Current Models", providers: "Provider Comparison" };
   async function viewPage(name) {
     setTitle(PAGES[name]); setNav(name);
     try {
@@ -170,7 +170,7 @@
   }
 
   // ---------- router ----------
-  // Routes: #/  ·  #/about  ·  #/models  ·  #/paths/:path  ·  #/lessons/:path/:lesson[/:anchor]
+  // Routes: #/  ·  #/about  ·  #/models  ·  #/providers  ·  #/paths/:path  ·  #/lessons/:path/:lesson[/:anchor]
   async function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     if (parts[0] === "paths" && parts[1]) viewPath(parts[1]);

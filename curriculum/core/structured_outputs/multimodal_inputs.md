@@ -30,11 +30,11 @@ messages = [{
 }]
 ```
 
-There are two non-text block types you'll use. An **image block** (`"type": "image"`) holds a JPEG, PNG, GIF or WebP picture. A **document block** (`"type": "document"`) holds a PDF, or a plain-text file. Every block has a `source` that says where the bytes come from, in one of three forms:
+There are two non-text block types you'll use. These block shapes are Claude's; other providers take the same files in differently shaped parts, compared in [On other providers](#on-other-providers). An **image block** (`"type": "image"`) holds a JPEG, PNG, GIF or WebP picture. A **document block** (`"type": "document"`) holds a PDF, or a plain-text file. Every block has a `source` that says where the bytes come from, in one of three forms:
 
 - **`base64`**: the file's bytes, encoded as text and embedded in the request. **Base64** is a way of writing any binary data using only 64 safe characters (letters, digits, `+` and `/`), so it can travel inside JSON. It makes the data about a third larger. You must also give the `media_type`, such as `image/jpeg` or `application/pdf`, and it must match the actual bytes.
 - **`url`**: a public web address. The API downloads the file itself, which keeps your request small. It only works for files that are reachable on the public internet, so not for a user's private upload.
-- **`file`**: a `file_id` from Anthropic's **Files API**, where you upload a file once and refer to it in later requests without sending the bytes again. Uploaded files are visible to every API key in your workspace, so treat file IDs as server-side secrets: store which user owns which file in your own database, and never accept a `file_id` from a user.
+- **`file`**: a `file_id` from Anthropic's **Files API** (a Claude feature; OpenAI has its own Files API, and local servers like Ollama have none), where you upload a file once and refer to it in later requests without sending the bytes again. Uploaded files are visible to every API key in your workspace, so treat file IDs as server-side secrets: store which user owns which file in your own database, and never accept a `file_id` from a user.
 
 Put images and documents **before** your question in the content list. Models do better when they've seen the material before reading what to do with it, the same principle as putting a long document first in Long Context and Context Engineering. When you send several images, put a short text label before each ("Image 1:", "Image 2:") so your prompt can refer to them unambiguously.
 
@@ -142,7 +142,7 @@ One more risk: an image or PDF can contain *instructions*. A document that says 
 
 ### Sending PDFs
 
-A PDF goes in a **document block**. With base64, the shape is the same as an image, with `application/pdf` as the media type. This is the exact block the Document Parsing lesson uses later, one page at a time, to transcribe scanned pages:
+A PDF goes in a **document block**, a Claude feature: OpenAI takes PDFs as a differently shaped `file` part, and Ollama doesn't take PDFs at all (see [On other providers](#on-other-providers)). With base64, the shape is the same as an image, with `application/pdf` as the media type. This is the exact block the Document Parsing lesson uses later, one page at a time, to transcribe scanned pages:
 
 ```python
 # pdf_blocks.py: three ways to hand a PDF to the model, and what it will cost
@@ -202,11 +202,11 @@ For other formats the document block doesn't take, such as Word or Excel files, 
 
 Images and pages are paid for as input tokens, at the same price as text.
 
-**An image** is cut into patches of 28×28 pixels, and each patch is one token, so a W×H image costs about ⌈W/28⌉ × ⌈H/28⌉ tokens (⌈ ⌉ means "round up"). A 1000×1000 image is 36 × 36 = 1,296 tokens. That's what `image_block` estimates. Images above a model's maximum resolution are downsized first, which caps the cost per image: newer models accept larger images (up to 2,576 pixels on the long edge, about 4,800 tokens) than older ones (1,568 pixels, about 1,600 tokens), so the same high-resolution photo can cost up to three times more on a newer model. Shrinking to 1,568 pixels, as the script does, keeps a 12-megapixel phone photo at about 2,350 tokens or fewer on any model.
+**An image** on Claude is cut into patches of 28×28 pixels (other providers use their own formulas and limits), and each patch is one token, so a W×H image costs about ⌈W/28⌉ × ⌈H/28⌉ tokens (⌈ ⌉ means "round up"). A 1000×1000 image is 36 × 36 = 1,296 tokens. That's what `image_block` estimates. Images above a model's maximum resolution are downsized first, which caps the cost per image: newer models accept larger images (up to 2,576 pixels on the long edge, about 4,800 tokens) than older ones (1,568 pixels, about 1,600 tokens), so the same high-resolution photo can cost up to three times more on a newer model. Shrinking to 1,568 pixels, as the script does, keeps a 12-megapixel phone photo at about 2,350 tokens or fewer on any model.
 
 **A PDF page** typically costs 1,500 to 3,000 tokens of text, depending on how dense it is, *plus* the tokens for the page image. A 20-page report can easily be 60,000 tokens or more.
 
-You don't have to guess: `client.messages.count_tokens()` accepts the same image and document blocks as `messages.create()` and returns the exact input count for free, as you learned in Tokens, Cost and Rate Limits. Then multiply by the [current price](https://platform.claude.com/docs/en/about-claude/pricing). With the [cheap model](#/models), one receipt photo costs a small fraction of a cent. Across 100,000 documents, or with the [capable model](#/models), it becomes a budget line.
+You don't have to guess: Claude's `client.messages.count_tokens()` accepts the same image and document blocks as `messages.create()` and returns the exact input count for free, as you learned in Tokens, Cost and Rate Limits. Then multiply by the [current price](https://platform.claude.com/docs/en/about-claude/pricing). With the [cheap model](#/models), one receipt photo costs a small fraction of a cent. Across 100,000 documents, or with the [capable model](#/models), it becomes a budget line.
 
 Ways to spend less:
 
@@ -290,6 +290,34 @@ Transcripts have their own error patterns. STT models mishear names, product ter
 Notice that the structured-output part never changed. Whether the input was typed text, a photo, a PDF or a transcript, you wrote a Pydantic model, called `messages.parse()` and validated the result. Build your extractor as one function that takes content blocks and returns a validated object, and adding a new input type becomes a small function that produces blocks. That's the design the Messy-Text Extractor project rewards.
 
 </div>
+
+### On other providers
+
+Everything about *judgment* in this lesson carries over: straighten and shrink images, put the file before the question, give the schema an exit, distrust quiet vision errors, evaluate on hand-labeled examples, and treat text inside files as data. The mechanics differ a lot, input type by input type.
+
+- **Images.** OpenAI's Chat Completions takes an image as `{"type": "image_url", "image_url": {"url": ...}}`, where the URL is either a public `https://` address or a base64 **data URL** (`data:image/jpeg;base64,...`), plus an optional `detail` setting that changes how much the image is resized and so what it costs. Its token formula, size limits and supported formats are its own, so the 28×28 estimate doesn't apply; read the real count from `usage` after the call. On Ollama you need a vision model, such as [Gemma 3](https://ollama.com/library/gemma3) or [Qwen2.5-VL](https://ollama.com/library/qwen2.5vl), and its OpenAI-compatible API accepts base64 data URLs only, not image URLs. See OpenAI's [images and vision guide](https://developers.openai.com/api/docs/guides/images-vision) and Ollama's [vision page](https://docs.ollama.com/capabilities/vision).
+- **PDFs.** OpenAI's Chat Completions accepts PDFs (and only PDFs) as a `{"type": "file", "file": {"filename": ..., "file_data": "data:application/pdf;base64,..."}}` part. Like Claude, vision-capable models get both the text and an image of each page, but its limit is 50 MB per request, and its newer Responses API takes more file types; see the [file inputs guide](https://developers.openai.com/api/docs/guides/file-inputs). Ollama takes no PDFs, so for a local model either extract the text with `pypdf`, as in Long Context and Context Engineering, or turn each page into an image and send it like a photo; Document Parsing shows how.
+- **Audio.** Claude takes no audio. OpenAI has a separate [speech-to-text API](https://developers.openai.com/api/docs/guides/speech-to-text) (`client.audio.transcriptions.create`) and some chat models that accept audio parts directly; Gemini models accept audio in a normal request. Ollama serves an OpenAI-style `/v1/audio/transcriptions` endpoint for speech models, listed on its [OpenAI compatibility page](https://docs.ollama.com/api/openai-compatibility). The local `faster-whisper` step works in front of any provider, which makes the two-step pipeline the portable choice.
+
+Here is `receipt.py`'s request on a local vision model, reusing its schema and image helper:
+
+```python
+# receipt_other.py  (uv add openai; ollama pull gemma3:4b). Reuses receipt.py.
+import sys
+
+from openai import OpenAI
+from receipt import Receipt, image_block
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
+block, _ = image_block(sys.argv[1])  # the same straightened, shrunk JPEG
+data_url = f"data:image/jpeg;base64,{block['source']['data']}"  # OpenAI's image format
+completion = client.chat.completions.parse(
+    model="gemma3:4b",  # a vision model; or an OpenAI model ID
+    messages=[{"role": "user", "content": [{"type": "image_url", "image_url": {"url": data_url}},
+        {"type": "text", "text": "Extract this receipt. Use null for anything not printed."}]}],
+    response_format=Receipt)
+print(completion.choices[0].message.parsed)
+```
 
 ### Assignment
 

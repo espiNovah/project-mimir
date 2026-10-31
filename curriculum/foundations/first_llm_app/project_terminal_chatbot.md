@@ -88,6 +88,7 @@ Put the parts that don't need the network into their own plain functions: calcul
 - Before each request, use `client.messages.count_tokens` to estimate the input cost and print it, then compare the estimate with the real `usage` afterward.
 - When the conversation grows past a token limit you choose, automatically drop the oldest turns (in user/assistant pairs, so the history stays valid) and tell the user.
 - Make the bot work with both Claude and a local Ollama model, switchable with a `--local` flag, and compare the quality and speed of their answers in your README.
+- Write a second backend, `OpenAICompatibleBackend(ChatBackend)`, using the `openai` package and the Chat Completions format from the "On other providers" sections of Your First API Call and Streaming Responses. Run it against a local open model through Ollama's OpenAI-compatible API (free), or a second hosted provider if you have a key, choose it with `--provider`, and report its tokens and cost (or "$0.00 (local)") through the same cost meter. Your chat loop and tests shouldn't change at all; if they do, your `ChatBackend` interface leaked provider details.
 
 </div>
 

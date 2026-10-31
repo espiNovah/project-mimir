@@ -1,6 +1,6 @@
 ### Introduction
 
-Your API now has users, a database and a job queue. It also has a dependency you don't control: the model provider. Some calls will take ten times longer than usual. Some will fail with a `529` because the provider is overloaded. And when you run an eval over 200 examples, some will come back `429` because you've hit your rate limit. On the other side, your own users can hurt you too: one script in a loop can spend your whole monthly budget in an afternoon.
+Your API now has users, a database and a job queue. It also has a dependency you don't control: the model provider. Some calls will take ten times longer than usual. Some will fail with a `529` because the provider is overloaded (that's Anthropic's code; OpenAI and most others send `503`). And when you run an eval over 200 examples, some will come back `429` because you've hit your rate limit. On the other side, your own users can hurt you too: one script in a loop can spend your whole monthly budget in an afternoon.
 
 In Tokens, Cost and Rate Limits you met the basics: which errors to retry, and a simple backoff loop. This lesson turns that into production habits for a web service. You'll put a deadline on every call, retry the right errors without stacking retry loops, respect what the server tells you, and give your own API a per-user rate limit that answers `429` with a `Retry-After` header. Then you'll test all of it with fakes, so you never have to wait for a real outage to know it works. The LLM-Powered API project requires every piece.
 
@@ -22,7 +22,7 @@ A **timeout** is the longest you're willing to wait before giving up. Without on
 
 Different libraries have different defaults, so never rely on them without checking:
 
-- The `anthropic` SDK waits up to **10 minutes** by default. That suits a long generation, but it's far too long for a web request where the user gave up after 30 seconds.
+- The `anthropic` SDK waits up to **10 minutes** by default (so does the `openai` SDK; check any other SDK's docs). That suits a long generation, but it's far too long for a web request where the user gave up after 30 seconds.
 - `httpx` times out after 5 seconds by default.
 - `requests` has **no timeout at all** unless you pass one, such as `requests.get(url, timeout=(3, 10))`.
 
@@ -389,6 +389,34 @@ def test_api_returns_429_with_retry_after(monkeypatch):
 ```
 
 For the Redis version, `fakeredis` (`uv add --dev fakeredis`) gives you an in-memory stand-in: `r = fakeredis.FakeAsyncRedis()` and pass it to `fixed_window`, so the test needs no running Redis. These are the "retry that succeeds after a fake `429`" and "`429` from your rate limiter" tests the LLM-Powered API project asks for.
+
+### On other providers
+
+The habits in this lesson are universal: a timeout on every call, retrying only transient errors, backoff with jitter and three caps, one retry layer, and doing what `Retry-After` says. The details differ by provider, and some of them change your code:
+
+- **Status codes.** `529` is Anthropic's overloaded code. OpenAI reports an overloaded model as `503` with the error code `server_is_overloaded`, so keep `503` in `RETRY_STATUSES`. OpenAI also uses `429` for billing problems, such as `insufficient_quota` when the account is out of credits, and its [error codes guide](https://developers.openai.com/api/docs/guides/error-codes) says retrying those won't help. Check the error's `code` and fail fast on them.
+- **Error classes.** The OpenAI Python SDK uses the same names under `openai.`: `APIConnectionError`, `APITimeoutError` (a subclass of it), `APIStatusError`, `RateLimitError` and `InternalServerError`. `retry_after_seconds` and `is_retryable` port by changing the module name, as below.
+- **Built-in retries and timeouts.** The OpenAI SDK's defaults happen to match the Anthropic SDK's: a 10-minute timeout, and 2 retries of connection errors, `408`, `409`, `429` and `5xx`. Set `max_retries=0` and your own timeout there too. Other SDKs and plain HTTP clients have their own defaults, so look them up instead of assuming.
+- **Rate-limit headers.** Both providers may send `retry-after` on a `429`. The headers that report your remaining budget differ: Anthropic sends `anthropic-ratelimit-requests-remaining` and a reset *time* (an RFC 3339 timestamp) in `anthropic-ratelimit-requests-reset`, while OpenAI sends `x-ratelimit-remaining-requests` and a reset *duration* such as `6m0s` in `x-ratelimit-reset-requests`, as its [rate limits guide](https://developers.openai.com/api/docs/guides/rate-limits) shows. Parse each format separately if you use them to slow down before you hit a limit.
+- **Local models.** An open model such as [Qwen3](https://ollama.com/library/qwen3) through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) has no provider rate limit, but timeouts matter more. Generation speed depends on your hardware, and Ollama unloads an idle model after 5 minutes by default, so the first call after a pause also waits for the model to load. Measure your own 99th percentile before choosing a timeout.
+
+```python
+import openai  # uv add openai; reuses MAX_WAIT and retry_after_seconds (checking openai.APIStatusError)
+
+RETRY_STATUSES = {408, 409, 429, 500, 502, 503, 504}
+QUOTA_CODES = {"insufficient_quota", "organization_spend_limit_exceeded"}  # 429s that waiting won't fix
+
+
+def is_retryable(exc: BaseException) -> bool:
+    if isinstance(exc, openai.APIConnectionError):           # includes APITimeoutError
+        return True
+    if isinstance(exc, openai.APIStatusError) and exc.status_code in RETRY_STATUSES:
+        if exc.code in QUOTA_CODES:                          # out of credits: fail fast
+            return False
+        wait = retry_after_seconds(exc)
+        return wait is None or wait <= MAX_WAIT
+    return False
+```
 
 ### Assignment
 

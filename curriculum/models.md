@@ -26,7 +26,7 @@ MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")
 
 ### Other providers and open models
 
-The skills in this curriculum transfer across providers. Several projects ask you to run your code against a second provider or an open-weight model, so you learn where providers differ.
+The skills in this curriculum transfer across providers. Several projects ask you to run your code against a second provider or an open-weight model, so you learn where providers differ. The [Provider Comparison](#/providers) page puts the Claude, OpenAI and Ollama APIs side by side for porting code.
 
 - **Another hosted provider:** any provider with an OpenAI-compatible API works. Check its own models page for current IDs and prices.
 - **Open-weight models on your own machine:** install [Ollama](https://ollama.com/) and pick a current small model from the [Ollama library](https://ollama.com/library) that fits your RAM. Ollama serves an OpenAI-compatible API, and it also offers [Anthropic API compatibility](https://docs.ollama.com/api/anthropic-compatibility), so many projects run locally for free.

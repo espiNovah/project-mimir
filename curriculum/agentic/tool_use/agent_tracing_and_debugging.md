@@ -43,7 +43,7 @@ Keep the fields from `traced_call` and add the ones an agent needs. A good rule:
 
 **On every span:** `trace_id`, `span_id`, `parent_id`, `kind` (run, model or tool), `name`, `timestamp`, `latency_s` and `error`. The error field is `None` when things went fine and the exception text when your code crashed. Failed spans are traces too, and often the most interesting ones.
 
-**On the run span:** the goal, the `model`, the `prompt_version` and system prompt, the final answer, the total tokens, the number of steps and the **end reason**. The end reason is why the loop stopped: `end_turn` (the model finished), `step_limit` (your safety stop fired) or something unusual like `max_tokens` or `refusal`. You'll filter on it constantly. "Show me every run that hit the step limit" is a great way to find stuck agents.
+**On the run span:** the goal, the `model`, the `prompt_version` and system prompt, the final answer, the total tokens, the number of steps and the **end reason**. The end reason is why the loop stopped: `end_turn` (the model finished), `step_limit` (your safety stop fired) or something unusual like `max_tokens` or `refusal`. Those names are Claude's `stop_reason` values; other APIs use their own (OpenAI's `finish_reason` says `stop`, `length` or `tool_calls`), so map them onto your end reasons as shown in [On other providers](#on-other-providers). You'll filter on it constantly. "Show me every run that hit the step limit" is a great way to find stuck agents.
 
 **On model spans:** the step number, the full response content (text, tool requests and thinking blocks), the `stop_reason`, and the input and output tokens. Notice what's missing: the full message list sent to the model. It's long and grows every step, so storing it each time would make traces huge. You don't need it, because it can be rebuilt from the earlier spans, and later in this lesson you'll do exactly that.
 
@@ -355,7 +355,7 @@ On top of that, OpenTelemetry's **GenAI semantic conventions** agree on names fo
 | `tool_use_id`, `input`, `output` | `gen_ai.tool.call.id`, `gen_ai.tool.call.arguments`, `gen_ai.tool.call.result` |
 | `error` | `error.type` and the span's error status |
 
-The names in this lesson were chosen to line up, so moving to OTel later is a translation, not a redesign. Two cautions. The GenAI conventions are still marked "Development", which means names can change; check the current spec before you depend on one. And you don't always have to write these spans yourself. Instrumentation libraries such as OpenInference can create them for common SDKs, and some provider SDKs emit them directly. The Anthropic Python SDK, for example, has built-in OpenTelemetry tracing in beta. Whichever you use, wrap your agent loop in your own `invoke_agent` span so the model and tool spans have a parent.
+The names in this lesson were chosen to line up, so moving to OTel later is a translation, not a redesign. Two cautions. The GenAI conventions are still marked "Development", which means names can change; check the current spec before you depend on one. And you don't always have to write these spans yourself. Instrumentation libraries such as OpenInference can create them for common SDKs, and some provider SDKs emit them directly. The Anthropic Python SDK, for example, has built-in OpenTelemetry tracing in beta. That is a Claude SDK feature; for the OpenAI SDK, or a local model reached through it, an instrumentation library such as OpenInference creates the same kind of spans. Whichever you use, wrap your agent loop in your own `invoke_agent` span so the model and tool spans have a parent.
 
 ### Trace viewers: Langfuse and Phoenix
 
@@ -365,6 +365,27 @@ Once traces are in OpenTelemetry format, you can view them in a **trace UI**: a 
 - **Arize Phoenix** runs on your own machine with a `pip install`. Its source is public under the Elastic License 2.0, which lets you use and self-host it for free but isn't an OSI-approved open-source license.
 
 Both let you add scores and notes to traces and turn traces into eval datasets. For the agents in this section, JSONL files and `debug.py` are enough, and they keep you close to the data. You'll set up a real trace backend, sampling, privacy masking and dashboards in Logging and Tracing in the Production path, and use them in the Trace Detective project.
+
+### On other providers
+
+Spans, trace and parent IDs, the tracer, the failure patterns, the checks in `debug.py` and the idea of replay don't care which model you call, and the OpenTelemetry GenAI conventions were designed for every provider: the same `gen_ai.*` attribute names, with `gen_ai.provider.name` saying whose model it was. What changes is where you find each fact in the raw response before you copy it into a span. In OpenAI's Chat Completions API the reply is in `choices[0].message`, tool requests are in `message.tool_calls` with arguments as a JSON *string*, the stop signal is `choices[0].finish_reason` (`tool_calls`, `stop`, `length`, `content_filter`), and tokens are `usage.prompt_tokens` and `usage.completion_tokens`; a normal finish is `stop`, not `end_turn`, so `check` in `debug.py` needs that name. Token fields also differ in what they include: Claude's `usage.input_tokens` leaves out cached tokens, while OpenAI's `prompt_tokens` counts them, so note which you stored before comparing runs. Replay needs care too, because `rebuild_messages` builds Claude-shaped content blocks; for another provider, store the message exactly as that API returned it and rebuild from that. Here is the model span from `agent.py` rewritten for a local open model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) (set `MIMIR_MODEL` to a local model such as `qwen3:4b`, and convert `TOOLS` to OpenAI's format, where the schema goes under `function.parameters` as OpenAI's [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) shows):
+
+```python
+from openai import OpenAI  # uv add openai
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # or OpenAI() with OPENAI_API_KEY
+
+with tracer.span("model", f"chat {MODEL}", run["span_id"], step=step) as span:
+    response = client.chat.completions.create(model=MODEL, tools=TOOLS,
+                                              messages=[{"role": "system", "content": SYSTEM}, *messages])
+    choice = response.choices[0]
+    span["output"] = choice.message.model_dump(mode="json", exclude_none=True)
+    span["stop_reason"] = choice.finish_reason        # "tool_calls" here means "run the tools"
+    span["input_tokens"] = response.usage.prompt_tokens
+    span["output_tokens"] = response.usage.completion_tokens
+```
+
+OpenTelemetry keeps a separate page of [GenAI conventions for OpenAI](https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/openai.md) that shows how these fields map to attributes, and OpenAI's Agents SDK has its own [tracing](https://openai.github.io/openai-agents-python/tracing/) built in. For open models, [OpenInference](https://github.com/Arize-ai/openinference) instruments the OpenAI client, so pointing it at Ollama gives you spans for a local model that Phoenix or Langfuse can display.
 
 ### Assignment
 

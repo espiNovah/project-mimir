@@ -67,7 +67,7 @@ Three things to know about this guarantee:
 
 - **Only a subset of JSON Schema is supported.** Claude's structured outputs, for example, don't enforce numeric bounds (`minimum`, `maximum`) or string lengths. The SDK moves those into the field descriptions and checks them after the response arrives. Your Pydantic validators, which the model never sees, are also only checked afterward. So a reply can be schema-valid and still fail *your* validation.
 - **Some responses can't match.** If the model refuses a request, or hits `max_tokens` partway through, the output may not match the schema. Check `response.stop_reason` before trusting the result.
-- **It's provider-specific.** The idea is the same everywhere, and OpenAI and Google offer equivalents, but parameter names and supported keywords differ. Check your provider's list of supported schema features.
+- **It's provider-specific.** `messages.parse()` and `output_config.format` are Claude's names for this feature. The idea is the same everywhere, and OpenAI, Google and Ollama offer equivalents, but parameter names and supported keywords differ. Check your provider's list of supported schema features; [On other providers](#on-other-providers) compares them.
 
 ### Structured output through a tool
 
@@ -209,6 +209,27 @@ The schema is part of your prompt, so design it to make honest answers easy:
 - **Give enums an exit.** Add `"other"` or `"unknown"` to categories so the model isn't forced into a wrong bucket. Structured outputs don't guarantee the *capitalization* of enum values on every provider, so compare labels case-insensitively.
 - **Describe intent.** `Field(description="Total including tax, as printed")` removes guesswork that a bare name like `total` leaves in.
 - **Order fields deliberately.** Models write fields in order, so a short `evidence` field that quotes the relevant sentence, placed before the answer, gives the model a moment to look before it commits. Keep it short. Current models already think before answering, and some providers may refuse a schema field that asks for the model's full step-by-step reasoning.
+
+### On other providers
+
+The ideas in this lesson transfer completely: constrain the shape, validate your own rules afterward, feed errors back with a capped, logged retry, and remember that valid is not correct. The names and fine print differ. OpenAI's version is also called **Structured Outputs**: in Chat Completions you pass `response_format={"type": "json_schema", "json_schema": {..., "strict": True}}`, or let the SDK do it with `client.chat.completions.parse(response_format=Ticket)` and read `message.parsed`, much like Claude's `parsed_output`. OpenAI's strict mode requires every field to be listed as required (an optional field becomes a type that allows `null`) and supports a different subset of keywords than Claude, including numeric bounds such as `minimum`. A safety refusal shows up in `message.refusal` instead of the parsed object, and a cut-off answer has `finish_reason == "length"`, the equivalent of Claude's `max_tokens` stop reason. The retry loop needs one change: append the failed answer as `{"role": "assistant", "content": message.content}`, since Chat Completions replies are a string, not a list of content blocks. The older **JSON mode** (`{"type": "json_object"}`) only guarantees valid JSON, not your schema, so treat it like prompt-only JSON plus validation. The tool route works too: OpenAI tools put the schema under `function.parameters`, also take `"strict": True`, and return the arguments as a JSON *string* in `message.tool_calls`. On open models, Ollama turns a schema in `response_format` (or its own `format` field) into **grammar-constrained decoding**, where the server masks out any token that would break the schema, the same technique as llama.cpp's [GBNF grammars](https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md). A small local model will always give you the shape, but its values are noticeably less accurate, which is why the Messy-Text Extractor project has you measure both. Read OpenAI's [structured outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs) (assigned below) and Ollama's [structured outputs page](https://docs.ollama.com/capabilities/structured-outputs). Instructor, from [Libraries that do it for you](#libraries-that-do-it-for-you), wraps all of these behind one call; its [Ollama page](https://python.useinstructor.com/integrations/ollama/) shows the local setup. Here is the ticket example on a local model:
+
+```python
+# ticket_other.py  (uv add openai pydantic; ollama pull qwen3:4b). Ticket is the model from above.
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
+completion = client.chat.completions.parse(
+    model="qwen3:4b",                 # or an OpenAI model ID
+    messages=[{"role": "user", "content": "Classify this support email:\n\nhi, i was charged "
+               "TWICE for march and my rent is due tomorrow, please fix asap!!"}],
+    response_format=Ticket,           # the SDK sends Ticket's schema as a strict json_schema
+)
+message = completion.choices[0].message
+if message.refusal or completion.choices[0].finish_reason != "stop":
+    raise RuntimeError(f"no usable answer: {message.refusal or completion.choices[0].finish_reason}")
+print(message.parsed)                 # a validated Ticket, as with Claude's parsed_output
+```
 
 ### Assignment
 

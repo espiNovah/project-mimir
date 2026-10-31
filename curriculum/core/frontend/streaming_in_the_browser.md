@@ -95,7 +95,7 @@ app.mount("/", StaticFiles(directory="static", html=True))  # (6) serves static/
 
 1. `AsyncAnthropic` is the async version of the client you've used since Your First API Call. While one request waits on the model, the server can handle others, as you learned in Async Basics.
 1. `response_class=EventSourceResponse` (added in FastAPI 0.135) tells FastAPI that this route is a *generator*, a function that `yield`s values one at a time (see Pythonic Python), and that each yielded value is one SSE message. FastAPI sets the `text/event-stream` header, sends keep-alive pings and disables proxy buffering for you.
-1. `client.messages.stream` is the same helper from Streaming Responses, in its async form: `async with` and `async for`.
+1. `client.messages.stream` is the same helper from Streaming Responses, in its async form: `async with` and `async for`. It and `text_stream` belong to the Anthropic SDK. Other SDKs stream with different objects, shown in [On other providers](#on-other-providers).
 1. Each text delta from the model is forwarded the moment it arrives. `data=` is always encoded as JSON, which gives you the newline safety described above. Pydantic models and dictionaries work too.
 1. When the model finishes, a `done` event tells the browser the answer is complete. If the model call fails, the browser gets a clear `error` event instead. It says nothing about the internal error, because error details can leak information. Log the real exception on the server, as in Debugging and Logging.
 1. Serving the page from the same app means the page and the API share an *origin* (the same scheme, host and port), so the browser allows the request without any CORS setup. The mount goes last so it doesn't shadow your API routes.
@@ -185,6 +185,30 @@ You can watch the raw stream without a browser. The `-N` flag turns off `curl`'s
 If the messages appear all at once at the end, something between the model and you is buffering the response.
 
 </div>
+
+### On other providers
+
+Every major provider streams over SSE, but each one sends its own event names and payloads. Claude sends named events such as `content_block_delta` and `message_stop`. OpenAI's Chat Completions API sends unnamed `data:` messages, each holding a JSON "chunk" whose new text is in `choices[0].delta.content`, and ends with a literal `data: [DONE]`. OpenAI's newer Responses API uses named events such as `response.output_text.delta`, described in [OpenAI's streaming guide](https://developers.openai.com/api/docs/guides/streaming-responses). The Chat Completions chunk format is in the [Chat Completions API reference](https://developers.openai.com/api/reference/resources/chat). This is one more reason your endpoint translates the provider's stream into your *own* small set of events. The browser code, the buffering, the `done` and `error` events and cancellation stay the same whatever model sits behind the server. Only the generator changes. Here it is for OpenAI, or for a local open model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), which streams in the same chunk format:
+
+```python
+import openai  # uv add openai
+MODEL = os.environ.get("MIMIR_MODEL", "qwen3:8b")
+client = openai.AsyncOpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # AsyncOpenAI() for OpenAI
+
+@app.post("/chat/stream", response_class=EventSourceResponse)
+async def chat_stream(req: ChatRequest):
+    messages = [{"role": "user", "content": req.question}]
+    try:
+        async with await client.chat.completions.create(model=MODEL, messages=messages, stream=True) as stream:
+            async for chunk in stream:
+                if chunk.choices and chunk.choices[0].delta.content:  # some chunks carry no text
+                    yield ServerSentEvent(event="token", data=chunk.choices[0].delta.content)
+        yield ServerSentEvent(event="done", data={})
+    except openai.APIError:
+        yield ServerSentEvent(event="error", data={"message": "The model call failed."})
+```
+
+The `async with` matters here too: it closes the connection to the provider when the user clicks Stop. Two details differ for the practice task. The stop reason is called `finish_reason` (`"stop"` or `"length"`) and arrives in the last chunk, and token usage only appears in the stream if you pass `stream_options={"include_usage": True}`. If you build in TypeScript instead, the Vercel AI SDK from [Next.js and the AI SDK](#/lessons/core/nextjs-and-the-ai-sdk) hides all of these differences behind one `streamText` call, and switching providers is a one-line change.
 
 ### Assignment
 

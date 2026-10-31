@@ -248,11 +248,11 @@ def classify(text: str) -> tuple[int, dict]:
         model=MODEL,
         max_tokens=1024,
         system=SYSTEM,
-        output_config={"effort": "low"},   # a simple task: think as little as possible
+        output_config={"effort": "low"},   # a Claude setting: think as little as possible (OpenAI: reasoning_effort)
         # The first 4,000 characters are plenty to tell the topic, and cap the cost.
         messages=[{"role": "user", "content": text[:4000]}],
     )
-    # The response may start with a thinking block, so take the first text block.
+    # A Claude response may start with a thinking block, so take the first text block.
     answer = next((b.text for b in response.content if b.type == "text"), "").strip()
     trace = {
         "seconds": time.perf_counter() - start,
@@ -266,6 +266,10 @@ def classify(text: str) -> tuple[int, dict]:
 Three details make the comparison fair. An answer that isn't one of the labels becomes `-1`, which counts as wrong, so the LLM isn't flattered by ignoring its bad outputs. The trace records tokens and seconds for every call, so you can report cost per 1,000 calls and median latency next to quality. And you develop the prompt on the validation set only; the test set is run once, for every system, at the end.
 
 Then put everything in one table: macro-F1 with its interval, cost per 1,000 messages and median latency, for the trivial baseline, the classic model and the LLM. That table is the deliverable of Beat the Baseline, and it is the kind of evidence that settles "should we use an LLM for this?" in a design review.
+
+### On other providers
+
+The comparison method doesn't care where the LLM runs: the same cases, macro-F1 with an interval, a paired bootstrap, and cost and latency per call. Only `classify` changes, and two parts of it are Claude-specific: the `effort` setting and skipping a possible thinking block. On OpenAI's Chat Completions API, a reasoning model takes `reasoning_effort="low"` instead (see OpenAI's [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning)), the answer is simply `response.choices[0].message.content`, and the token counts are `usage.prompt_tokens` and `usage.completion_tokens`. A local model such as [Qwen3](https://ollama.com/library/qwen3) through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) makes a useful extra row in your table: no per-token bill, but a latency that depends on your machine, which is exactly the trade-off the table exists to show. Price each hosted provider at its own rates.
 
 ### Assignment
 

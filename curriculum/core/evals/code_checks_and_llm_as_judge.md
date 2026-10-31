@@ -91,7 +91,7 @@ Three habits separate judges that work from judges that produce noise.
 
 **Reason first, then verdict.** Asking for a short reason before the verdict gives the model room to find the unsupported claim before committing. It also gives *you* something to read when the judge disagrees with you, which is how you improve the prompt.
 
-Here is a faithfulness judge. It uses `client.messages.parse` with a Pydantic model, as in Getting Structured Output, so the verdict can only ever be `"PASS"` or `"FAIL"`:
+Here is a faithfulness judge. It uses `client.messages.parse` (the Anthropic SDK's helper; other SDKs have their own, shown in On other providers) with a Pydantic model, as in Getting Structured Output, so the verdict can only ever be `"PASS"` or `"FAIL"`:
 
 ```python
 # judge.py   setup: uv add anthropic pydantic
@@ -242,6 +242,29 @@ Research on LLM judges keeps finding the same habits:
 - **Leniency.** Judges often pass borderline outputs. Concrete FAIL examples in the prompt pull the line back to where you drew it.
 
 None of these biases is a reason to avoid judges. They're the reason you measure TPR and TNR, and the reason a human keeps reading a sample of outputs every week. A domain expert's judgment is the ground truth that both code checks and judges approximate; schedule time to check the approximation, especially after you change the model or the prompt.
+
+### On other providers
+
+Everything about measuring a judge carries over unchanged: binary verdicts, reason before verdict, dev and test splits, and TPR and TNR with bootstrap intervals. The structured-output call is what changes. On OpenAI, the SDK's helper is `client.chat.completions.parse` with `response_format=Verdict`, and the parsed object is in `choices[0].message.parsed` (see OpenAI's [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs)). Ollama's OpenAI-compatible API accepts `response_format` too, but small local models follow schemas less reliably, so count a reply that fails to parse as a judge error, never as a silent PASS.
+
+```python
+# In judge.py, replacing the Anthropic client and judge_faithfulness.   setup: uv add openai
+from openai import OpenAI
+
+judge_client = OpenAI()  # or OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+JUDGE_MODEL = os.environ["MIMIR_JUDGE_MODEL"]  # a different family from the system you grade
+
+
+def judge_faithfulness(question: str, answer: str, sources: list[str]) -> Verdict:
+    numbered = "\n\n".join(f"[{i}] {text}" for i, text in enumerate(sources, start=1))
+    prompt = JUDGE_PROMPT.format(sources=numbered, question=question, answer=answer)
+    completion = judge_client.chat.completions.parse(
+        model=JUDGE_MODEL, messages=[{"role": "user", "content": prompt}], response_format=Verdict,
+    )
+    return completion.choices[0].message.parsed  # None if the model refused
+```
+
+Which provider judges is a real design decision, because of self-preference. If your system runs on Claude, a judge from OpenAI or from an open family such as [Qwen3](https://ollama.com/library/qwen3) has no family style to favor, and the reverse holds if your system runs on OpenAI. Don't assume the outside judge is better, though; measure it. Run `measure_judge.py` once per judge on the same labeled test set and compare TPR and TNR with their intervals, as you would compare two classifiers. If the in-family judge passes noticeably more of the outputs you labeled FAIL (a lower TPR) than the outside judge does, that's self-preference showing up in your own data. Calibrate each judge separately, too: a prompt you tuned until one model agreed with you won't automatically transfer, so repeat the dev-set iteration whenever you change the judge model. OpenAI's [evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) guide gives the same advice: validate a judge against human labels before you trust it.
 
 ### Assignment
 

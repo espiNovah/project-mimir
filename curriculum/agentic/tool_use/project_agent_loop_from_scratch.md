@@ -69,6 +69,7 @@ Your README must show:
 - Add a code execution tool that runs inside a Docker container with `--network none`, a memory limit and a timeout, and show a trace of it being used.
 - Add a token budget as a second stop condition, and print a cost summary at the end of each run.
 - Build a tiny trace viewer that prints a trace file as a readable, colored timeline in the terminal.
+- Run the same loop against a second provider or a local open model, such as Qwen3 through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), with the provider chosen by an environment variable. Keep the tools and tracer shared, and put the provider-specific parts (tool definition shape, `tool_calls` versus `tool_use` blocks, how results and errors are sent back) behind one small adapter, as described in "On other providers" in The Agent Loop. Run `evaluate.py` and the injection trials on both, and report the pass rates, leak rates, steps and tokens side by side.
 
 </div>
 

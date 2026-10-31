@@ -95,7 +95,7 @@ That last point is what **retrieval** does automatically: instead of sending a 3
 
 Many apps send the same large chunk of context over and over: a long system prompt, a reference manual, a set of examples. Processing those tokens again on every call is wasteful. **Prompt caching** lets the provider keep the processed start of a prompt (the *prefix*) for a few minutes, so the next call that begins with exactly the same prefix reads it from the cache. Cached reads are much cheaper than fresh input tokens and come back faster.
 
-You mark where the stable part ends with a `cache_control` marker, as in the code below. Caching is a **prefix match**: it only works if the beginning of the prompt is byte-for-byte identical. Change one character near the top and everything after it must be processed fresh. So put stable content first (system prompt, reference documents) and changing content last (the user's question). That's the same order the long-context advice recommends, which is convenient.
+On Claude you mark where the stable part ends with a `cache_control` marker, as in the code below. That marker, and the separate prices for cache writes and reads, are Claude features: OpenAI and many other providers cache long prefixes automatically with no marker, and a local model has no per-token bill to save (see [On other providers](#on-other-providers)). Caching is a **prefix match**: it only works if the beginning of the prompt is byte-for-byte identical. Change one character near the top and everything after it must be processed fresh. So put stable content first (system prompt, reference documents) and changing content last (the user's question). That's the same order the long-context advice recommends, which is convenient.
 
 ```python
 # cached_qa.py  (run with: uv run cached_qa.py report.txt)
@@ -136,6 +136,28 @@ On the first question you should see a cache *write*; on the second, a cache *re
 ### Know your limits
 
 Every model has a maximum context size and a separate maximum output size, and thinking tokens count toward the window too. Check the numbers for the model you use on [Current Models](#/models), and measure rather than guess: the `usage` field on every response tells you exactly how many input tokens a document cost. A rough rule for English is about four characters per token, so a 50-page report might be 25,000 to 40,000 tokens. That fits easily in a modern window, but at scale, sending it on every question adds up. Before you send something big, ask whether the model needs all of it.
+
+### On other providers
+
+Almost everything here is provider-neutral. Context as a budget, documents first and the question last, tagged documents with metadata, quote-then-answer, trimming and the "Lost in the Middle" effect apply to every model, and small open models usually suffer from long inputs *more* than hosted ones. The `pypdf` step is plain Python. Two things differ. First, **caching**: OpenAI caches long prompt prefixes automatically, with no `cache_control` marker, and reports the cached part as `usage.prompt_tokens_details.cached_tokens` *inside* its `prompt_tokens` total, while Claude reports cache reads and writes separately from `input_tokens`; minimum lengths, lifetimes and discounts differ too, so read OpenAI's [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching) before comparing bills. The prefix rule is the same everywhere: stable content first. Second, **window size**: hosted models now take hundreds of thousands of tokens, but Ollama sets a local model's context from your machine's memory, as small as 4,000 tokens on a typical laptop, and a longer prompt can be cut short without an error, so raise it as its [context length page](https://docs.ollama.com/context-length) explains before you paste in a 30-page report. Here is the cache check from `cached_qa.py` on OpenAI:
+
+```python
+# cached_qa_openai.py  (uv add openai; set OPENAI_API_KEY and OPENAI_MODEL)
+import os
+import sys
+
+from openai import OpenAI
+
+client = OpenAI()
+document = open(sys.argv[1], encoding="utf-8").read()
+for question in ["What is this document about?", "List three numbers it mentions."]:
+    response = client.chat.completions.create(
+        model=os.environ["OPENAI_MODEL"],  # a current ID from OpenAI's models page
+        messages=[{"role": "system", "content": "Answer using only the document."},
+                  {"role": "user", "content": f"<document>\n{document}\n</document>\n<question>{question}</question>"}],
+    )  # no marker: a long shared prefix is cached automatically
+    print(question, response.usage.prompt_tokens, response.usage.prompt_tokens_details.cached_tokens)
+```
 
 ### Assignment
 

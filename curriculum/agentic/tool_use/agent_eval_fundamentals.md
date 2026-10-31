@@ -65,7 +65,7 @@ A single task often combines them: a code check on the database state, plus a ju
 
 ### A grader that checks the environment
 
-Here's a complete small eval. First, the agent: a support bot with two tools that act on a SQLite database of tickets. It's the same kind of manual loop you wrote in The Agent Loop, with a step limit. Install the SDK with `uv add anthropic` and save this as `agent.py`:
+Here's a complete small eval. First, the agent: a support bot with two tools that act on a SQLite database of tickets. It's the same kind of manual loop you wrote in The Agent Loop, with a step limit. Its `stop_reason != "tool_use"` test is Claude's way of saying "no more tools to run"; [On other providers](#on-other-providers) shows the equivalent elsewhere. Install the SDK with `uv add anthropic` and save this as `agent.py`:
 
 ```python
 # agent.py: a tiny support agent that works on a SQLite ticket table.
@@ -217,6 +217,28 @@ You don't need 200 tasks on day one. Five to ten real tasks, each with a state c
 
 </div>
 
+### On other providers
+
+Tasks, fresh environments, state checks, path constraints, pass@k and pass^k are all provider-neutral, and only `agent.py` talks to a model. That makes this eval a good way to compare providers: keep `TASKS`, `fresh_db` and the graders, swap in a second `run_agent`, and compare pass^k, steps and tokens on the same tasks. Three things change on OpenAI-style APIs. Tool definitions put the schema under `function.parameters`, the loop keeps going while the reply has `tool_calls` (Claude's `stop_reason == "tool_use"` doesn't exist there), and the transcript holds dictionaries with `tool_calls` lists instead of `tool_use` blocks, so the tool-call count in `grade_close_refunds` becomes `sum(len(m.get("tool_calls") or []) for m in transcript if m["role"] == "assistant")`. Better still, count from your trace records, which you control, so one grader works for every provider. Here is the same loop for a local open model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), to save as `agent_local.py` and import in `evaluate.py`; OpenAI's [Evaluate agent workflows](https://developers.openai.com/api/docs/guides/agent-evals) guide covers its hosted eval tools, and open-source harnesses such as [Inspect](https://inspect.aisi.org.uk/providers.html) run the same tasks against OpenAI, Ollama and many other providers.
+
+```python
+import json
+from openai import OpenAI  # uv add openai
+from agent import TOOLS, run_tool
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # or OpenAI() with OPENAI_API_KEY
+TOOLS_OAI = [{"type": "function", "function": {"name": t["name"], "description": t["description"], "parameters": t["input_schema"]}} for t in TOOLS]
+def run_agent(task, db, model="qwen3:4b", max_steps=10):
+    messages = [{"role": "user", "content": task}]
+    for _ in range(max_steps):
+        msg = client.chat.completions.create(model=model, tools=TOOLS_OAI, messages=messages).choices[0].message
+        messages.append(msg.model_dump(exclude_none=True))  # a plain dict, like the tool messages below
+        if not msg.tool_calls:
+            break
+        for call in msg.tool_calls:  # arguments arrive as a JSON string, not a dict
+            messages.append({"role": "tool", "tool_call_id": call.id, "content": run_tool(db, call.function.name, json.loads(call.function.arguments))})
+    return messages
+```
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
@@ -250,5 +272,5 @@ The following questions are an opportunity to reflect on key topics in this less
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
-- The [τ-bench paper](https://arxiv.org/abs/2406.12045) introduced pass^k for agents and shows how fast it falls for real models on customer-service tasks. Its [code is on GitHub](https://github.com/sierra-research/tau-bench). You'll meet benchmarks like it in Evaluating Agents at Scale.
+- The [τ-bench paper](https://arxiv.org/abs/2406.12045) introduced pass^k for agents and shows how fast it falls for real models on customer-service tasks. The [original code](https://github.com/sierra-research/tau-bench) is still on GitHub with outdated tasks; the benchmark is now maintained, with fixed tasks and new domains, in the [tau2-bench repository](https://github.com/sierra-research/tau2-bench). You'll meet benchmarks like it in Evaluating Agents at Scale.
 - [Inspect's scorers docs](https://inspect.aisi.org.uk/scorers.html) show many ready-made graders, including model-graded ones, that you can compare with your own.

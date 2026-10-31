@@ -43,7 +43,7 @@ The key thing to understand is that **the model never sees your Python code.** I
 Using a tool takes two API calls, not one. Here is the whole round trip, step by step:
 
 1. You send the user's message **plus the list of tool definitions**.
-1. The model decides a tool would help. Instead of an answer, its reply contains a **`tool_use` block**: the tool's name, the arguments as a dictionary and a unique ID such as `toolu_01A09q90qw90lq917835lq9`. The reply's `stop_reason` is `"tool_use"`.
+1. The model decides a tool would help. Instead of an answer, its reply contains a **`tool_use` block**: the tool's name, the arguments as a dictionary and a unique ID such as `toolu_01A09q90qw90lq917835lq9`. The reply's `stop_reason` is `"tool_use"`. (`tool_use`, `tool_result` and `stop_reason` are Claude's names. Other providers carry the same information under different names, covered in "On other providers" below.)
 1. Your code reads that block and calls your real function. **The model doesn't run anything.** Your code decides whether to run the tool at all.
 1. You append the model's reply to the conversation, then add a **user** message containing a **`tool_result` block**. It carries the same ID as the request and the tool's output, usually as text.
 1. You call the API again with the longer conversation. Now the model can read the result and answer.
@@ -165,11 +165,28 @@ By default, the model decides whether to call a tool at all. That setting is cal
 - **`{"type": "tool", "name": "get_weather"}`**: the model must call that specific tool.
 - **`{"type": "none"}`**: the model may not call tools on this request, even though they're defined.
 
-For years, forcing a specific tool was the standard trick for getting structured data out of a model: define a tool whose schema is the data you want, force the model to call it, and read the arguments. It still works on many models, but several newer Claude models, including the [capable model](#/models), reject `any` and `tool` with an error. You already know the better options from the Structured Outputs section: use native structured outputs when you just want data, or use `auto`, name the tool in your prompt ("Use the get_weather tool"), set `"strict": True` on the tool definition so its arguments always match the schema, and check whether a `tool_use` block actually came back. `none` works everywhere, and it's useful when you want a final summary without the model wandering off to call more tools.
+For years, forcing a specific tool was the standard trick for getting structured data out of a model: define a tool whose schema is the data you want, force the model to call it, and read the arguments. It still works on many models, but several newer Claude models, including the [capable model](#/models), reject `any` and `tool` with an error. You already know the better options from the Structured Outputs section: use native structured outputs when you just want data, or use `auto`, name the tool in your prompt ("Use the get_weather tool"), set `"strict": True` on the tool definition so its arguments always match the schema (strict tool schemas exist on Claude and OpenAI, but not on every provider or open-model server, so validate arguments in your code there), and check whether a `tool_use` block actually came back. `none` works everywhere, and it's useful when you want a final summary without the model wandering off to call more tools.
 
-### The same idea on every provider
+### On other providers
 
-Every major provider works this way. OpenAI, Google Gemini and open-model servers such as Ollama use slightly different field names, but the shape is identical: definitions in, structured call out, result back in. For example, OpenAI's tool definitions put the JSON Schema in a field called `parameters` instead of `input_schema`, and its tool requests and results use different block names and ID fields. Once you understand one provider's round trip, learning another is a matter of reading its docs for half an hour. This is also why the concepts in this path are worth more than any one SDK: the names change, but the loop doesn't.
+Every major provider works this way. OpenAI, Google Gemini and open-model servers such as Ollama use slightly different field names, but the shape is identical: definitions in, structured call out, result back in. In OpenAI's Chat Completions format, which most open-model servers copy, a tool definition is wrapped in `{"type": "function", "function": {...}}` and its JSON Schema goes in `parameters` instead of `input_schema`. Requests arrive in the reply's `tool_calls` list with arguments as a JSON *string*, each result goes back as its own `{"role": "tool", "tool_call_id": ...}` message instead of a `tool_result` block, and `finish_reason` is `"tool_calls"` where Claude's `stop_reason` is `"tool_use"`. Tool choice exists there too, spelled `"auto"`, `"required"` (Claude's `any`), `{"type": "function", ...}` for one named tool, and `"none"`, and `strict: true` goes inside the `function` object. Server tools differ the most: OpenAI calls them built-in tools, such as its own web search, and each provider offers a different set, while open models running locally have none, so you write those tools yourself. OpenAI's [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) covers all of this, and Ollama's [tool calling page](https://docs.ollama.com/capabilities/tool-calling) shows open models such as Qwen3 doing the same round trip on your own machine. Here is this lesson's tool and round trip in that format:
+
+```python
+openai_weather_tool = {"type": "function", "function": {    # an extra wrapper object
+    "name": "get_weather",
+    "description": weather_tool["description"],
+    "parameters": weather_tool["input_schema"],             # the same JSON Schema, a new key
+}}
+# reply = client.chat.completions.create(model=..., messages=messages,
+#                                        tools=[openai_weather_tool]).choices[0].message
+# messages.append(reply)
+# for call in reply.tool_calls or []:                       # not tool_use blocks
+#     args = json.loads(call.function.arguments)            # a JSON string, not a dict
+#     messages.append({"role": "tool", "tool_call_id": call.id,
+#                      "content": get_weather(**args)})     # one message per result
+```
+
+Once you understand one provider's round trip, learning another takes half an hour with its docs: the names change, but the loop doesn't.
 
 ### Assignment
 
@@ -199,7 +216,7 @@ The following questions are an opportunity to reflect on key topics in this less
 - [Which stop reason means the model wants a tool, and which means it is finished?](#knowing-when-the-model-is-finished)
 - [What is the difference between a client tool and a server tool?](#client-tools-and-server-tools)
 - [What are the tool choice options, and what should you do instead of forcing a tool on models that reject it?](#controlling-tool-choice)
-- [What stays the same about function calling across different providers?](#the-same-idea-on-every-provider)
+- [What stays the same about function calling across different providers?](#on-other-providers)
 
 ### Additional resources
 

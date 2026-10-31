@@ -245,6 +245,24 @@ You can also mix them. A Next.js app can be just the front end, with its route h
 
 For the Docs Chatbot UI project, the recommended path is a React and TypeScript front end, built with Vite or Next.js, calling the FastAPI backend from your Chat With Your Docs project, because that's where your retrieval, citations and evals already are. After Streaming in the Browser you'll be able to read its stream yourself, with or without `useChat`.
 
+### On other providers
+
+This lesson is already the most provider-neutral code in the curriculum: the AI SDK hides each provider's request format, stream events and tool-call shapes behind the same `streamText` call and the same UI message stream, so `useChat` and your page don't change at all. Switching means installing a different provider package and changing the `model:` line in the route handler. For OpenAI, install `@ai-sdk/openai`, set `OPENAI_API_KEY`, and pass `openai(MODEL)`; note that this default factory uses OpenAI's newer Responses API, and `openai.chat(MODEL)` uses Chat Completions. For a local open model, point the [OpenAI-compatible provider](https://ai-sdk.dev/providers/openai-compatible-providers) at Ollama:
+
+```ts
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+
+const ollama = createOpenAICompatible({
+  name: "ollama",
+  baseURL: "http://localhost:11434/v1",
+  includeUsage: true,               // report token counts while streaming
+});
+
+// in the route handler: model: ollama(process.env.MIMIR_MODEL ?? "qwen3:4b"),
+```
+
+What doesn't carry over is anything you pass through `providerOptions`, such as Anthropic-specific settings: those are provider features, and the other provider ignores or rejects them. Small local models also follow tool and format instructions less reliably. The [OpenAI provider page](https://ai-sdk.dev/providers/ai-sdk-providers/openai) lists its options, and the [Provider Comparison](#/providers) page shows what the SDK is translating underneath.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">

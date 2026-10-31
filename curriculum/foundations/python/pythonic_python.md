@@ -161,7 +161,7 @@ with open("notes.txt", "w", encoding="utf-8") as f:
 # here, the file is already closed, even if write() had failed
 ```
 
-`with` runs the setup (opening the file), gives you the resource under the name after `as`, runs your indented block, and then always runs the cleanup when the block ends, however it ends. You'll use `with` for files in the next lesson, and later for HTTP clients and streaming API responses, where `with client.messages.stream(...) as stream:` makes sure the connection is closed.
+`with` runs the setup (opening the file), gives you the resource under the name after `as`, runs your indented block, and then always runs the cleanup when the block ends, however it ends. You'll use `with` for files in the next lesson, and later for HTTP clients and streaming API responses, where `with client.messages.stream(...) as stream:` makes sure the connection is closed. (That's Anthropic's SDK. Other SDKs stream differently, for example OpenAI's `create(..., stream=True)` returns a generator-like stream you loop over, but the pattern of looping over chunks is the same.)
 
 You can write your own context manager with a generator and the `contextlib` module. Code before the `yield` is setup, and code after it is cleanup:
 

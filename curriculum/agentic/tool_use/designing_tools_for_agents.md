@@ -77,7 +77,7 @@ A few habits get you most of the way:
 - **Sensible defaults, stated in the description.** "Use 5 unless you need more" tells the model what a normal call looks like.
 - **Fewer arguments.** Every optional argument is a decision the model has to make. If your code can work something out itself, don't ask for it.
 
-Some providers can also enforce the schema. In Tool Errors and Parallel Calls you'll see `"strict": True`, which makes the API guarantee the arguments match your schema's types, fields and enums. Strict mode supports only part of JSON Schema, though. It doesn't enforce number ranges or string lengths, so rules like "between 1 and 20" still need a check in your code, and the description should state them so the model gets them right the first time.
+Some providers can also enforce the schema. In Tool Errors and Parallel Calls you'll see `"strict": True`, which makes the API guarantee the arguments match your schema's types, fields and enums. Claude and OpenAI both offer strict tool schemas, each with its own list of supported JSON Schema features; where a provider or open-model server doesn't, your code's validation is the only check. Strict mode supports only part of JSON Schema, though. It doesn't enforce number ranges or string lengths, so rules like "between 1 and 20" still need a check in your code, and the description should state them so the model gets them right the first time.
 
 ### Returning what the agent needs
 
@@ -244,7 +244,7 @@ RESULT ~19 tokens: [{"name": "Hiro Tanaka", "team": "support", "email": "person5
 ANSWER (2 tool steps): Hiro Tanaka is on the support team, not sales. His email is person58@example.com.
 ```
 
-The error told the model what to do, and it did it. Your runs may differ, because the model isn't deterministic, so run each task a few times.
+The error went back with `"is_error": True`, a Claude field that marks a failed call; on providers without it, the error text alone carries the message. The error told the model what to do, and it did it. Your runs may differ, because the model isn't deterministic, so run each task a few times.
 
 When you read transcripts, look for these signs of a tool problem:
 
@@ -255,6 +255,20 @@ When you read transcripts, look for these signs of a tool problem:
 - **It retried the same failing call.** The error message isn't telling it what to change.
 
 Then change one thing, run the same tasks again and compare. This is error analysis, the habit you built in Measuring Quality, applied to tools. You can even paste a few transcripts and your tool definitions into a chat with a capable model and ask it to point out where the descriptions are ambiguous. It's often good at spotting the sentence that misled it. In Agent Eval Fundamentals you'll turn these checks into a proper eval with graders and repeated trials.
+
+### On other providers
+
+Everything about tool *design* in this lesson is provider-neutral: task-shaped tools, clear names and descriptions, enums, small outputs and instructive errors help every model, because every model only sees the definition. Only the wrapping differs. OpenAI-style APIs put the schema under `function.parameters`, and OpenAI's strict mode, set as `strict: true` inside the `function` object, asks for the same shape `directory_search_contacts` already has: every property in `required` and `additionalProperties: false`. There's no `is_error` field on OpenAI's `role: "tool"` messages, so start failed results with a word like `Error:` and let the instructive text do the work. OpenAI's [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) has its own tool-writing advice, which closely matches this lesson's. Smaller open models are much less forgiving of vague definitions, so running `watch.py` against Qwen3 through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility) is a good way to find the weak spots in a description. This helper converts the definitions you already have:
+
+```python
+def to_openai(tool: dict) -> dict:
+    """Turn a Claude-style tool definition into the OpenAI Chat Completions shape."""
+    function = {"name": tool["name"], "description": tool["description"],
+                "parameters": tool["input_schema"]}
+    if tool.get("strict"):
+        function["strict"] = True              # OpenAI keeps strict inside "function"
+    return {"type": "function", "function": function}
+```
 
 ### Assignment
 

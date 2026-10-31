@@ -151,7 +151,7 @@ The Claude API has an `input_examples` field on tool definitions for this: a lis
 
 Every technique above trades something away: routing can hide tools, tool search adds a step, and examples cost tokens. The only way to know whether a change helped is to measure it. The question to measure is narrow and cheap to answer: **for a given request, is the first tool the model calls the right one?** You don't need to run the tools or finish the task, just one model call per case.
 
-First, look at what each setup costs. The token counting endpoint counts a request's input tokens without running the model, and it's free to use within its own rate limits. Save this as `count_tool_tokens.py`:
+First, look at what each setup costs. Claude's token counting endpoint, `count_tokens`, counts a request's input tokens without running the model, and it's free to use within its own rate limits. That endpoint is a Claude API feature: OpenAI has a [similar one](https://developers.openai.com/api/docs/guides/token-counting) for its Responses API, and with a local model you can read the input token count from the `usage` of a real request. Save this as `count_tool_tokens.py`:
 
 ```python
 # count_tool_tokens.py  (uv add anthropic python-dotenv)
@@ -255,6 +255,26 @@ None of these techniques belong in a three-tool agent. Each adds code, moving pa
 1. **Then reach for a technique that matches the problem you measured.** Too many definition tokens or falling accuracy as the catalog grows suggests routing or tool search. Big intermediate results suggest programmatic tool calling or better-shaped tool outputs. Badly formatted arguments suggest examples.
 
 The Agent Loop From Scratch project doesn't need any of them, which is the point. Knowing when *not* to add a technique is as much a skill as knowing how.
+
+### On other providers
+
+The first half of this lesson holds on every provider: tool definitions cost tokens on every request, namespacing and consolidation help any model choose, and the router in `catalog.py` is plain Python that picks a subset before the call. Tool search, programmatic tool calling and `input_examples`, as written here, are Claude features. OpenAI has its own [tool search](https://developers.openai.com/api/docs/guides/tools-tool-search) in the Responses API on recent models, built on the same `defer_loading` idea, but you set it up differently (a `tool_search` tool, ideally with deferred functions grouped into `namespace` objects), so Claude's search-tool types and `tool_search_tool_result` blocks don't carry over. With an open model there's no server-side search at all, so retrieve tools yourself: embed each tool description, send only the closest few for each request, or give the model a `find_tools` tool as described above. The selection eval carries over almost unchanged, and it's the right way to check a new model, because how many tools a model handles well varies a lot from model to model. Here is `first_tool` for a local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility); use it in `selection_eval.py` with the "all tools" and "routed" configs and drop "tool search":
+
+```python
+from openai import OpenAI  # uv add openai
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # a local model via Ollama
+
+def as_openai(tools: list[dict]) -> list[dict]:
+    return [{"type": "function", "function": {"name": t["name"], "description": t["description"],
+             "parameters": t["input_schema"]}} for t in tools]
+
+def first_tool(request: str, tools: list[dict]) -> tuple[str | None, int]:
+    response = client.chat.completions.create(model="qwen3:4b", tools=as_openai(tools),
+                                              messages=[{"role": "user", "content": request}])
+    calls = response.choices[0].message.tool_calls or []
+    return (calls[0].function.name if calls else None), response.usage.prompt_tokens
+```
 
 ### Assignment
 

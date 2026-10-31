@@ -307,6 +307,8 @@ if __name__ == "__main__":
 
 Anthropic's docs say each PDF page typically costs 1,500 to 3,000 text tokens plus image tokens, because every page is also sent as an image. With the [cheap model](#/models) that's a fraction of a cent per page. That's fine for a hundred scanned pages, but it adds up for a hundred thousand. A sensible rule: use a text parser for digital PDFs, OCR for clean scans in bulk, and a vision model for the pages the others get wrong. Save `parser="vision"` in those records so you can spot-check them.
 
+Sending a whole PDF as a `document` block, with text and page images extracted for you, is a Claude feature. Other providers accept PDFs in a different shape or not at all, and most open vision models take only images, so there you render each page to an image first (see [On other providers](#on-other-providers)).
+
 There's also a third option: don't parse at all. If a user asks about one 30-page report, sending the whole PDF with the question (as in Long Context and Context Engineering) is simpler and often better than RAG. Parse and index when you have more documents than fit in a prompt, or the same documents are queried over and over.
 
 ### Inspecting your output
@@ -320,6 +322,30 @@ Never index a parser's output you haven't read. Open `docs/*.md` for a few docum
 - **Empty or near-empty output.** It usually means a scan, an image-only page or a password-protected file.
 
 A cheap habit that catches most of this is a small table per file: number of records, total characters, characters per page and the most repeated lines. A file that's far off from its neighbors is worth opening.
+
+### On other providers
+
+Most of this lesson has nothing to do with any model provider. pdfplumber, trafilatura, MarkItDown, OCRmyPDF, the record format and the inspection habits work the same whatever model reads the result. Only `vision_parse.py` changes, because PDF input is where providers differ most. OpenAI also accepts a PDF directly, as an `input_file` content part with the file as base64 `file_data`, and like Claude it sends the model both the extracted text and an image of each page ([OpenAI's file inputs guide](https://developers.openai.com/api/docs/guides/pdf-files) shows the shape and the limits). Many other providers, and almost every open model, accept images but not PDFs. The approach that works everywhere is to render each page to a PNG yourself and send it as an image, which also keeps one call per page and exact page numbers. pdfplumber can render pages, so you need no new library. Here is the per-page call for a local open vision model, such as [Qwen3-VL in the Ollama library](https://ollama.com/library/qwen3-vl), through Ollama's [OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility); `prompt` is the same transcription prompt as in `vision_parse.py`:
+
+```python
+import base64, io, os
+import pdfplumber
+from openai import OpenAI  # uv add openai
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # local Ollama server
+MODEL = os.environ.get("MIMIR_MODEL", "qwen3-vl:8b")
+
+def transcribe_page(path: str, index: int, prompt: str) -> str:
+    with pdfplumber.open(path) as pdf:  # render the page as a PNG image
+        image = pdf.pages[index].to_image(resolution=150).original
+    image.save(buffer := io.BytesIO(), format="PNG")
+    url = "data:image/png;base64," + base64.b64encode(buffer.getvalue()).decode()
+    reply = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": [
+        {"type": "image_url", "image_url": {"url": url}}, {"type": "text", "text": prompt}]}])
+    return reply.choices[0].message.content or ""
+```
+
+The same code works with OpenAI's vision models if you use `OpenAI()` and one of its model IDs. A local model costs nothing per page but is slower and makes more transcription mistakes than the hosted ones, so spot-check its records just as carefully. Record which model you used in the `parser` field, for example `"vision:qwen3-vl:8b"`.
 
 ### Assignment
 

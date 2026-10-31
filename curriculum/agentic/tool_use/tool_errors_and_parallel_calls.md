@@ -37,7 +37,7 @@ In Function Calling you learned the round trip: the model sends a `tool_use` blo
 }
 ```
 
-`is_error: True` tells the model "this call didn't work." The model reads the message on its next turn and decides what to do: retry with different arguments, try another tool, or explain the problem to the user. This is the big idea of the lesson. **An exception that crashes your loop ends the task. An exception reported as a tool result is just another observation**, the same way a person who opens the wrong drawer simply opens a different one.
+`is_error: True` tells the model "this call didn't work." (`is_error` is a Claude field. Providers without one, such as OpenAI, take only the text, so make the message itself say it failed.) The model reads the message on its next turn and decides what to do: retry with different arguments, try another tool, or explain the problem to the user. This is the big idea of the lesson. **An exception that crashes your loop ends the task. An exception reported as a tool result is just another observation**, the same way a person who opens the wrong drawer simply opens a different one.
 
 There's a rule here worth memorizing: **every `tool_use` block must get exactly one `tool_result` back.** If the model asked for three things and one failed, you still send three results, one of them marked as an error. If you leave one out, the API rejects your next request.
 
@@ -60,7 +60,7 @@ Write error messages for the model the way you'd write them for a new colleague:
 
 The cheapest error is one you catch before doing any work. Check arguments at the top of the tool, before you call a paid API, write to a database or send a message. "Quantity must be between 1 and 100, got -3" costs nothing; refunding a bad order costs a lot.
 
-Your schema is the first line of validation. Setting `"strict": True` on a tool definition (with `"additionalProperties": False` and a `required` list in the schema) makes the API guarantee that the arguments match your schema's types and fields. A schema can't express every rule, though. "The file must be inside the sandbox folder" is a rule your code has to check.
+Your schema is the first line of validation. Setting `"strict": True` on a tool definition (with `"additionalProperties": False` and a `required` list in the schema) makes the API guarantee that the arguments match your schema's types and fields. Strict tool schemas are a feature of some providers, including Claude and OpenAI; elsewhere, check the arguments' types in your code too. A schema can't express every rule, though. "The file must be inside the sandbox folder" is a rule your code has to check.
 
 **Timeouts are errors too.** Give every tool a time limit and report the timeout as an error result: "search_web timed out after 10 seconds. Try a narrower query." Without a limit, one slow website freezes the whole agent. In Python's `asyncio`, `asyncio.wait_for(some_coroutine, timeout=10)` raises `TimeoutError` when time runs out, which you can catch like any other exception.
 
@@ -96,7 +96,9 @@ Handling this correctly takes three rules:
 
 1. Loop over **every** `tool_use` block in the response, not just the first one.
 1. Return **one `tool_result` per call, matched by `tool_use_id`**. The ID is what connects each answer to its question. Order in the list doesn't matter to the API, but a mismatched ID does: if you swap two IDs, the model will believe London's weather belongs to Paris.
-1. Put **all** the results in **one** user message. Splitting them across several messages is a common mistake, and it quietly teaches the model to stop making parallel calls.
+1. Put **all** the results in **one** user message. Splitting them across several messages is a common mistake, and it quietly teaches the model to stop making parallel calls. This rule is Claude's; OpenAI-style APIs want one `role: "tool"` message per result instead, all placed straight after the assistant message.
+
+Parallel tool use is on by default with Claude, and its `disable_parallel_tool_use` setting (inside `tool_choice`) limits a turn to one call. Other providers have their own switch, such as OpenAI's `parallel_tool_calls: false`.
 
 ### Running calls concurrently
 
@@ -196,6 +198,28 @@ Try it with a file name that doesn't exist. In the printed trace you should see 
 The `print` inside the loop is a tiny trace: which tools ran, with which arguments, and whether they failed. Agents are hard to debug from the final answer alone. You'll turn this habit into proper tooling in Agent Tracing and Debugging, later in this section.
 
 </div>
+
+### On other providers
+
+The three kinds of failure, instructive error messages, early validation, timeouts, failure counters and the choice between concurrent and one-at-a-time execution are all yours, in your code, on any provider. The "exactly one result per call" rule holds on OpenAI too: an assistant message with `tool_calls` must be followed by a `role: "tool"` message for every `tool_call_id`, or the next request fails. Three things differ. There's no `is_error` field, so the error has to say so in its text. Each result is a separate `role: "tool"` message rather than one user message holding every result. And arguments arrive as a JSON string, which small open models sometimes get wrong, so a parse failure is one more bad-arguments error to send back. OpenAI's [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) covers `parallel_tool_calls` and strict mode, and Ollama's [tool calling page](https://docs.ollama.com/capabilities/tool-calling) shows open models such as Qwen3 making parallel calls. Here is `run_one` for an OpenAI-style call, reusing this lesson's `HANDLERS` and `ToolError`:
+
+```python
+import json
+
+async def run_one_openai(call) -> dict:
+    result = {"role": "tool", "tool_call_id": call.id}     # one message per call
+    try:
+        args = json.loads(call.function.arguments)        # a string; may be invalid JSON
+        result["content"] = await asyncio.wait_for(HANDLERS[call.function.name](**args), timeout=10)
+    except (ToolError, json.JSONDecodeError) as e:
+        result["content"] = f"Error: {e}"                 # no is_error: say it in the text
+    except TimeoutError:
+        result["content"] = f"Error: {call.function.name} timed out after 10 seconds."
+    except Exception as e:
+        result["content"] = f"Error: unexpected {type(e).__name__} in {call.function.name}."
+    return result
+# messages.extend(await asyncio.gather(*(run_one_openai(c) for c in reply.tool_calls)))
+```
 
 ### Assignment
 

@@ -186,7 +186,7 @@ export default defineConfig({
 
 When you deploy, either serve the built `dist/` files from the same domain as the API, or add FastAPI's `CORSMiddleware` with your front end's exact origin.
 
-Here is a minimal backend to talk to. Create it in a separate folder with `uv init chat-api`, then `uv add "fastapi[standard]" anthropic`, and run it with `uv run fastapi dev main.py`. It takes the whole conversation each time, because the model has no memory between calls (see System Prompts and Conversations).
+Here is a minimal backend to talk to. It uses the Anthropic SDK; [On other providers](#on-other-providers) shows the same route for OpenAI-compatible APIs. Create it in a separate folder with `uv init chat-api`, then `uv add "fastapi[standard]" anthropic`, and run it with `uv run fastapi dev main.py`. It takes the whole conversation each time, because the model has no memory between calls (see System Prompts and Conversations).
 
 ```python
 import os
@@ -339,6 +339,29 @@ This version waits for the full reply. In Streaming in the Browser you'll read t
 The free [React Developer Tools](https://react.dev/learn/react-developer-tools) browser extension adds a Components tab to your browser's developer tools. Click any component to see its current props and state. When the screen shows something wrong, check the state first: if the state is right, the bug is in your JSX; if it's wrong, the bug is in whatever set it.
 
 </div>
+
+### On other providers
+
+Your React code never talks to a model provider. It talks to your own `/api/chat` contract, a list of messages in and `{ reply }` out, so switching providers changes only the backend, and the browser never has to know. That's also why the API key stays safe on the server. The message list itself carries over almost unchanged: OpenAI's Chat Completions API and the OpenAI-compatible servers used for open models take the same `role` and `content` dictionaries. Three things differ. The reply text is in `choices[0].message.content` instead of a list of content blocks. `max_tokens` is required by the Anthropic API but optional elsewhere. And a system prompt, which you'll add in the Assignment, is a separate `system` argument for Claude but the first message in the list, with role `"system"`, for OpenAI-style APIs (see [OpenAI's text generation guide](https://developers.openai.com/api/docs/guides/text)). Here is the same route on any OpenAI-compatible API, shown with a local open model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility):
+
+```python
+import openai  # uv add openai
+
+MODEL = os.environ.get("MIMIR_MODEL", "qwen3:8b")
+client = openai.OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI() for OpenAI
+
+@app.post("/api/chat")
+def chat(req: ChatRequest) -> ChatReply:
+    try:
+        response = client.chat.completions.create(
+            model=MODEL, messages=[m.model_dump() for m in req.messages],  # same message shape
+        )
+    except openai.APIError:
+        raise HTTPException(status_code=502, detail="The model call failed.")
+    return ChatReply(reply=response.choices[0].message.content or "")
+```
+
+The Pydantic models, the Vite proxy and every line of `App.tsx` stay exactly as they are.
 
 ### Assignment
 

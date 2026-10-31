@@ -37,7 +37,7 @@ Your code then extracts the text between `<answer>` and `</answer>`, as you did 
 
 ### Built-in thinking
 
-You learned in Reasoning Models that many current models have reasoning built in. They were trained to think before answering, and the API returns that thinking as separate `thinking` content blocks before the final `text` block. On current Claude models this is called **adaptive thinking**: the model decides for itself how much to think, based on how hard the request looks. You steer the overall amount with an **effort** setting (`low`, `medium`, `high` and higher), which trades quality against tokens and time.
+You learned in Reasoning Models that many current models have reasoning built in. They were trained to think before answering, and the API returns that thinking as separate `thinking` content blocks before the final `text` block. On current Claude models this is called **adaptive thinking**: the model decides for itself how much to think, based on how hard the request looks. You steer the overall amount with an **effort** setting (`low`, `medium`, `high` and higher), which trades quality against tokens and time. The parameter names below are Claude features; other providers have their own reasoning switches with different names and levels, covered in [On other providers](#on-other-providers) below.
 
 When built-in thinking is available, prefer it over hand-written `<thinking>` tags. The model was trained to use it, it does not clutter your answer text, and you control it with one setting instead of prompt wording. Manual tags are still useful with models or settings that lack a thinking mode, and when you want the reasoning in a specific format you can show to users or log.
 
@@ -156,6 +156,27 @@ A rough guide:
 - **Several distinct jobs** (extract, then analyze, then write), or **steps you want to check**: use a chain with gates.
 
 These are starting points, not rules. Whether thinking or chaining helps *your* task is an empirical question. You answer it by running both versions on the same test inputs and comparing scores, tokens and seconds, which is exactly what the Prompt Lab project asks you to do.
+
+### On other providers
+
+Prompted reasoning in `<thinking>` and `<answer>` tags works on any model, which makes it the portable choice when you compare providers. So does prompt chaining: `chain.py` only needs its `ask()` function rewritten for another SDK, and the gates are plain Python. Built-in thinking is where providers differ. OpenAI calls its thinking models **reasoning models** and controls them with `reasoning_effort` in Chat Completions (`reasoning.effort` in the Responses API); the allowed levels vary by model and include `none`, `minimal`, `low`, `medium`, `high` and more, so check the model's page. OpenAI never returns the raw reasoning, only an optional summary through the Responses API, and the hidden reasoning tokens are counted in `usage.completion_tokens_details.reasoning_tokens` and billed as output. Its output cap is `max_completion_tokens`, and as with Claude it must leave room for the thinking. Open models vary most: some, like [Qwen3](https://ollama.com/library/qwen3), think by default, and Ollama returns their reasoning in a separate field from the answer, as its [thinking docs](https://docs.ollama.com/capabilities/thinking) show. OpenAI's [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) has the details. Here's `think.py`'s request through the OpenAI SDK:
+
+```python
+# think_other.py  (uv add openai; ollama pull qwen3:4b)
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
+question = ("A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. "
+            "How much does the ball cost? Give just the amount in your final answer.")
+response = client.chat.completions.create(
+    model="qwen3:4b",              # or an OpenAI reasoning model ID
+    reasoning_effort="high",       # try "low"; levels depend on the model
+    max_completion_tokens=4000,    # reasoning + answer (Ollama documents max_tokens)
+    messages=[{"role": "user", "content": question}],
+)
+print(response.choices[0].message.content)
+print(response.usage)  # on OpenAI, completion_tokens_details.reasoning_tokens is the thinking
+```
 
 ### Assignment
 

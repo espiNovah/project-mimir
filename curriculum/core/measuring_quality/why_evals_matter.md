@@ -156,6 +156,26 @@ Evals come in **levels**. Fast code checks (valid label? valid JSON? under 100 w
 
 Together they form a loop: **log traces, read them, find failures, add them to the golden set, change the system, rerun the eval, compare.** Without the eval you can't tell whether fixing the two-topic problem broke the sarcasm cases. With it, every change comes with evidence. One warning before you start comparing numbers, though: on a small dataset, a score difference of a point or two is usually noise. Eval Statistics, two lessons from now, shows you how to tell.
 
+### On other providers
+
+Almost everything in this lesson is provider-neutral: traces, error analysis, golden datasets and the eval loop work the same whether the model comes from Anthropic, OpenAI, Google or your own laptop. Only the call inside `traced_call` changes, and with it the names of the fields you copy into the trace. In OpenAI's Chat Completions API, the system prompt is the first message rather than a separate `system` argument, the text is in `choices[0].message.content`, the stop reason is `finish_reason` (with values like `"stop"` and `"length"` instead of `"end_turn"` and `"max_tokens"`), and token counts are `usage.prompt_tokens` and `usage.completion_tokens`. The output cap is optional there and is called `max_completion_tokens`, and the error class to catch is `openai.APIError`. Keep your *trace* field names the same whichever provider you call, so one analysis script reads every trace file, and add a `provider` field, because the same open model can behave differently on two hosts. Here's the middle of `traced_call` for OpenAI, or for a local model such as [Qwen3](https://ollama.com/library/qwen3) through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility):
+
+```python
+from openai import OpenAI  # uv add openai
+
+client = OpenAI()  # reads OPENAI_API_KEY; for Ollama: OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+response = client.chat.completions.create(
+    model=MODEL,  # an OpenAI model name, or a local one such as "qwen3:4b"
+    messages=[{"role": "system", "content": system}, {"role": "user", "content": user_input}],
+)
+record["output"] = response.choices[0].message.content
+record["stop_reason"] = response.choices[0].finish_reason
+record["input_tokens"] = response.usage.prompt_tokens
+record["output_tokens"] = response.usage.completion_tokens
+```
+
+OpenAI's [evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices) guide describes the same loop from OpenAI's side.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">

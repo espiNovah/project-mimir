@@ -126,7 +126,7 @@ if __name__ == "__main__":
 
 Walk through the numbered comments:
 
-1. **The contract.** `Request` is what step one promises step two. `messages.parse` sends its schema and hands back a validated object, so the gate deals with fields, not text.
+1. **The contract.** `Request` is what step one promises step two. `messages.parse` sends its schema and hands back a validated object, so the gate deals with fields, not text. That helper and its `parsed_output` field belong to the Anthropic SDK; other SDKs have their own versions, shown in [On other providers](#on-other-providers).
 1. **Retry with feedback.** The drafting prompt grows one sentence on a retry, the exact complaint from the gate. The model gets a specific thing to fix.
 1. **Gate one escalates.** If step one found no articles, or invented an ID that isn't in `KB`, there's nothing safe to draft from. A human sees the ticket instead of the customer seeing a made-up answer.
 1. **A hard cap.** Two drafts at most. A ticket that fails twice goes to review with the last draft and the reason attached, so the reviewer starts with context.
@@ -143,7 +143,7 @@ The classifier step is usually small, and this is where you save money. A good c
 - **Short definitions** of each category in the prompt. Most routing errors come from fuzzy boundaries, and one line per category ("hardware: broken or missing devices") fixes many of them.
 - **An "other" category** for anything that doesn't fit, including tickets that mix two issues.
 - **A way to say "unsure"**, such as a `confident` field. A guess that admits it's a guess is much more useful than a confident wrong answer.
-- **The [cheap model](#/models) at low effort.** Picking a label is an easy job, and the classifier runs on every single input.
+- **The [cheap model](#/models) at low effort.** Picking a label is an easy job, and the classifier runs on every single input. The `effort` setting is a Claude feature; other providers' reasoning models have similar knobs, and on a model without one, the cheap model alone is enough.
 
 ### Rules first, then a model
 
@@ -274,6 +274,25 @@ for (gold, predicted), n in mistakes.most_common():
 ```
 
 The last loop is the part to read closely. "hardware routed to accounts: 3" tells you exactly which category definition to sharpen, or which rule to tighten.
+
+### On other providers
+
+Chains, gates, rules-first routing, misroute recovery and per-step evals are plain Python, so they carry over to any provider unchanged. The provider shows up in two places: the structured-output call that enforces each contract, and the effort setting on the classifier. With the OpenAI SDK, `client.chat.completions.parse(response_format=Request)` takes the same Pydantic class and returns it as `choices[0].message.parsed`, as OpenAI's [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs) explains. Two details differ: a refusal arrives as text in `message.refusal`, and a reply cut off by the token limit raises `LengthFinishReasonError` (a small model's JSON that doesn't fit the schema raises a Pydantic `ValidationError`) instead of returning `None`, so gate one should catch those exceptions too. Claude's `output_config={"effort": "low"}` becomes `reasoning_effort="low"` on OpenAI's [reasoning models](https://developers.openai.com/api/docs/guides/reasoning), and you leave it out for models that don't reason. For a local open model, Ollama accepts the same `response_format` through its [OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility), though small models fill schemas less reliably, which makes your gates matter even more. Here is step one of `chain.py` on a local model:
+
+```python
+from openai import OpenAI  # uv add openai
+from chain import KB, Request
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # or OpenAI() with OPENAI_API_KEY
+
+def extract(ticket: str, kb: dict[str, str] = KB, model: str = "qwen3:4b") -> Request | None:
+    articles = "\n".join(f"{k}: {v}" for k, v in kb.items())
+    completion = client.chat.completions.parse(
+        model=model, response_format=Request,  # the same Pydantic contract as before
+        messages=[{"role": "system", "content": f"You triage help-desk tickets. Pick only from these articles:\n{articles}"},
+                  {"role": "user", "content": f"<ticket>\n{ticket}\n</ticket>"}])
+    return completion.choices[0].message.parsed  # None on a refusal; a cutoff or bad JSON raises
+```
 
 ### Assignment
 

@@ -149,6 +149,30 @@ When you are stuck, paste your prompt and two bad outputs into a chat with a cap
 
 </div>
 
+### On other providers
+
+Everything in this lesson's prose carries over: clear goals, positive instructions with reasons, varied few-shot examples, tags around data and prompts kept in versioned files work on OpenAI, Gemini and open models alike. XML tags are not a Claude-only trick; other models follow them too, although OpenAI's guide also uses Markdown headings for the same job, and you can test both. What changes is the shape of the call. Most other providers, and most open-model servers, speak OpenAI's **Chat Completions** format: the system prompt is the first message in the list (`"role": "system"`, called `"developer"` on some newer OpenAI models) rather than a separate `system` argument, `max_tokens` is optional, the reply text lives in `response.choices[0].message.content`, and token counts are `usage.prompt_tokens` and `usage.completion_tokens`. Some people also put few-shot examples in as pairs of fake `user` and `assistant` messages instead of tags; both work, so measure. OpenAI's [text generation guide](https://developers.openai.com/api/docs/guides/text) leads with its newer Responses API (`client.responses.create`, with `response.output_text`), but Chat Completions is still supported and is the shape other providers copy. Here's `summarize()` on a free local model through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility):
+
+```python
+# summarize_other.py  (uv add openai; ollama pull qwen3:4b)
+import re
+
+from openai import OpenAI
+from summarize import PROMPT_TEMPLATE, SYSTEM  # the same prompt, unchanged
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
+
+def summarize(review: str, model: str = "qwen3:4b") -> str | None:  # or an OpenAI model ID
+    response = client.chat.completions.create(model=model, messages=[
+        {"role": "system", "content": SYSTEM},  # system prompt = first message
+        {"role": "user", "content": PROMPT_TEMPLATE.format(review=review)}])
+    text = response.choices[0].message.content or ""
+    match = re.search(r"<summary>(.*?)</summary>", text, re.DOTALL)
+    return match.group(1).strip() if match else None
+```
+
+Small open models such as the [Qwen3 family](https://ollama.com/library/qwen3) follow format instructions less reliably than hosted models, so expect more `None` results. That's exactly the kind of difference the Prompt Lab project asks you to measure.
+
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
@@ -157,7 +181,7 @@ When you are stuck, paste your prompt and two bad outputs into a chat with a cap
    - Read the general principles, the sections on examples and XML tags, and the parts on output format. Skim the rest; you will come back to the thinking and long-context parts in the next two lessons.
 1. Work through [Anthropic's interactive prompt engineering tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial). It is a set of notebooks with exercises that check your answers, and it gives you many small reps of the ideas in this lesson.
    - Do chapters 1 through 7 (basic structure through few-shot examples).
-   - The tutorial was written for Claude 3 models. When it disagrees with the current docs, follow the current docs, and swap in a current model ID from [Current Models](#/models). Some chapters use assistant "prefill" (starting the model's reply for it); current Claude models no longer accept prefill, so ask for tagged output instead, as in this lesson.
+   - The tutorial was written for Claude 3 models. When it disagrees with the current docs, follow the current docs, and swap in a current model ID from [Current Models](#/models). Some chapters use assistant "prefill" (starting the model's reply for it); current Claude models no longer accept prefill, and OpenAI's API never offered it, so ask for tagged output instead, as in this lesson.
 1. Read [OpenAI's prompt engineering guide](https://developers.openai.com/api/docs/guides/prompt-engineering) to see that the same principles hold across providers.
    - Focus on the sections about message roles, few-shot learning and formatting with Markdown and XML.
 1. Practice: pick a small task, such as rewriting product reviews into one-sentence summaries. Write a one-line prompt, run it on five inputs, then rewrite the prompt using what you learned (goal, audience, format spec, two varied examples, XML tags). Save both versions as files in a `prompts/` folder. Compare the outputs side by side and write down what changed.

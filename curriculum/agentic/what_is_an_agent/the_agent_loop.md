@@ -133,9 +133,9 @@ Walk through it piece by piece:
 - **`MAX_STEPS`** is set before anything else. A smart guesser needs at most 7 guesses for 100 numbers, so 10 leaves room without allowing a runaway.
 - **`messages`** starts as just the goal. Everything the agent learns gets appended to it. This list is the agent's entire memory.
 - **`for step in range(...)`** is the loop, and it's a `for`, not a `while True`. That one choice means the step limit can't be forgotten: when the range runs out, the loop ends.
-- **Think:** `client.messages.create` sends the whole history plus the tool list. Notice that the reply is appended *whole*, as `response.content`, not just its text. It may contain thinking blocks and tool requests, and the model needs to see all of it on the next turn.
-- **`stop_reason`** is how the API tells you *why* the model stopped writing. `"tool_use"` means "I'm waiting for a tool result." `"end_turn"` means "I'm finished." Anything else, such as `"max_tokens"` (the reply was cut off) or `"refusal"` (the model declined), means something unusual happened, so the code stops rather than guessing what to do.
-- **Act:** the code finds each `tool_use` block, runs the real `guess` function and prints what happened. Printing every step costs nothing and is how you'll spot most bugs.
+- **Think:** `client.messages.create` sends the whole history plus the tool list. Notice that the reply is appended *whole*, as `response.content`, not just its text. It may contain thinking blocks (a Claude feature: the model's reasoning, which must be passed back unchanged) and tool requests, and the model needs to see all of it on the next turn.
+- **`stop_reason`** is how the API tells you *why* the model stopped writing. `"tool_use"` means "I'm waiting for a tool result." `"end_turn"` means "I'm finished." Anything else, such as `"max_tokens"` (the reply was cut off) or `"refusal"` (the model declined), means something unusual happened, so the code stops rather than guessing what to do. These field and value names are Claude's; other providers have the same signal under other names, as you'll see in "On other providers" below.
+- **Act:** the code finds each `tool_use` block (Claude's name for a tool request inside a reply), runs the real `guess` function and prints what happened. Printing every step costs nothing and is how you'll spot most bugs.
 - **Observe:** the results go back as a new user message, each one tagged with the ID of the request it answers. Then the loop goes around again.
 - **The last `return`** only runs if the range is exhausted. It's the safety stop, and it returns a clear message instead of crashing.
 
@@ -187,6 +187,28 @@ Writing the loop is easy. Designing a *productive* one is a real skill, and it m
 1. **A finish line the agent can check for itself.** The best goals come with a test: run the test suite, check that the file exists, compare the total with a known answer. When the agent can verify its own work, it stops claiming success too early.
 
 The guessing game ticks every box: the goal is precise, the tool's feedback is perfect, guessing is harmless and "correct" is an unambiguous finish line. Real tasks are messier, but these four questions are the ones to ask every time you design an agent.
+
+### On other providers
+
+Everything in this lesson except the field names carries over unchanged: the think, act, observe cycle, the message list as the agent's whole state, your code running the loop, the step cap and the other safety stops. On OpenAI's Chat Completions API, and on every server that copies it, the loop maps like this. The reply is `choices[0].message`, and you append it to `messages` whole, just as you append `response.content` here. Tool requests arrive in `message.tool_calls` instead of `tool_use` blocks, and each call's arguments are a JSON *string* you parse with `json.loads`. Each observation goes back as its own `{"role": "tool", "tool_call_id": ..., "content": ...}` message instead of a `tool_result` block inside one user message. The stop signal is `finish_reason`: `"tool_calls"` plays the part of `"tool_use"`, `"stop"` the part of `"end_turn"`, and `"length"` the part of `"max_tokens"`, while token counts are `usage.prompt_tokens` and `usage.completion_tokens`. OpenAI's newer Responses API renames the pieces again (`function_call` and `function_call_output` items) but runs the same loop, as its [function calling guide](https://developers.openai.com/api/docs/guides/function-calling) shows. Here is the guessing-game loop against a free open model, Qwen3, running on your machine through [Ollama's OpenAI-compatible API](https://docs.ollama.com/api/openai-compatibility); it reuses `MAX_STEPS` and `guess` from `main.py`:
+
+```python
+import json
+from openai import OpenAI  # uv add openai
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # drop both for OpenAI itself
+TOOLS = [{"type": "function", "function": {"name": "guess", "description": "Guess the secret "
+          "whole number between 1 and 100. Returns 'too low', 'too high' or 'correct'.",
+          "parameters": {"type": "object", "properties": {"number": {"type": "integer"}}, "required": ["number"]}}}]
+messages = [{"role": "user", "content": "Find the secret number with the guess tool, then tell me what it is."}]
+for step in range(1, MAX_STEPS + 1):                      # the same safety stop
+    reply = client.chat.completions.create(model="qwen3:4b", messages=messages, tools=TOOLS).choices[0].message
+    messages.append(reply)                                # THINK: keep the whole reply
+    if not reply.tool_calls:                              # finish_reason "stop" (done) or "length" (cut off)
+        break
+    for call in reply.tool_calls:                         # ACT, then OBSERVE: one "tool" message per call
+        observation = guess(int(json.loads(call.function.arguments)["number"]))
+        messages.append({"role": "tool", "tool_call_id": call.id, "content": observation})
+```
 
 ### Assignment
 

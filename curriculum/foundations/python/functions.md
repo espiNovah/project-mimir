@@ -69,7 +69,7 @@ print(build_prompt("What is a token?", tone="formal"))
 print(build_prompt("What is a token?", max_sentences=1, tone="playful"))
 ```
 
-The last two calls use **keyword arguments**: you name the parameter when you pass the value. Keyword arguments make calls readable and let you skip or reorder optional parameters. You will see them all over AI SDKs. A typical model call looks like `client.messages.create(model=..., max_tokens=..., messages=...)`, which is just a function call with keyword arguments.
+The last two calls use **keyword arguments**: you name the parameter when you pass the value. Keyword arguments make calls readable and let you skip or reorder optional parameters. You will see them all over AI SDKs. A typical model call looks like `client.messages.create(model=..., max_tokens=..., messages=...)`, which is just a function call with keyword arguments. That example is Anthropic's SDK; OpenAI's looks like `client.chat.completions.create(model=..., messages=...)`, the same idea with different names.
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
