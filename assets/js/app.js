@@ -69,7 +69,7 @@
         <h1>${esc(path.title)}</h1>
         <p class="lead">${esc(path.description)}</p>
         ${(path.requires || []).length ? `<p class="requires">Requires: ${path.requires.map((id) => { const r = findPath(id); return r ? `<a href="#/paths/${r.id}">${esc(r.title)}</a>` : ""; }).join(", ")}</p>` : ""}
-        <div class="path-stats"><span>~${path.hours} hours</span><span>${path.sections.length} sections</span><span>${c.total} lessons</span><span>${c.projects} projects</span><span>${c.done}/${c.total} complete</span></div>
+        <div class="path-stats"><span>${path.sections.length} sections</span><span>${c.total} lessons</span><span>${c.projects} projects</span><span>${c.done}/${c.total} complete</span></div>
         <div class="progress"><i style="width:${pct(c.done, c.total)}%"></i></div>
       </header>
       ${path.sections.map((s) => `

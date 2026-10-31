@@ -80,7 +80,7 @@ def render_index(manifest):
         path_items.append(f"""        <li><a class="path-card" href="#/paths/{p['id']}" data-path="{p['id']}">
           <span class="num">{i:02d}</span>
           <div><h3>{e(p['title'])}{tag}</h3><p>{e(p['description'])}</p></div>
-          <div class="meta"><span>{total} lessons · {projects} projects<br>~{p['hours']} hours</span><div class="progress"><i></i></div></div>
+          <div class="meta"><span>{total} lessons · {projects} projects</span><div class="progress"><i></i></div></div>
         </a></li>""")
     who = "\n".join(f'        <li><h3>{e(t)}</h3><p>{e(d)}</p></li>' for t, d in WHO)
     faq = "\n".join(f'        <details class="faq-item"><summary><h3>{e(q)}</h3></summary><p>{e(a)}</p></details>' for q, a in FAQ)
