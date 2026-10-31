@@ -178,6 +178,10 @@ main { flex: 1; padding-block: 44px 80px; outline: none; }
 .faq-item[open] summary::after { content: "−"; }
 .faq-item h3 { font-size: 1.0625rem; font-weight: 800; display: inline; }
 .faq-item p { margin: 0; padding: 0 18px 18px; color: var(--muted); max-width: 70ch; }
+@media (min-width: 861px) {
+  .faq-block .section-title { text-align: center; }
+  .faq { margin-inline: auto; }
+}
 
 /* ---------- Path page ---------- */
 .path-head {

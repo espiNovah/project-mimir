@@ -160,7 +160,7 @@ def render_index(manifest):
         </ul>
       </section>
 
-      <section class="home-block" aria-labelledby="faq-title">
+      <section class="home-block faq-block" aria-labelledby="faq-title">
         <h2 class="section-title" id="faq-title">Frequently asked questions</h2>
         <div class="faq">
 {faq}
