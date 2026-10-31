@@ -35,23 +35,23 @@ Phases 3–7 can run in parallel once Phase 2 has merged. Sizes assume one focus
 
 One PR. Each fix below was confirmed by reading the file.
 
-- [ ] **EDIT** `curriculum/foundations/web/api_keys_and_secrets.md:23`: remove Anthropic from the `Authorization: Bearer` line, and add an `x-api-key` line that names Anthropic.
-- [ ] **EDIT** `curriculum/foundations/web/project_weather_cli.md:21`: `tap_weather_cli:main` becomes `mimir_weather_cli:main`.
-- [ ] **EDIT** `curriculum/foundations/git/git_basics.md:131`: before the first push, add a fallback. Run `git status`, and if it reports "not a git repository", run `git init`. Then always run `git branch -M main`.
-- [ ] **EDIT** `curriculum/foundations/first_llm_app/tokens_cost_and_rate_limits.md:68`: add `encoding="utf-8"` to `open()`.
-- [ ] **EDIT** `curriculum/foundations/llms/context_windows_and_sampling.md:100`: state plainly which current models reject non-default sampling parameters, instead of "some".
-- [ ] **EDIT** `curriculum/core/prompting/thinking_and_prompt_chaining.md:44`: fix the "chapter 6 … if you skipped it" reference. The previous lesson already assigns chapters 1–7.
-- [ ] **EDIT** `curriculum/core/rag/hybrid_search_and_reranking.md:44`: replace the unmaintained `rank_bm25` with `bm25s` (and mention Postgres full-text search).
-- [ ] **VERIFY then fix**:
+- [x] **EDIT** `curriculum/foundations/web/api_keys_and_secrets.md:23`: remove Anthropic from the `Authorization: Bearer` line, and add an `x-api-key` line that names Anthropic.
+- [x] **EDIT** `curriculum/foundations/web/project_weather_cli.md:21`: `tap_weather_cli:main` becomes `mimir_weather_cli:main`.
+- [x] **EDIT** `curriculum/foundations/git/git_basics.md:131`: before the first push, add a fallback. Run `git status`, and if it reports "not a git repository", run `git init`. Then always run `git branch -M main`.
+- [x] **EDIT** `curriculum/foundations/first_llm_app/tokens_cost_and_rate_limits.md:68`: add `encoding="utf-8"` to `open()`.
+- [x] **EDIT** `curriculum/foundations/llms/context_windows_and_sampling.md:100`: state plainly which current models reject non-default sampling parameters, instead of "some".
+- [x] **EDIT** `curriculum/core/prompting/thinking_and_prompt_chaining.md:44`: fix the "chapter 6 … if you skipped it" reference. The previous lesson already assigns chapters 1–7.
+- [x] **EDIT** `curriculum/core/rag/hybrid_search_and_reranking.md:44`: replace the unmaintained `rank_bm25` with `bm25s` (and mention Postgres full-text search).
+- [ ] **VERIFY then fix**: *(Batch 11: the τ-bench naming, the promptfoo source and the Pydantic URLs are done; the three Research items wait for Batch 13.)*
   - [x] the `mcp run … --transport streamable-http` flag (verified on mcp 2.3.0, 2026-10-29) in `agentic/mcp/mcp_transports_and_security.md:43`
-  - [ ] the τ³-bench naming in `agentic/agent_evals/simulated_users_and_benchmarks.md:30`
-  - [ ] the promptfoo acquisition claim in `core/evals/evaluating_rag_and_regressions.md:42` (cite a source or remove it)
-  - [ ] the Pydantic docs URLs in `core/structured_outputs/json_schema_and_pydantic.md:40-44`
+  - [x] the τ³-bench naming in `agentic/agent_evals/simulated_users_and_benchmarks.md:30`
+  - [x] the promptfoo acquisition claim in `core/evals/evaluating_rag_and_regressions.md:42` (cite a source or remove it)
+  - [x] the Pydantic docs URLs in `core/structured_outputs/json_schema_and_pydantic.md:40-44`
   - [ ] the `CliffWalking-v1` version in `research/reinforcement_learning/project_train_an_rl_agent.md:36`
   - [ ] the Microsoft Research link in `research/research_skills/writing_up_research.md:39`
   - [ ] the truncated sentence in `research/planning/project_llm_vs_classical_planner.md:12`
-- [ ] **EDIT** `production/reliability/prompt_versioning_and_ci_evals.md:38,40`: update the two redirected GitHub Docs URLs.
-- [ ] **EDIT** the three Skilljar course links in `foundations/first_llm_app/`: mark them optional, because they require a sign-up.
+- [x] **EDIT** `production/reliability/prompt_versioning_and_ci_evals.md:38,40`: update the two redirected GitHub Docs URLs.
+- [x] **EDIT** the three Skilljar course links in `foundations/first_llm_app/`: mark them optional, because they require a sign-up.
 
 **Done when:** `python3 scripts/validate.py --links` passes and every item is checked off.
 
@@ -62,20 +62,20 @@ One PR. Each fix below was confirmed by reading the file.
 These changes make every later phase cheaper and keep it enforced.
 
 ### 1.1 Knowledge checks
-- [ ] **EDIT** `LAYOUT_STYLE_GUIDE.md`: add `### Knowledge check` to the lesson layout, after Assignment and before Additional resources.
+- [x] **EDIT** `LAYOUT_STYLE_GUIDE.md`: add `### Knowledge check` to the lesson layout, after Assignment and before Additional resources.
   - It holds 4–7 questions.
   - Each question links to the heading anchor that answers it, for example `[What is a chunk?](#chunking)`. This is how The Odin Project does it.
-- [ ] **EDIT** `templates/lesson-template.md`: add the section.
+- [x] **EDIT** `templates/lesson-template.md`: add the section.
 
 ### 1.2 Project evidence checklist
-- [ ] **EDIT** `templates/project-template.md` and the style guide: add an `#### Evidence` block that lists what proves the project works.
-- [ ] Set the default evidence by stage:
+- [x] **EDIT** `templates/project-template.md` and the style guide: add an `#### Evidence` block that lists what proves the project works.
+- [x] Set the default evidence by stage:
   - **Foundations onward:** tests plus CI.
   - **Core onward:** traces plus an eval score with a confidence interval.
   - **From the Agent Loop project onward:** one prompt-injection test.
 
 ### 1.3 Validator
-- [ ] **EDIT** `scripts/validate.py`:
+- [x] **EDIT** `scripts/validate.py`:
   - Require `### Knowledge check` in non-project lessons that don't carry the "Outline lesson" banner. Outlines stay exempt until Phase 8.
   - Fail on any hard-coded model ID (regex `claude-(haiku|sonnet|opus|fable)-\d`) outside `curriculum/models.md`.
   - Check that every `requires` path id (see 1.5) exists.
@@ -85,18 +85,18 @@ These changes make every later phase cheaper and keep it enforced.
 Not needed before launch: the site isn't live, so no learner has saved progress or shared links. **After launch**, progress keys and URLs are both `path-id/lesson-id` (`assets/js/app.js`), so moving a lesson between paths would need an alias field that redirects old routes and migrates saved progress.
 
 ### 1.5 Path prerequisites
-- [ ] Add an optional `"requires": ["ml"]` field on paths, and render "Requires: ML Foundations" on the path page in `app.js`.
+- [x] Add an optional `"requires": ["ml"]` field on paths, and render "Requires: ML Foundations" on the path page in `app.js`.
 
 ### 1.6 Current models page
-- [ ] **NEW** `curriculum/models.md`, rendered like `about.md`, with a nav link.
+- [x] **NEW** `curriculum/models.md`, rendered like `about.md`, with a nav link.
   - It lists the current cheap development model, the default capable model, and an open-weight option, with prices and a "last checked" date.
   - Lessons say "use the cheapest current model (see Current Models)" instead of an ID.
-- [ ] **EDIT** about 30 files: replace hard-coded `claude-haiku-5-5` / `claude-sonnet-5-5`. The validator from 1.3 enforces this.
-- [ ] **EDIT** `scripts/validate.py`: exempt `models.md` from the "not listed in curriculum.json" check, as it does for `about.md`.
+- [x] **EDIT** about 30 files: replace hard-coded `claude-haiku-5-5` / `claude-sonnet-5-5`. The validator from 1.3 enforces this.
+- [x] **EDIT** `scripts/validate.py`: exempt `models.md` from the "not listed in curriculum.json" check, as it does for `about.md`.
 
 ### 1.7 Exercises repo
-- [ ] **NEW** folder `exercises/` in this repo (it can move to its own repo later). Each exercise is a folder with a `README.md`, a starter file, a failing test file and a reference solution in `solution/`. `scripts/check_exercises.py` checks in CI that every solution passes and every starter fails.
-- [ ] Seed it with the exercise sets lessons will link to:
+- [x] **NEW** folder `exercises/` in this repo (it can move to its own repo later). Each exercise is a folder with a `README.md`, a starter file, a failing test file and a reference solution in `solution/`. `scripts/check_exercises.py` checks in CI that every solution passes and every starter fails.
+- [x] Seed it with the exercise sets lessons will link to:
   - `python-basics/` (10)
   - `pythonic-python/` (8)
   - `debugging/` (8 bugged scripts)
@@ -107,13 +107,13 @@ Not needed before launch: the site isn't live, so no learner has saved progress 
   - `evals/` (5, compute P/R/F1 and bootstrap CIs)
 
 ### 1.8 Contributor workflow
-- [ ] **EDIT** `CONTRIBUTING.md`: link this roadmap, explain the "claim a lesson" convention (one issue per lesson, labeled `write-lesson`), and add a definition of done for a written lesson:
+- [x] **EDIT** `CONTRIBUTING.md`: link this roadmap, explain the "claim a lesson" convention (one issue per lesson, labeled `write-lesson`), and add a definition of done for a written lesson:
   - at least 900 words of the learner's own explanation
   - at least one runnable code example where the topic is code
   - a knowledge check
   - the Assignment includes a practice step
   - the "Outline lesson" banner is removed
-- [ ] Open one GitHub issue per item in Phases 3, 4 and 8, using a label for each phase.
+- [ ] Open one GitHub issue per item in Phases 3, 4 and 8, using a label for each phase. *(Batch 11: no longer needed for the required paths, which are written. Open issues for the electives only if outside contributors join.)*
 
 **Done when:**
 - the validator enforces 1.3 in CI;
@@ -363,7 +363,7 @@ Below is the target order. Unmarked items stay where they are.
 
 ### Site-wide copy
 
-- [ ] **EDIT** hours in `curriculum.json`, `curriculum/about.md`, the FAQ in `scripts/build.py`, and `README.md`. The new core total is about 1,340 h, roughly 15–20 months at 15–20 h/week. Then run `python3 scripts/build.py` to regenerate `index.html`.
+- [x] **EDIT** hours in `curriculum.json`, `curriculum/about.md`, the FAQ in `scripts/build.py`, and `README.md`. The new core total is about 1,340 h, roughly 15–20 months at 15–20 h/week. Then run `python3 scripts/build.py` to regenerate `index.html`. *(Batch 11: rechecked and raised to about 1,760 h, roughly 20–27 months; see Hours re-budget.)*
 
 **Done when:**
 - the validator and `build.py --check` pass;
@@ -456,11 +456,11 @@ Each lesson meets the definition of done, and where it is a coding topic it link
 
 Apply the evidence checklist (1.2) to every project, plus these specific changes:
 
-- [ ] **Hello, uv**: provide the starter `main.py`, so the learner only extends it.
-- [ ] **Expense Tracker**, **Weather CLI**: GitHub Actions running ruff and pytest is required, with a badge in the README.
-- [ ] **Terminal Chatbot**: a `ChatBackend` interface is required.
-- [ ] **Messy-Text Extractor**: image or PDF inputs; scores with bootstrap CIs.
-- [ ] **LLM-Powered API**:
+- [x] **Hello, uv**: provide the starter `main.py`, so the learner only extends it.
+- [x] **Expense Tracker**, **Weather CLI**: GitHub Actions running ruff and pytest is required, with a badge in the README.
+- [x] **Terminal Chatbot**: a `ChatBackend` interface is required.
+- [x] **Messy-Text Extractor**: image or PDF inputs; scores with bootstrap CIs.
+- [x] **LLM-Powered API**:
   - Postgres via Compose
   - Alembic migrations
   - user auth
@@ -469,12 +469,12 @@ Apply the evidence checklist (1.2) to every project, plus these specific changes
   - JSONL traces with prompt version IDs
   - an extractor eval in CI
   - deployed with a public `/health`
-- [ ] **Chat With Your Docs**: a PDF source, pgvector, hybrid search, incremental re-index, one indirect-injection test document.
-- [ ] **RAG Eval Harness**: generic across the extractor and RAG; judge TPR/TNR; CIs; runs in CI.
-- [ ] **Docs Chatbot UI**: Next.js or React with TypeScript, login, streaming. Streamlit is only the prototype step.
-- [ ] **Agent Loop From Scratch**: OpenTelemetry-compatible traces, required rather than extra credit; a 10-task eval with pass^3; one prompt-injection test (a poisoned web page tries to exfiltrate through `write_file` or search).
-- [ ] **Every later agentic project**: a small required eval and one injection case, carried forward.
-- [ ] **The Agent That Remembers**, **Workflow Automation Agent**: state survives a process restart, and approvals show in a UI.
+- [x] **Chat With Your Docs**: a PDF source, pgvector, hybrid search, incremental re-index, one indirect-injection test document.
+- [x] **RAG Eval Harness**: generic across the extractor and RAG; judge TPR/TNR; CIs; runs in CI.
+- [x] **Docs Chatbot UI**: Next.js or React with TypeScript, login, streaming. Streamlit is only the prototype step.
+- [x] **Agent Loop From Scratch**: OpenTelemetry-compatible traces, required rather than extra credit; a 10-task eval with pass^3; one prompt-injection test (a poisoned web page tries to exfiltrate through `write_file` or search).
+- [x] **Every later agentic project**: a small required eval and one injection case, carried forward.
+- [x] **The Agent That Remembers**, **Workflow Automation Agent**: state survives a process restart, and approvals show in a UI. *(Both survive a restart. Approvals show on a page in Workflow Automation Agent; The Agent That Remembers comes before Approvals and Permissions, so it doesn't require them.)*
 - [x] **Port Your Agent**: LangGraph plus an open model (a second provider is extra credit), with a comparison table. Done in Batch 8.
 - [ ] **Fine-Tune a Small Model**: batched or vLLM throughput for the cost estimate.
 
@@ -507,10 +507,10 @@ Apply the evidence checklist (1.2) to every project, plus these specific changes
 
 ## Phase 8: Write the remaining outlines and backfill knowledge checks
 
-- [ ] Write every remaining "Outline lesson" in path order, so learners hit finished content first. This is about 75 files after Phase 3, minus any cut ones.
-- [ ] Backfill knowledge checks into all 34 Foundations lessons (this can start right after Phase 1).
-- [ ] Once the outline count reaches zero, make the knowledge-check validator rule apply to every lesson.
-- [ ] Rebalance repeated readings: Building Effective Agents is cited about 10 times and Chip Huyen's platform post 5 times. Swap in fresh material, for example the Google SRE book chapters and real postmortems.
+- [ ] Write every remaining "Outline lesson" in path order, so learners hit finished content first. This is about 75 files after Phase 3, minus any cut ones. *(Batch 11: every required path is written. The ML and Research outlines are Batches 12–13.)*
+- [x] Backfill knowledge checks into all 34 Foundations lessons (this can start right after Phase 1).
+- [ ] Once the outline count reaches zero, make the knowledge-check validator rule apply to every lesson. *(Waits on the electives: the rule already applies to every written lesson.)*
+- [ ] Rebalance repeated readings: Building Effective Agents is cited about 10 times and Chip Huyen's platform post 5 times. Swap in fresh material, for example the Google SRE book chapters and real postmortems. *(Batch 11: the Google SRE book is now cited in 6 lessons. Building Effective Agents is still cited in 13, mostly pointing to the section for that lesson's own pattern, which is reasonable. Revisit during the electives.)*
 
 **Done when:** the validator reports 0 outlines and every lesson has a knowledge check.
 
@@ -518,17 +518,19 @@ Apply the evidence checklist (1.2) to every project, plus these specific changes
 
 ## Hours re-budget
 
-| Path | Before | After | Main reason |
-| --- | --- | --- | --- |
-| Foundations | 200 | 260 | Pythonic Python, debugging, CI, DSA, AI assistants, Working with Data |
-| AI Engineering Core | 300 | 380 | eval statistics, ML essentials, Postgres/Docker/auth/queues, TS/React |
-| Agentic Systems | 300 | 300 | tracing, durable execution and cost added; frameworks and multi-agent trimmed |
-| Production & LLMOps | 120 | 180 | cloud, data in prod, alerting, load testing, code review |
-| Final Capstone | 100 | 120 | team practice, longer real use |
-| Getting Hired | 80 | 100 | coding interviews, networking, job-search process |
-| **Required total** | **1,100** | **1,340** | |
-| ML Foundations (elective) | 150 | 120 | classic ML and vectors moved to Core |
-| Research Track (elective) | 200 | ~500 | honest estimate; now requires ML |
+| Path | Before | Plan (2026-10-28) | Rechecked (2026-10-31) | Main reason |
+| --- | --- | --- | --- | --- |
+| Foundations | 200 | 260 | 390 | Pythonic Python, debugging, CI, DSA, AI assistants, Working with Data; 11 projects |
+| AI Engineering Core | 300 | 380 | 470 | eval statistics, ML essentials, Postgres/Docker/auth/queues, TS/React; large projects |
+| Agentic Systems | 300 | 300 | 430 | tracing, durable execution and cost added; projects now need evals, traces and injection tests |
+| Production & LLMOps | 120 | 180 | 210 | cloud, data in prod, alerting, load testing, code review |
+| Final Capstone | 100 | 120 | 120 | team practice, longer real use |
+| Getting Hired | 80 | 100 | 140 | coding interviews, networking, job-search process |
+| **Required total** | **1,100** | **1,340** | **1,760** | |
+| ML Foundations (elective) | 150 | 120 | 120 | classic ML and vectors moved to Core |
+| Research Track (elective) | 200 | ~500 | ~500 | honest estimate; now requires ML |
+
+The Batch 11 recheck estimated each lesson's reading, assignments and exercises and each project's requirements for a learner starting from zero. The 2026-10-28 plan matched a fast learner, so the required paths were raised to the likely estimate rather than cutting content.
 
 ## Suggested PR sequence
 
@@ -575,7 +577,7 @@ Phases 0–3 are done, and Phase 4 is partly done. This plan finishes the requir
 | 9. Production II, Capstone (done 2026-10-30) | Caching and Model Choice, Batching/Rate Limits/Fallbacks, Security Review, Code Review, A Server of Your Own (optional), Finding a Real Problem, Writing a Spec, Working in a Team, Resume for AI Roles, Case Studies and Demos (10) | Evidence for 4 Production briefs and the Capstone. Hello, Production still points at Render and repeats Deploying Your API: make it require Cloud Run, a staging service, a recorded rollback and `teardown.sh`, as taught in One Real Cloud and Environments and Releases |
 | 10. Getting Hired (done 2026-10-31) | Your First Contribution, Networking and Referrals, Running a Job Search, Freelance and Contract Work, Behavioral Interviews, Offers and Negotiation, System Design Basics, AI System Design (8) | Write the Outreach Sprint project. Evidence for 3 Hired briefs |
 | P. Provider neutrality (done 2026-10-31) | none | Added after a bias audit on 2026-10-29: 38 lessons had Anthropic code and none had code for another provider. Backfill an "On other providers" section into every earlier lesson with model-calling code (lessons written from Batch 6 on include one already). Your First API Call shows the same request with the OpenAI SDK and a local open model via Ollama. Add a provider comparison page next to the Current Models page (messages, tool calls, structured output, streaming, caching). Prompt Lab and Messy-Text Extractor compare models across two providers; Port Your Agent requires an open model; the Capstone allows any provider. *Done:* 36 lessons now have an "On other providers" section (including Next.js and the AI SDK, which the first audit missed because it calls models through the AI SDK), the Provider Comparison page is live at `#/providers` and linked from Current Models, Prompt Lab and Messy-Text Extractor require a second provider (Ollama counts), and Terminal Chatbot and Agent Loop From Scratch have second-provider extra credit. |
-| 11. Final review | none | Expand Writing a Good README (863 words). Make chunk IDs stable across re-ingestion (Chat With Your Docs vs the RAG Eval Harness dataset). A consistency pass across the curriculum. Recheck each path's hour estimate against what it assigns. Tick off the checkboxes in this roadmap |
+| 11. Final review (done 2026-10-31) | none | Expand Writing a Good README (863 words). Make chunk IDs stable across re-ingestion (Chat With Your Docs vs the RAG Eval Harness dataset). A consistency pass across the curriculum. Recheck each path's hour estimate against what it assigns. Tick off the checkboxes in this roadmap |
 | 12–13. Electives (optional) | ML: 8 lessons. Research: 17 lessons | ML: 4 briefs. Research: 5 briefs |
 
 Each batch takes about 20–30 minutes of agent time plus review.
@@ -613,4 +615,5 @@ Agents work without API keys, Docker or a Render account, so some code has only 
 - [ ] Browser check: the FTC job-scams page (`consumer.ftc.gov/articles/job-scams`, Running a Job Search) is behind an Akamai bot filter.
 - [ ] Batch P, with Ollama: every lesson's Ollama snippet (Foundations use `llama3.2:3b`, later lessons `qwen3:4b`, `qwen3:8b`, `gemma3:4b` and `qwen3-vl:8b`). Check in particular: `chat.completions.parse` with a strict `json_schema` (judge, triage, chaining and structured-output lessons); the object form `image_url: {"url": ...}`; `max_completion_tokens` and `reasoning_effort` on qwen3; the streamed usage chunk from `stream_options`; replaying assistant `model_dump` messages; the Qwen3-VL page transcription (Document Parsing); and the Next.js route with `@ai-sdk/openai-compatible` against Ollama.
 - [ ] Batch P, with an OpenAI key: the OpenAI snippets in Your First API Call, Timeouts/Retries (check a real `insufficient_quota` fills `exc.code`), Citations and Grounding, Streaming in the Browser (check Stop closes the upstream connection), React Essentials, Rapid UIs and Long Context (check `cached_tokens` on the second call); the error OpenAI returns when a tool message is missing (The Agent Loop states it from memory); and the Provider Comparison page's claims about `chat.completions.parse` and `responses.parse`.
+- [ ] Batch 11, against real Postgres: the chunk table with a `text PRIMARY KEY` and `chunk_id()` IDs, re-ingesting the same docs gives the same IDs, and the hybrid-search SQL still joins on the text IDs (Chunking and Vector Databases, Hybrid Search and Reranking).
 - [ ] Browser checks: the Meta hiring-process page says candidates use only its built-in AI assistant (Coding Interviews), and the Runestone pythonds3 chapter names match the Complexity lesson.

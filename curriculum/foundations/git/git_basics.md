@@ -113,7 +113,7 @@ A **remote** is a copy of the repo somewhere else; `origin` is the conventional 
 
 #### Edit locally, not on GitHub
 
-GitHub lets you edit files in the browser. For now, avoid it: if the GitHub copy and your local copy both change separately, your next push gets rejected and fixing that takes skills you'll learn in the next lesson. Make changes locally, commit, then push.
+GitHub lets you edit files in the browser. For now, avoid it: if the GitHub copy and your local copy both change separately, your next push gets rejected and fixing that takes skills you'll learn in the Branches and Pull Requests lesson. Make changes locally, commit, then push.
 
 </div>
 

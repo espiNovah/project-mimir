@@ -22,7 +22,7 @@ Model APIs charge separately for:
 - **Input tokens:** everything you send, including the system prompt, the whole conversation history and any documents.
 - **Output tokens:** everything the model generates, including any thinking. Output is typically about five times more expensive per token than input.
 
-Prices are quoted per million tokens (MTok) and vary hugely by model, often by 20 times or more between a provider's smallest and largest models. At the time of writing, Claude Haiku 5.5 costs $0.10 per million input tokens and $0.50 per million output tokens (for prompts up to 100,000 tokens), while Claude Sonnet 5.5 costs $2 and $10. Prices change, so always check the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) and never hard-code a price without noting where it came from.
+Prices are quoted per million tokens (MTok) and vary hugely by model, often by 20 times or more between a provider's smallest and largest models. At the time of writing, the [cheap model](#/models) costs $0.10 per million input tokens and $0.50 per million output tokens (for prompts up to 100,000 tokens), while the [capable model](#/models) costs $2 and $10. Prices change, so always check the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) and never hard-code a price without noting where it came from.
 
 Every response tells you exactly what you used, so calculating the cost of a call is simple arithmetic:
 
@@ -59,17 +59,20 @@ In the Claude Console you can set a monthly spend limit for your organization. D
 Sometimes you need to know the size of a request *before* sending it: to check that a long document fits in the context window, or to estimate what a batch of 10,000 requests will cost. As you learned in Tokens and Tokenization, each provider has its own tokenizer, so a tool like `tiktoken` only gives a rough idea for Claude. Anthropic provides a free token-counting endpoint that gives the exact count for a given model:
 
 ```python
+import os
+
 import anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
 client = anthropic.Anthropic()
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 with open("notes.txt", encoding="utf-8") as f:
     document = f.read()
 
 count = client.messages.count_tokens(
-    model="claude-haiku-5-5",
+    model=MODEL,
     system="Summarize the user's notes in five bullet points.",
     messages=[{"role": "user", "content": document}],
 )
@@ -116,6 +119,7 @@ The standard pattern is **exponential backoff with jitter**:
 - **Give up eventually** and report a clear error.
 
 ```python
+import os
 import random
 import time
 
@@ -124,6 +128,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 client = anthropic.Anthropic(max_retries=0)   # we handle retries ourselves in this example
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 RETRYABLE = (
     anthropic.RateLimitError,
@@ -151,7 +156,7 @@ def create_with_retry(max_attempts: int = 5, **request):
 
 try:
     response = create_with_retry(
-        model="claude-haiku-5-5",
+        model=MODEL,
         max_tokens=1000,
         messages=[{"role": "user", "content": "Say hello in French."}],
     )

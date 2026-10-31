@@ -2,7 +2,7 @@
 
 Most useful APIs want to know who you are. They identify you with an **API key**: a long, random string that works like a password for your program. Model providers bill you per request, so an API key is effectively a credit card number. If it leaks, someone else can run up your bill, and leaked keys are found and abused within minutes of being pushed to a public GitHub repository. Automated bots scan for them constantly.
 
-This lesson teaches the habits professionals use so that keys never end up in code, in Git history or in screenshots. You'll need these habits in the very next section, when you get your first model API key.
+This lesson teaches the habits professionals use so that keys never end up in code, in Git history or in screenshots. You'll need these habits in the Your First LLM App section, when you get your first model API key.
 
 ### Lesson overview
 

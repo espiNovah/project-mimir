@@ -166,8 +166,8 @@ Finally, test it on a stranger. Ask someone who hasn't seen the project to watch
    - Notice how he presents evidence that a system improved, and copy one technique into your own write-up.
 1. Install [OBS Studio](https://obsproject.com/) (or use your operating system's built-in recorder) and read the [OBS quick start guide](https://obsproject.com/kb/quick-start-guide).
    - Set up a scene with your screen and microphone, record a 30-second test, and check that the audio is clear and the text readable.
-1. Write a case study for your Final Capstone using the five-part arc in The shape of a case study, with a results table and a "How I built it" paragraph. Keep the first four parts to one screen.
-1. Script and record a demo video of three minutes or less for the Capstone, following Planning a demo video. Ask one person who hasn't seen the project to watch it and tell you what it does. If they can't, revise. Keep both the case study and the video; Project: Portfolio Site needs them, plus two more like them.
+1. Revise the case-study post you published for your Final Capstone into the five-part arc in The shape of a case study, with a results table and a "How I built it" paragraph. Keep the first four parts to one screen. Reuse its numbers and story; don't start from scratch.
+1. Re-cut or re-record the Capstone demo video to three minutes or less, following Planning a demo video. Ask one person who hasn't seen the project to watch it and tell you what it does. If they can't, revise. Keep both the case study and the video; Project: Portfolio Site needs them, plus two more like them.
 
 </div>
 

@@ -54,7 +54,7 @@ Put the parts that don't need the network into their own plain functions: calcul
    - `/cost` prints the session's total tokens and cost so far.
    - `/quit` exits cleanly (and so does Ctrl+D).
 1. **Cost meter.** After every reply, print that turn's input tokens, output tokens and cost, and the running total for the session. Read token counts from the final message's `usage`. Keep prices in one clearly labeled place, with a comment saying where and when you got them, and support at least two models.
-1. **Configurable personality and model.** Accept `--system PATH` to load the system prompt from a text file (with a sensible default if it's not given) and `--model NAME` to choose the model. Include at least two example system prompt files in a `prompts/` folder.
+1. **Configurable personality and model.** Accept `--system PATH` to load the system prompt from a text file (with a sensible default if it's not given) and `--model NAME` to choose the model. Without `--model`, fall back to the `MIMIR_MODEL` environment variable and then the [cheap model](#/models), as in Your First API Call. Include at least two example system prompt files in a `prompts/` folder.
 1. **Error handling with retry.** The program must never crash with a traceback because of the API or the network.
    - Retry rate limit (429), overloaded (529), server (5xx) and connection errors with exponential backoff and jitter, and respect `retry-after` when present. Show the user a short message while it waits.
    - Give a clear, specific message for an invalid API key, an unknown model name and a missing `.env` key, then exit or return to the prompt as appropriate.

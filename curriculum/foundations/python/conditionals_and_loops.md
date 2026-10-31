@@ -151,8 +151,8 @@ Python also has a `match` statement for comparing one value against many pattern
 1. Read sections 4.1 to 4.4 of [the official tutorial's "More Control Flow Tools"](https://docs.python.org/3/tutorial/controlflow.html), covering `if`, `for`, `range()`, `break` and `continue`. Section 4.5, on `else` clauses on loops, is optional; the rest of the page is for later lessons.
 1. Practice:
    - From [CS50P Problem Set 1](https://cs50.harvard.edu/python/psets/1/), do Deep Thought, Home Federal Savings Bank, File Extensions and Math Interpreter.
-   - From [CS50P Problem Set 2](https://cs50.harvard.edu/python/psets/2/), do camelCase, Coke Machine and Just setting up my twttr.
    - On Exercism, complete "Meltdown Mitigation" (conditionals) and "Making the Grade" (loops) from the [Python track](https://exercism.org/tracks/python).
+   - In the [Python basics exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/python-basics), make the tests pass for exercises 03 to 05 (FizzBuzz, Letter grade and Count vowels). Each exercise has a starter file and failing tests; run them with `uv run pytest python-basics/<exercise>` from the `exercises/` folder (the set's README shows the setup).
 
 </div>
 

@@ -20,8 +20,8 @@ The first run installs pytest and the other exercise dependencies from `exercise
 
 | # | Exercise | Lesson | Practices |
 | --- | --- | --- | --- |
-| 01 | [Temperature converter](01_temperature_converter/) | Variables and Types | arithmetic, `round`, `return` |
-| 02 | [Receipt line](02_receipt_line/) | Variables and Types | f-strings, number formatting |
+| 01 | [Temperature converter](01_temperature_converter/) | Functions | arithmetic, `round`, `return` |
+| 02 | [Receipt line](02_receipt_line/) | Functions | f-strings, number formatting |
 | 03 | [FizzBuzz](03_fizzbuzz/) | Conditionals and Loops | `for`, `range`, `%`, `if`/`elif` order |
 | 04 | [Letter grade](04_letter_grade/) | Conditionals and Loops | chained conditions, boundaries |
 | 05 | [Count vowels](05_count_vowels/) | Conditionals and Loops | looping over a string, `in` |

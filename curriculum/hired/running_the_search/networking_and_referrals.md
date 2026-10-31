@@ -151,7 +151,7 @@ Both are worth having. But a weak referral from a stranger, requested in a first
 
 **When to ask.** Ask for a referral when three things are true: you've had a real interaction (a conversation, some collaboration, sustained help in a community), there's a specific open role you match well, and you've done your homework on that role. "Would you refer me to anything at your company?" is hard to say yes to. "Would you be comfortable referring me for the AI engineer role posted last week?" is easy.
 
-**Make it easy.** Send the link to the posting, your resume, and three or four sentences the referrer can paste into the referral form: the role, your strongest piece of evidence for it, and how you know each other. Most referral forms ask "How do you know this person?", so give them an honest answer to use.
+**Make it easy.** Send the link to the posting, your resume (Resume for AI Roles, the next lesson, shows how to tailor it), and three or four sentences the referrer can paste into the referral form: the role, your strongest piece of evidence for it, and how you know each other. Most referral forms ask "How do you know this person?", so give them an honest answer to use.
 
 **Accept no gracefully.** Some people can't refer, have a policy against referring people they haven't worked with, or just don't feel they know you well enough. Thank them, and keep the relationship. Asking again in six months, after more interaction, is fine.
 

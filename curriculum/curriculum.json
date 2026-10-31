@@ -5,7 +5,7 @@
     {
       "id": "foundations",
       "title": "Foundations",
-      "hours": 260,
+      "hours": 390,
       "optional": false,
       "description": "Set up a real developer environment, learn Python, Git and how the web works, then build your first app on a language model.",
       "sections": [
@@ -429,7 +429,7 @@
     {
       "id": "core",
       "title": "AI Engineering Core",
-      "hours": 380,
+      "hours": 470,
       "optional": false,
       "description": "The everyday skills of an AI engineer: prompting, evals, structured outputs, classic ML, backends, retrieval and a real frontend.",
       "sections": [
@@ -805,7 +805,7 @@
     {
       "id": "agentic",
       "title": "Agentic Systems",
-      "hours": 300,
+      "hours": 430,
       "optional": false,
       "description": "The heart of the curriculum. Build agents from scratch, learn when not to, connect them to the world with tools and MCP, and make them safe and measurable.",
       "sections": [
@@ -1164,7 +1164,7 @@
     {
       "id": "production",
       "title": "Production & LLMOps",
-      "hours": 180,
+      "hours": 210,
       "optional": false,
       "description": "Take your work from \"runs on my laptop\" to \"runs for real users\": deployed, observable, affordable and secure.",
       "sections": [
@@ -1651,7 +1651,7 @@
     {
       "id": "hired",
       "title": "Getting Hired",
-      "hours": 100,
+      "hours": 140,
       "optional": false,
       "description": "Turn your skills into a job. Learn the roles, build a portfolio that proves you can do them, and prepare for interviews.",
       "sections": [
@@ -1735,7 +1735,7 @@
         },
         {
           "id": "interviews",
-          "title": "Resume & Interviews",
+          "title": "Interviews",
           "description": "Prepare for coding rounds, system design, behavioral questions and take-homes.",
           "lessons": [
             {

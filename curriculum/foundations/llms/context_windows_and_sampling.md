@@ -97,7 +97,7 @@ Two other common settings cut off the long tail of unlikely tokens before sampli
 
 #### Not every model lets you change these
 
-Sampling settings are an area where providers differ and change over time. Some APIs accept `temperature`, `top_p` and `top_k`. Others, including several of the newest reasoning-focused models, fix them at their defaults and reject other values, expecting you to steer the output with instructions instead. Always check the current documentation for the specific model you're using.
+Sampling settings are an area where providers differ and change over time. Some APIs accept `temperature`, `top_p` and `top_k`. Others fix them at their defaults and reject other values, expecting you to steer the output with instructions instead. The current Claude models on the [Models page](#/models) are in this second group: a request that sets a non-default `temperature`, `top_p` or `top_k` returns an error. Always check the current documentation for the specific model you're using.
 
 </div>
 

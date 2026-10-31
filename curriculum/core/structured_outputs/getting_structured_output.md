@@ -216,11 +216,13 @@ The ideas in this lesson transfer completely: constrain the shape, validate your
 
 ```python
 # ticket_other.py  (uv add openai pydantic; ollama pull qwen3:4b). Ticket is the model from above.
+import os
+
 from openai import OpenAI
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
 completion = client.chat.completions.parse(
-    model="qwen3:4b",                 # or an OpenAI model ID
+    model=os.environ.get("MIMIR_MODEL", "qwen3:4b"),  # or an OpenAI model ID
     messages=[{"role": "user", "content": "Classify this support email:\n\nhi, i was charged "
                "TWICE for march and my rent is due tomorrow, please fix asap!!"}],
     response_format=Ticket,           # the SDK sends Ticket's schema as a strict json_schema

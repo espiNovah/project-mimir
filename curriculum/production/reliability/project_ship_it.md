@@ -47,7 +47,7 @@ Every piece of this project is something you practiced in an earlier project or 
    - The [Managing Incidents chapter of Google's SRE book](https://sre.google/sre-book/managing-incidents/) is a good free model for how real teams structure this.
 1. Work through reviewed pull requests.
    - Add `.github/pull_request_template.md` from Code Review. After your initial setup, every change reaches `main` through a pull request that uses it, including any AI-use disclosure.
-   - Get at least one pull request reviewed by someone else, such as a study partner, using Conventional Comments labels, and address every comment before merging. If you have no reviewer, review your own coding agent's pull request as in the Code Review lesson, and say so in your README.
+   - Get at least one pull request reviewed by someone else, such as a friend who codes or someone from a developer community, using Conventional Comments labels, and address every comment before merging. If you have no reviewer, review your own coding agent's pull request as in the Code Review lesson, and say so in your README.
 1. Push to GitHub with a README that leads with the demo URL and an architecture diagram, then links to the dashboard screenshot, CI runs, `SECURITY.md`, `RUNBOOK.md` and your reviewed pull requests, and ends with what you learned.
 
 #### Evidence
@@ -61,8 +61,9 @@ Your README must show:
 - The CI gate blocking a bad prompt change: a link to the pull request, its failed eval run with the step summary showing the score drop and the `broke:` cases, the fix commit and the passing run after it, and a screenshot of the branch protection rule that makes the check required. (Prompt Versioning and CI Evals)
 - An alert fired on purpose: how you triggered it (for example, a flag that forces model errors in staging, or a lowered cost threshold), a screenshot of the notification with its timestamp, the `RUNBOOK.md` entry you followed, and a short timeline of what you checked and did. (Alerting and Incidents)
 - The security review results: `SECURITY.md` with every Evidence cell linking a test, CI step or screenshot; the output of `gitleaks git` over the full history; the latest pip-audit output and how you resolved or justified any finding; your provider spend limit (a screenshot); and the residual risks you accept. (Security Review for AI Apps)
-- A reviewed pull request: a link to it, showing the filled-in template, the review comments with their labels, your replies and fix commits, and the approval. If an AI reviewer also commented, say which of its comments were useful and which were wrong. (Code Review)
+- A reviewed pull request: a link to it, showing the filled-in template, the review comments with their labels, your replies and fix commits, and the approval (GitHub won't let you approve your own pull request, so for a self-review, link your summary comment instead). If an AI reviewer also commented, say which of its comments were useful and which were wrong. (Code Review)
 - The dashboard screenshot, and the cost per request and p95 latency from it, with the date range.
+- **A public post.** A link to your post about this project, as Learning in Public asks for each path you complete: your Production post.
 
 #### Extra credit
 

@@ -34,7 +34,7 @@ Heading to a master's degree or a research role? The elective Research Track cov
 | Final Capstone | Solve a real problem for real users | ~120 |
 | Getting Hired | Turn your portfolio into a job | ~100 |
 
-The core paths take about 1,340 hours. At 15–20 hours a week that's roughly 16–21 months. ML Foundations adds about 120 hours, and the Research Track about 500. Treat the hours as guides, not deadlines.
+The core paths take about 1,760 hours. At 15–20 hours a week that's roughly 20–27 months. ML Foundations adds about 120 hours, and the Research Track about 500. Treat the hours as guides, not deadlines.
 
 ### How to succeed
 

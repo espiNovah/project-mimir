@@ -362,7 +362,7 @@ The names in this lesson were chosen to line up, so moving to OTel later is a tr
 Once traces are in OpenTelemetry format, you can view them in a **trace UI**: a web page that shows each run as a collapsible tree, with timings, token counts and the full content of each span. Two popular ones are free:
 
 - **Langfuse** is open source (MIT license for its core). You can self-host it with Docker Compose, which you learned in the Core path, or use its free cloud tier.
-- **Arize Phoenix** runs on your own machine with a `pip install`. Its source is public under the Elastic License 2.0, which lets you use and self-host it for free but isn't an OSI-approved open-source license.
+- **Arize Phoenix** runs on your own machine after one install (`uv add arize-phoenix`). Its source is public under the Elastic License 2.0, which lets you use and self-host it for free but isn't an OSI-approved open-source license.
 
 Both let you add scores and notes to traces and turn traces into eval datasets. For the agents in this section, JSONL files and `debug.py` are enough, and they keep you close to the data. You'll set up a real trace backend, sampling, privacy masking and dashboards in Logging and Tracing in the Production path, and use them in the Trace Detective project.
 

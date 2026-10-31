@@ -53,7 +53,7 @@ Barbara Oakley's widely taken course *Learning How to Learn* popularized a few i
 
 ### Consistency beats intensity
 
-Over 12–18 months, the people who finish aren't the ones who study 12 hours on a Saturday. They're the ones who study an hour or two most days. Some practical habits:
+Over the two years or so this curriculum takes, the people who finish aren't the ones who study 12 hours on a Saturday. They're the ones who study an hour or two most days. Some practical habits:
 
 - **Study at the same time each day** so it becomes a routine instead of a decision.
 - **End each session by writing your next step**, such as "Next: finish the assignment, item 3." Tomorrow you can start without thinking.

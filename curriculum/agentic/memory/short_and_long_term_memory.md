@@ -397,7 +397,7 @@ tools = [{"type": "function", "function": {"name": t["name"], "description": t["
                                            "parameters": t["input_schema"]}}
          for t in (memory.REMEMBER_TOOL, memory.RECALL_TOOL)]
 reply = client.chat.completions.create(
-    model="llama3.2:3b", tools=tools,
+    model="qwen3:4b", tools=tools,
     messages=[{"role": "system", "content": memory.preferences_for_prompt("ada")},
               {"role": "user", "content": "Remember that I prefer metric units."}])
 print(reply.choices[0].message.tool_calls)

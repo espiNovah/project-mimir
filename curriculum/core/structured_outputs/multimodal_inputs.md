@@ -303,6 +303,7 @@ Here is `receipt.py`'s request on a local vision model, reusing its schema and i
 
 ```python
 # receipt_other.py  (uv add openai; ollama pull gemma3:4b). Reuses receipt.py.
+import os
 import sys
 
 from openai import OpenAI
@@ -312,7 +313,7 @@ client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenA
 block, _ = image_block(sys.argv[1])  # the same straightened, shrunk JPEG
 data_url = f"data:image/jpeg;base64,{block['source']['data']}"  # OpenAI's image format
 completion = client.chat.completions.parse(
-    model="gemma3:4b",  # a vision model; or an OpenAI model ID
+    model=os.environ.get("MIMIR_MODEL", "gemma3:4b"),  # a vision model; or an OpenAI model ID
     messages=[{"role": "user", "content": [{"type": "image_url", "image_url": {"url": data_url}},
         {"type": "text", "text": "Extract this receipt. Use null for anything not printed."}]}],
     response_format=Receipt)

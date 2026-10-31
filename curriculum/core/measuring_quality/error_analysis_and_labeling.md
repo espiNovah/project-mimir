@@ -120,7 +120,7 @@ Expect the guidelines to change. As you label more traces, your sense of what co
 Labeling in a spreadsheet works, but a small tool of your own is faster and less error-prone: it shows one trace at a time, takes a single keypress, and saves after every label so you can stop and resume. This one runs in the terminal and uses only what you learned in Foundations:
 
 ```python
-# label.py: a tiny terminal labeling tool.   run: uv run label.py traces.jsonl
+# label.py: a tiny terminal labeling tool.   run: uv run label.py traces/calls.jsonl
 import json
 import sys
 from pathlib import Path

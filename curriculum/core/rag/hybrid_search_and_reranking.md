@@ -51,7 +51,7 @@ Two caveats are worth knowing. First, `websearch_to_tsquery` joins plain words w
 
 You now have two ranked lists. How do you merge them? The tempting answer is to add the scores, but that's unreliable: a `ts_rank_cd` score and a cosine similarity are on completely different scales, and their spread changes from query to query.
 
-**Reciprocal rank fusion (RRF)** ignores the scores and uses only the *positions*. Each chunk gets `1 / (k + rank)` from every list it appears in, and those values are added up. `k` is a constant, usually 60, that stops the top position from dominating. Here's a worked example with chunk IDs:
+**Reciprocal rank fusion (RRF)** ignores the scores and uses only the *positions*. Each chunk gets `1 / (k + rank)` from every list it appears in, and those values are added up. `k` is a constant, usually 60, that stops the top position from dominating. Here's a worked example, with short numbers standing in for real chunk IDs such as `refunds.md:3`:
 
 ```text
 vector search:  [7, 3, 9]      keyword search:  [3, 12, 7]
@@ -89,7 +89,7 @@ CREATE INDEX IF NOT EXISTS chunks_tsv_idx ON chunks USING gin (tsv);
 """
 
 
-def keyword_search(conn, question: str, n: int = 20) -> list[int]:
+def keyword_search(conn, question: str, n: int = 20) -> list[str]:
     terms = " or ".join(re.findall(r"\w[\w-]*", question))   # match ANY word, not all
     rows = conn.execute(
         """SELECT id FROM chunks, websearch_to_tsquery('english', %s) AS query
@@ -99,7 +99,7 @@ def keyword_search(conn, question: str, n: int = 20) -> list[int]:
     return [row[0] for row in rows]
 
 
-def vector_search(conn, question: str, n: int = 20) -> list[int]:
+def vector_search(conn, question: str, n: int = 20) -> list[str]:
     q = model.encode(question, prompt=QUERY_PROMPT, normalize_embeddings=True)
     rows = conn.execute(
         "SELECT id FROM chunks ORDER BY embedding <=> %s LIMIT %s", (q, n)
@@ -107,16 +107,16 @@ def vector_search(conn, question: str, n: int = 20) -> list[int]:
     return [row[0] for row in rows]
 
 
-def rrf(rankings: list[list[int]], k: int = 60) -> list[tuple[int, float]]:
+def rrf(rankings: list[list[str]], k: int = 60) -> list[tuple[str, float]]:
     """Reciprocal rank fusion: sum 1/(k + rank) over every list a chunk appears in."""
-    scores: dict[int, float] = {}
+    scores: dict[str, float] = {}
     for ranking in rankings:
         for rank, chunk_id in enumerate(ranking, start=1):
             scores[chunk_id] = scores.get(chunk_id, 0.0) + 1 / (k + rank)
     return sorted(scores.items(), key=lambda item: item[1], reverse=True)
 
 
-def hybrid_search(conn, question: str, n: int = 20) -> list[tuple[int, float]]:
+def hybrid_search(conn, question: str, n: int = 20) -> list[tuple[str, float]]:
     return rrf([vector_search(conn, question, n), keyword_search(conn, question, n)])
 
 
@@ -128,14 +128,14 @@ if __name__ == "__main__":
             source, heading = conn.execute(
                 "SELECT source, heading FROM chunks WHERE id = %s", (chunk_id,)
             ).fetchone()
-            print(f"{score:.4f}  {source} > {heading}")
+            print(f"{score:.4f}  {chunk_id}  {source} > {heading}")
 ```
 
 Walk through the important lines:
 
 - **The generated column** means you never compute `tsv` in Python. Postgres fills it in for existing rows when the column is added, and for every new row your ingestion script inserts. The heading is included so a query for "refunds" matches chunks under a "Refunds" heading.
 - **`re.findall(r"\w[\w-]*", question)`** pulls out the words, keeping hyphenated codes like `E-4021` together and dropping quotes and leading dashes that `websearch_to_tsquery` would treat as operators. Joining them with `or` makes a chunk match if it contains any of the words. Stop words are removed and `ts_rank_cd` rewards chunks that contain more of the words, close together.
-- **Both searches return IDs only, in rank order.** That's all RRF needs. Each search fetches 20 candidates, many more than you'll keep, so a chunk ranked 15th by one search can still win if the other likes it too.
+- **Both searches return IDs only, in rank order.** These are the stable chunk IDs from Chunking and Vector Databases, such as `refunds.md:3`. That's all RRF needs. Each search fetches 20 candidates, many more than you'll keep, so a chunk ranked 15th by one search can still win if the other likes it too.
 - **`rrf` is ten lines of plain Python** with no knowledge of where the lists came from. You could add a third list (say, a second embedding model) without changing it.
 
 You can also write RRF as a single SQL query with a `FULL OUTER JOIN`; the [pgvector-python RRF example](https://github.com/pgvector/pgvector-python/blob/master/examples/hybrid_search/rrf.py) shows how. Doing it in Python is easier to read and test, and the difference in speed is tiny for 40 rows.
@@ -173,13 +173,13 @@ Each stage is tuned with its own number: how many to fetch, how many to keep. An
 
 ### Measuring retrieval
 
-Before you judge generated answers, check whether the right chunk was retrieved at all. If it wasn't, no prompt can save the answer. You need a small set of questions where you know which chunk holds the answer, and two numbers:
+Before you judge generated answers, check whether the right chunk was retrieved at all. If it wasn't, no prompt can save the answer. You need a small set of questions where you know which chunk holds the answer, written down by its stable ID (such as `refunds.md:3`) so the label still points at the same chunk after you re-ingest, and two numbers:
 
 - **Hit rate at k**: the share of questions whose correct chunk appears in the top k results.
 - **MRR** (mean reciprocal rank): for each question, score `1 / rank` of the correct chunk (1 for first place, 0.5 for second, 0 if it's missing), then average. It rewards putting the right chunk *high*, not just somewhere.
 
 ```python
-def retrieval_scores(results: list[list[int]], gold: list[int], k: int = 5) -> tuple[float, float]:
+def retrieval_scores(results: list[list[str]], gold: list[str], k: int = 5) -> tuple[float, float]:
     """results[i] is the ranked chunk IDs for question i; gold[i] is its correct chunk ID."""
     hits, reciprocal_ranks = 0, 0.0
     for ranked, right in zip(results, gold):

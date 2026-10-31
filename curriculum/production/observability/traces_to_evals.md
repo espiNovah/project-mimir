@@ -145,7 +145,7 @@ For a single model call, the input is the whole story. For RAG and agents, it is
 So decide which kind of case you want:
 
 - **End-to-end cases** run the whole pipeline, live retrieval and tools included. They test what the user experiences, but they can start passing or failing because the world changed.
-- **Frozen cases** save the context from the trace (the retrieved chunks, the tool results, even the date the user asked) and feed it straight to the generation step. They test one thing, your prompt and model, and they're stable. This is the replay idea from Agent Tracing and Debugging, turned into a permanent test. For a RAG app, it means your answer function needs an optional `context` parameter that skips retrieval when given.
+- **Frozen cases** save the context from the trace (the retrieved chunks, the tool results, even the date the user asked) and feed it straight to the generation step. They test one thing, your prompt and model, and they're stable. This is the replay idea from Agent Tracing and Debugging, turned into a permanent test. For a RAG app, it means your answer function needs an optional `context` parameter that skips retrieval when given. Save the chunks' text, not only their IDs: a stable chunk ID tells you which chunk the trace saw, but the document behind it may have been edited or re-chunked since.
 
 Use frozen cases for generation failures ("had the right chunk and still said 60 days") and end-to-end cases for retrieval or tool failures ("never found the 2026 policy"), where the live step is what you're testing. Time-sensitive cases need a frozen date: "what's on sale this week?" means nothing without one.
 

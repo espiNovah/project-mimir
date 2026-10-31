@@ -12,6 +12,7 @@ This section contains a general overview of topics that you will learn in this l
 - Why chunk size matters and how to choose it.
 - Common chunking strategies: fixed-size, recursive and structure-aware.
 - Why metadata belongs with every chunk, and how contextual chunks retrieve better.
+- Why every chunk needs a stable ID, and how to build one.
 - What a vector database does and how approximate search works.
 - How to choose between pgvector, Chroma and hosted services.
 - How to write an ingestion script that stores chunks in pgvector, and query it.
@@ -64,6 +65,25 @@ A vector on its own is useless to a person. Store these with every chunk:
 Metadata also lets you **filter**: search only this product's manual, only documents from this year, only files this user may see. In a SQL database that's just a `WHERE` clause.
 
 Chunks also retrieve better when they carry a little context. "Revenue grew 3% over the previous quarter" is ambiguous on its own: whose revenue, which quarter? Anthropic found that prepending a short, model-written description of where a chunk came from (which company, which report) before embedding, a technique it calls **contextual retrieval**, markedly reduces failed retrievals. A free version of the same idea is to prepend the document title and heading to each chunk before you embed it, which the script below does. You still store and show the original text; only the embedded text gets the prefix.
+
+### Stable chunk IDs
+
+Every chunk needs an ID, and it's tempting to let the database hand one out: a `bigserial` column numbers rows 1, 2, 3 in the order they're inserted. That works until you ingest again. The delete-then-insert step that keeps ingestion idempotent gives every reinserted chunk a new number, and adding a file or rebuilding the database shuffles them all. Nothing breaks loudly, but several things outside the table remember chunk IDs:
+
+- **Eval labels.** In Evaluating RAG and Catching Regressions you'll write test questions that record which chunks hold each answer. If the IDs change on every ingest, those labels silently point at the wrong chunks, and your retrieval scores turn into nonsense.
+- **Citations and traces.** Your traces and feedback log the IDs of the chunks each answer retrieved and cited. Weeks later, you want to open exactly that chunk.
+- **Caches.** Anything cached under a chunk ID, such as an embedding or a model-written context, is only valid while the ID still means the same text.
+
+So build the ID from facts about the chunk itself, so the same input always produces the same ID. There are two common recipes:
+
+- **Position-based:** the source file plus where the chunk sits in it, such as `refunds.md:3` (the fourth chunk of `refunds.md`, counting from 0) or `handbook.pdf:p2:0` (the first chunk on page 2). It's readable, you can find the chunk by eye, and it stays the same every time you re-ingest an unchanged file. Its weakness: an edit near the top of a file shifts the index of every later chunk in that file. Numbering chunks per page, as PDFs allow, limits the damage to one page.
+- **Content hash:** a short fingerprint of the chunk's text, such as the first 12 characters of its SHA-256 hash (a *hash* turns any text into a fixed-length string, and the same text always gives the same string). It survives edits elsewhere in the file, but any change to the chunk's own text, even a fixed typo, gives it a new ID, and two identical chunks (a disclaimer repeated in every file) get the same ID.
+
+This curriculum uses position-based IDs, built by one small function, `chunk_id`, in `chunking.py` below. Every later lesson and project uses the same function, so an ID in a trace, a citation and an eval label always means the same thing. Keep colons out of file names, since the ID uses them as separators, and remember that renaming a file renames its chunks.
+
+One limit applies to every recipe: no chunk ID survives a change to the chunker itself. A new chunk size or overlap produces different chunks, so of course they get different IDs. Evaluating RAG and Catching Regressions shows how to keep your eval labels working when that happens.
+
+The ingest script below uses the bare file name because all your documents sit in one folder. If they live in subfolders, use the path relative to the docs folder instead (`policies/refunds.md`, not `refunds.md`), so two files with the same name can't share IDs.
 
 ### How vector databases search fast
 
@@ -122,6 +142,15 @@ MAX_CHARS = 1200   # about 300 tokens of English (roughly 4 characters per token
 OVERLAP = 200      # characters repeated between neighboring chunks
 
 
+def chunk_id(source: str, index: int, page: int | None = None) -> str:
+    """Stable ID from where a chunk lives: 'refunds.md:3', or 'handbook.pdf:p2:0' with a page.
+
+    index counts chunks from 0 within the file, or within the page when there is one.
+    Re-ingesting an unchanged file gives exactly the same IDs.
+    """
+    return f"{source}:{index}" if page is None else f"{source}:p{page}:{index}"
+
+
 def split_by_headings(text: str) -> list[tuple[str, str]]:
     """Split Markdown into (heading, body) sections at #, ## and ### lines."""
     sections, heading, lines = [], "", []
@@ -150,7 +179,7 @@ def split_long(body: str) -> list[str]:
         start = end - OVERLAP                                # step back to overlap
 ```
 
-Each window ends at the last blank line in its second half, so most chunks are whole paragraphs. Because a cut never falls in the first half of a window, stepping back `OVERLAP` characters still moves `start` forward, so the loop always ends. One known weakness: a line starting with `# ` inside a fenced code block looks like a heading. You'll fix that in the Assignment.
+Each window ends at the last blank line in its second half, so most chunks are whole paragraphs. Because a cut never falls in the first half of a window, stepping back `OVERLAP` characters still moves `start` forward, so the loop always ends. One known weakness: a line starting with `# ` inside a fenced code block looks like a heading. You'll fix that in the Assignment. `chunk_id` is the stable ID recipe from the last section, kept here so every script that numbers chunks imports the same function.
 
 Second, `ingest.py` creates the table, embeds every chunk and stores it:
 
@@ -163,21 +192,20 @@ import psycopg
 from pgvector.psycopg import register_vector
 from sentence_transformers import SentenceTransformer
 
-from chunking import split_by_headings, split_long
+from chunking import chunk_id, split_by_headings, split_long
 
 DB_URL = os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/mimir")
 MODEL_NAME = "BAAI/bge-small-en-v1.5"   # free, local, 384 dimensions
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS chunks (
-    id        bigserial PRIMARY KEY,
+    id        text PRIMARY KEY,        -- stable chunk_id, such as 'refunds.md:3'
     source    text NOT NULL,           -- file name, for citations and filters
     heading   text NOT NULL,           -- section heading
     position  int  NOT NULL,           -- order of the chunk inside its file
     content   text NOT NULL,           -- original text, kept so you can re-embed later
     model     text NOT NULL,           -- which model made the vector
-    embedding vector(384) NOT NULL,
-    UNIQUE (source, position)
+    embedding vector(384) NOT NULL
 );
 CREATE INDEX IF NOT EXISTS chunks_embedding_idx
     ON chunks USING hnsw (embedding vector_cosine_ops);
@@ -199,9 +227,9 @@ def main(folder: str = "docs") -> None:
             conn.execute("DELETE FROM chunks WHERE source = %s", (path.name,))  # idempotent
             with conn.cursor() as cur:
                 cur.executemany(
-                    "INSERT INTO chunks (source, heading, position, content, model, embedding)"
-                    " VALUES (%s, %s, %s, %s, %s, %s)",
-                    [(path.name, h, i, c, MODEL_NAME, v)
+                    "INSERT INTO chunks (id, source, heading, position, content, model, embedding)"
+                    " VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    [(chunk_id(path.name, i), path.name, h, i, c, MODEL_NAME, v)
                      for i, ((h, c), v) in enumerate(zip(pieces, vectors))],
                 )
             print(f"{path.name}: {len(pieces)} chunks")
@@ -217,7 +245,7 @@ Walk through it from the top:
 - **The HNSW index uses `vector_cosine_ops`**, so it only speeds up queries that sort by cosine distance.
 - **`register_vector(conn)`** must run after `CREATE EXTENSION`, because it looks up the new `vector` type in the database.
 - **The text you embed and the text you store differ.** The embedded text has the title and heading prepended; `content` keeps the original for display and prompts. Documents get no prefix, because this model only wants its instruction in front of *queries*.
-- **Delete, then insert, in one transaction** makes the script idempotent. If anything fails halfway, psycopg rolls back and the old chunks stay, and `UNIQUE (source, position)` catches any bug that inserts duplicates.
+- **Delete, then insert, in one transaction** makes the script idempotent. If anything fails halfway, psycopg rolls back and the old chunks stay. Because `chunk_id` builds each ID from the file name and position, the reinserted chunks get exactly the IDs they had before, and the primary key catches any bug that inserts the same chunk twice.
 
 ### Querying your chunks
 
@@ -271,7 +299,7 @@ Put `EXPLAIN` in front of the query in `psql` (`docker compose exec db psql -U p
    - Read the "Getting Started," "Querying" and "Indexing" sections. Note the distance operators and the difference between HNSW and IVFFlat indexes. Skim "Filtering" and "Iterative Index Scans."
 1. Skim the Psycopg 3 section of the [pgvector-python README](https://github.com/pgvector/pgvector-python), which shows `register_vector` and the insert and query patterns used above.
 1. Practice: build the ingestion pipeline from this lesson for a folder of 5 to 10 Markdown or text documents you care about.
-   - Start Postgres with the Compose file, run `ingest.py`, and run it a second time to confirm the row count doesn't change (`SELECT count(*) FROM chunks`).
+   - Start Postgres with the Compose file, run `ingest.py`, and run it a second time to confirm the row count and the IDs don't change (`SELECT count(*) FROM chunks` and `SELECT id FROM chunks ORDER BY id LIMIT 5`).
    - Fix the code-block weakness in `split_by_headings` so lines inside fenced code blocks are never treated as headings, and write a pytest test for it.
    - Add a second table filled with plain fixed-size chunks (no headings, no overlap). Write ten questions where you know which passage holds the answer, run each against both tables, and write down which chunking returned the right passage in the top 3 more often.
 
@@ -284,9 +312,9 @@ The following questions are an opportunity to reflect on key topics in this less
 - [What are the five steps of an ingestion pipeline, and what does it mean for it to be idempotent?](#the-ingestion-pipeline)
 - [What goes wrong when chunks are too small, and when they are too big?](#why-chunk-size-matters)
 - [How does recursive splitting differ from fixed-size splitting, and why add overlap?](#chunking-strategies)
-- [Which metadata should you store with each chunk, and what is contextual retrieval?](#metadata-and-context)
+- [Which metadata should you store with each chunk, and why embed the title and heading with the text but store the text alone?](#metadata-and-context)
+- [Why should chunk IDs stay the same when you re-ingest, and how do position-based and content-hash IDs differ?](#stable-chunk-ids)
 - [How does an HNSW index differ from IVFFlat, and what does it trade away for speed?](#how-vector-databases-search-fast)
-- [Why does the ingestion script embed different text from the text it stores?](#an-ingestion-script)
 - [Which pgvector operator gives cosine distance, and why must queries use the same model and prefix as ingestion?](#querying-your-chunks)
 
 ### Additional resources

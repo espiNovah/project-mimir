@@ -143,7 +143,7 @@ Some packages are only needed while developing, such as test runners and type ch
 
 1. Watch [CS50P Lecture 4: Libraries](https://cs50.harvard.edu/python/weeks/4/). It covers `random`, `statistics`, command-line arguments with `sys.argv`, installing packages, calling a web API and writing your own module.
    - Whenever the lecture says `pip install something`, use `uv add something` inside your practice project instead.
-   - The part about calling an API with `requests` is a preview of the Working with APIs lesson in the next section.
+   - The part about calling an API with `requests` is a preview of the Working with APIs lesson in The Web for AI Builders section.
 1. Read [chapter 6, "Modules", of the official Python tutorial](https://docs.python.org/3/tutorial/modules.html), sections 6.1 (including 6.1.1, "Executing modules as scripts", and 6.1.2, "The Module Search Path"), 6.2 and the introduction to 6.4, "Packages". Skip 6.1.3 (compiled files), 6.3 (`dir()`) and the subsections of 6.4.
 1. Skim [the official tutorial's "Brief Tour of the Standard Library"](https://docs.python.org/3/tutorial/stdlib.html) so you know roughly what's already available.
 1. Read [the uv guide to working on projects](https://docs.astral.sh/uv/guides/projects/), focusing on "Managing dependencies", `pyproject.toml` and `uv.lock`.

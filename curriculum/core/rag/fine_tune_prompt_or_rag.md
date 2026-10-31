@@ -155,7 +155,7 @@ Fine-tuning is the right answer only when questions 4 through 7 all come back "y
 1. Read the opening page of the [fine-tuning chapter of the Hugging Face LLM Course](https://huggingface.co/learn/llm-course/chapter11/1) for the open-model view on when and why to fine-tune.
 1. Read [What We've Learned From A Year of Building with LLMs](https://applied-llms.org/), written by a group of experienced practitioners.
    - Read the tactical and operational sections on prompting versus RAG versus fine-tuning, and on starting with evals.
-1. Read [OpenAI's guide to optimizing LLM accuracy](https://platform.openai.com/docs/guides/optimizing-llm-accuracy). It frames the same decision as two axes, context optimization (what the model needs to know) and LLM optimization (how it needs to act), which matches this lesson's knowledge-versus-behavior split. The ideas apply to any provider.
+1. Read [OpenAI's guide to optimizing LLM accuracy](https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy). It frames the same decision as two axes, context optimization (what the model needs to know) and LLM optimization (how it needs to act), which matches this lesson's knowledge-versus-behavior split. The ideas apply to any provider.
 1. Practice: for each of these scenarios, write one paragraph choosing prompting, RAG, fine-tuning or a classic model, using the checklist above, and say what evidence would change your mind.
    - An assistant that answers questions about a company's 500-page HR handbook.
    - A system that routes two million support messages a month to one of 77 intents. Use your own Beat the Baseline numbers and adapt `monthly_cost.py` with your real token counts.

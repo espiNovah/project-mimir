@@ -31,7 +31,7 @@ A **citation** is the visible link from a claim to its source, such as `[2]` aft
 
 ### Give every chunk an ID
 
-A model can only cite what it can name. So before the chunks go into the prompt, give each one a short number and a human-readable label. Use the numbers 1 to n in rank order, not your database IDs: small numbers are easy for the model to copy correctly, and your code keeps a list that maps each number back to the real chunk.
+A model can only cite what it can name. So before the chunks go into the prompt, give each one a short number and a human-readable label. Use the numbers 1 to n in rank order, not your stable chunk IDs such as `handbook.pdf:p2:0`: small numbers are easy for the model to copy correctly, and your code keeps a list that maps each number back to the real chunk. The stable ID is what you log in traces and compare with your eval labels; the number only lives inside one prompt.
 
 The label is what a reader sees next to a citation. This is where the metadata you've carried since Document Parsing pays off. A parsed record kept its `source`, `page` and `section`, so a chunk can be labeled "handbook.pdf, page 2, 3 Plans and prices." The simple `ingest.py` from Chunking and Vector Databases read Markdown and dropped page numbers; in the Chat With Your Docs project you'll have it read `records.jsonl` instead, so every chunk keeps its page. The code below works either way: it shows a page when there is one.
 
@@ -153,8 +153,8 @@ def check_answer(answer: str, chunks: list[dict]) -> list[str]:
     return problems
 
 
-def cited_chunk_ids(answer: str, chunks: list[dict]) -> list[int]:
-    """Database IDs of the chunks an answer cites, for logs and the UI."""
+def cited_chunk_ids(answer: str, chunks: list[dict]) -> list[str]:
+    """Stable chunk IDs (such as 'handbook.pdf:p2:0') an answer cites, for traces and the UI."""
     numbers = {int(n) for n in CITATION.findall(answer)}
     return [chunks[n - 1]["id"] for n in sorted(numbers) if 1 <= n <= len(chunks)]
 ```
@@ -336,7 +336,7 @@ Because it returns the same kind of string, `check_answer` works on its output u
 The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
 
 - [Name three ways a model can go wrong even when the right chunk is in its prompt.](#why-retrieval-is-not-grounding)
-- [Why number the chunks 1 to n instead of using database IDs, and where does the page number come from?](#give-every-chunk-an-id)
+- [Why number the chunks 1 to n instead of using their stable chunk IDs, and where does the page number come from?](#give-every-chunk-an-id)
 - [What four things should a grounded prompt say?](#a-grounded-prompt)
 - [What do the citation checks catch, and what can they not catch?](#verifying-citations-in-code)
 - [What does a native citation guarantee, and why measure coverage as well?](#native-citations)

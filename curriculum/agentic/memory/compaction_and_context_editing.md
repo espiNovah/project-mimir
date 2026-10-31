@@ -18,9 +18,9 @@ This section contains a general overview of topics that you will learn in this l
 
 ### Why the history grows so fast
 
-Tool results are usually the biggest cost. A single file read or search result can be thousands of tokens, and as you saw in the last lesson, every one of them is resent on every later turn. The model's own text is small by comparison: a tool call is a few dozen tokens, and its reasoning is often a few hundred.
+Tool results are usually the biggest cost. A single file read or search result can be thousands of tokens, and as you saw in Context Engineering for Agents, every one of them is resent on every later turn. The model's own text is small by comparison: a tool call is a few dozen tokens, and its reasoning is often a few hundred.
 
-You already have two ways to measure this. The API reports `usage.input_tokens` on every response, and your traces store it per step, so `context_report.py` from the last lesson shows the history growing. The token counting endpoint lets you check a request's size *before* you send it. That's handy right before a step you suspect will be large.
+You already have two ways to measure this. The API reports `usage.input_tokens` on every response, and your traces store it per step, so `context_report.py` from Context Engineering for Agents shows the history growing. The token counting endpoint lets you check a request's size *before* you send it. That's handy right before a step you suspect will be large.
 
 When the numbers say the context is getting too big, you have three options, and many long-running agents use all three:
 
@@ -162,7 +162,7 @@ What can go: raw tool output that's already been acted on, failed attempts that 
 
 ### Choosing when to compact
 
-Compact well before the hard limit, for example at 50 to 70 percent of the window or of the context budget you set in the last lesson. Leave room for the summary call itself, which has to read the whole history, and for a large tool result arriving just before you check.
+Compact well before the hard limit, for example at 50 to 70 percent of the window or of the context budget you set in Context Engineering for Agents. Leave room for the summary call itself, which has to read the whole history, and for a large tool result arriving just before you check.
 
 Three more rules of thumb:
 

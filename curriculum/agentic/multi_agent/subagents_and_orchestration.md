@@ -2,7 +2,7 @@
 
 A **multi-agent system** splits work between several model instances, each with its own instructions, tools and context window. The most common shape is an orchestrator: a lead agent that breaks a task into parts and hands each one to a **subagent**. Subagents work in parallel and send back short summaries. Done well, this lets a system cover more ground than one context window can hold. Done badly, it multiplies cost and creates agents that work from different, conflicting assumptions.
 
-You've already seen the workflow version of this. In Parallelization and Orchestrators, an orchestrator call planned subtasks once, your code ran the workers, and a synthesizer combined the results. This lesson takes the next step that lesson pointed to: the lead is a full agent that can delegate, read the results and delegate again, and each worker is a full agent with its own tools and loop. You'll also meet two other ways agents work together: **handoffs**, where one agent passes the whole conversation to another, and **A2A**, a protocol for agents built by different teams to talk over a network. Practitioners disagree in public about when any of this is worth it, and you'll read both sides.
+You've already seen the workflow version of this. In Parallelization and Orchestrator-Workers, an orchestrator call planned subtasks once, your code ran the workers, and a synthesizer combined the results. This lesson takes the next step that lesson pointed to: the lead is a full agent that can delegate, read the results and delegate again, and each worker is a full agent with its own tools and loop. You'll also meet two other ways agents work together: **handoffs**, where one agent passes the whole conversation to another, and **A2A**, a protocol for agents built by different teams to talk over a network. Practitioners disagree in public about when any of this is worth it, and you'll read both sides.
 
 ### Lesson overview
 
@@ -18,7 +18,7 @@ This section contains a general overview of topics that you will learn in this l
 
 ### From workers to subagents
 
-In the workflow from Parallelization and Orchestrators, each worker was a single model call. It received one file and one instruction, answered, and was done. A **subagent** is a worker that runs its own agent loop. It gets a task description, a system prompt and a set of tools, and it keeps calling tools until it has an answer. Then it returns that answer to the agent that started it, which is usually called the **lead** or **orchestrator**.
+In the workflow from Parallelization and Orchestrator-Workers, each worker was a single model call. It received one file and one instruction, answered, and was done. A **subagent** is a worker that runs its own agent loop. It gets a task description, a system prompt and a set of tools, and it keeps calling tools until it has an answer. Then it returns that answer to the agent that started it, which is usually called the **lead** or **orchestrator**.
 
 To the lead, a subagent looks like just another tool. The lead calls something like `delegate(objective="...")`, waits, and gets back a tool result. What happens inside (ten searches, five page reads, three dead ends) stays inside. That is the whole trick, and it's why subagents exist:
 

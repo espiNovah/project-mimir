@@ -210,7 +210,7 @@ LangGraph itself doesn't call any model. The model node does, so switching provi
 
 ```python
 model = init_chat_model(
-    "qwen3:8b", model_provider="openai",                   # OpenAI-style API...
+    "qwen3:4b", model_provider="openai",                   # OpenAI-style API...
     base_url="http://localhost:11434/v1", api_key="ollama",  # ...served by local Ollama
 ).bind_tools(TOOLS)
 ```

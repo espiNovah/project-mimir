@@ -125,7 +125,7 @@ Hooks run in your process, in ordinary Python, so they're the right place for an
 
 ### Porting a small agent
 
-Now port an agent you could have written in the Tool Use section. It has two tools, a calculator and a note writer, and a person must approve every note before it's saved. Following the advice from "Port Your Agent", the tools are plain functions in their own file, with no framework imports, so every version of the agent can share them. Save this as `tools.py`:
+Now port an agent you could have written in the Tool Use section. It has two tools, a calculator and a note writer, and a person must approve every note before it's saved. Following the advice in "Port Your Agent", the project at the end of this section, the tools are plain functions in their own file, with no framework imports, so every version of the agent can share them. Save this as `tools.py`:
 
 ```python
 """Plain tool functions, shared by every version of the agent. No framework imports."""

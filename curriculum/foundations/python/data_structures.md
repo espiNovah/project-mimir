@@ -182,8 +182,9 @@ Need order and duplicates? Use a list. Need to look things up by name? Use a dic
    - You can skip 5.1.1 (lists as stacks), 5.1.2 (queues) and 5.1.4 (nested comprehensions) on a first read.
 1. Rewatch the second half of [CS50P Lecture 2: Loops](https://cs50.harvard.edu/python/weeks/2/), where lists and dicts are combined with loops, including a list of dicts.
 1. Practice:
-   - Do Nutrition Facts from [CS50P Problem Set 2](https://cs50.harvard.edu/python/psets/2/) (a dict lookup).
+   - From [CS50P Problem Set 2](https://cs50.harvard.edu/python/psets/2/), do camelCase, Coke Machine and Just setting up my twttr (more loop practice, now that you've rewatched Lecture 2), and Nutrition Facts (a dict lookup).
    - On the [Exercism Python track](https://exercism.org/tracks/python), complete "Card Games" (lists), "Inventory Management" (dicts), "Cater Waiter" (sets) and "Tisbury Treasure Hunt" (tuples).
+   - In the [Python basics exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/python-basics), make the tests pass for exercises 06 and 07 (Word counts and Common tags). Each exercise has a starter file and failing tests; run them with `uv run pytest python-basics/<exercise>` from the `exercises/` folder (the set's README shows the setup).
 1. Build a tiny conversation log. In your practice project, write a script with a `messages` list like the one above. In a loop, read lines from the user with `input()`, append each as a `{"role": "user", "content": ...}` dict, append a fake assistant reply (for example, the user's text reversed), and stop when the user types `quit`. At the end, print how many messages were sent by each role using a counting dict.
 
 </div>

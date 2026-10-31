@@ -32,7 +32,7 @@ FAQ = [
     ("Do I need coding experience to start?",
      "No. The Foundations path starts from zero: the terminal, Git, Python, how the web works and how language models work. If you already code, skim Foundations and use its projects to test yourself."),
     ("How long does it take to finish?",
-     "The core paths take about 1,340 hours, roughly 16 to 21 months at 15 to 20 hours a week. The optional ML Foundations elective adds about 120 hours, and the Research Track about 500."),
+     "The core paths take about 1,760 hours, roughly 20 to 27 months at 15 to 20 hours a week. The optional ML Foundations elective adds about 120 hours, and the Research Track about 500."),
     ("What jobs does it prepare me for?",
      "Applied AI roles: AI engineer, agent or automation engineer, forward-deployed or AI solutions engineer, and LLMOps engineer. The Research Track adds the theory needed for a master's degree or research work."),
     ("How is Project Mímir different from a course or a bootcamp?",

@@ -2,7 +2,7 @@
 
 A huge share of real AI work is turning messy human text into clean data: invoices into spreadsheet rows, job postings into searchable fields, emails into tickets. In this project you will build a command-line tool that does exactly that for a type of document you choose. It will read pasted text, photos and PDFs, use a Pydantic schema with nested and optional fields, validate every output, retry with the validation error when something fails, and report its accuracy, with a confidence interval, on a test set of 20 real examples, for a Claude model and for a model from a second provider.
 
-You will reuse this extractor in the next section, where it becomes the engine behind the LLM-Powered API project, so build it cleanly.
+You will reuse this extractor in the Backend section, where it becomes the engine behind the LLM-Powered API project, so build it cleanly.
 
 ### Before you start
 

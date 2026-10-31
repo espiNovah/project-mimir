@@ -10,6 +10,7 @@ This section contains a general overview of topics that you will learn in this l
 
 - How to evaluate retrieval and generation separately.
 - Retrieval metrics: hit rate at k, recall at k, MRR and context precision.
+- How to keep relevance labels working when you change the chunker.
 - Answer metrics: faithfulness, correctness and refusal accuracy.
 - What evaluation frameworks such as Ragas and promptfoo offer.
 - What a regression is and how to catch one per question.
@@ -19,13 +20,15 @@ This section contains a general overview of topics that you will learn in this l
 
 Picture your Chat With Your Docs pipeline as a chain: the question goes to the retriever, the retriever returns chunks, and the model writes an answer from those chunks. A failure at the end can start anywhere along the chain.
 
-So for each test question, record not only a reference answer but also the IDs of the chunk or chunks that contain the answer. These are your *relevance labels*, and they let you score retrieval on its own. The order of debugging follows the chain: if the right chunk isn't retrieved, no prompt change can fix the answer. Fix retrieval first, then generation.
+So for each test question, record not only a reference answer but also the IDs of the chunk or chunks that contain the answer. These are your *relevance labels*, and they let you score retrieval on its own. Use the stable IDs from Chunking and Vector Databases, such as `config.md:3` or `handbook.pdf:p2:0`, never an auto-numbered database ID, which changes every time you re-ingest. The order of debugging follows the chain: if the right chunk isn't retrieved, no prompt change can fix the answer. Fix retrieval first, then generation.
 
 A test case in `eval_set.jsonl` might look like this:
 
 ```json
-{"id": "q14", "type": "answerable", "question": "How do I raise the request timeout?", "relevant_ids": ["config.md#3"], "reference": "Pass --timeout with a number of seconds; the default is 30."}
+{"id": "q14", "type": "answerable", "question": "How do I raise the request timeout?", "relevant_ids": ["config.md:3"], "evidence": ["Pass --timeout with the number of seconds"], "reference": "Pass --timeout with a number of seconds; the default is 30."}
 ```
+
+The `evidence` field holds a short quote copied exactly from each relevant passage. It takes seconds to add, and it's what lets you repair the labels later, as [When the chunker changes](#when-the-chunker-changes) shows.
 
 Write these from the documents, not from your system's outputs, or you'll end up testing only what already works.
 
@@ -62,9 +65,9 @@ def reciprocal_rank(retrieved: list[str], relevant: set[str]) -> float:
 
 if __name__ == "__main__":
     cases = [  # (what the retriever returned, what should have been returned)
-        (["a#2", "b#1", "c#4", "a#7", "d#1"], {"b#1"}),
-        (["e#3", "e#4", "f#1", "g#2", "h#9"], {"x#1"}),          # a miss
-        (["k#1", "m#2", "k#2", "n#5", "p#1"], {"k#1", "k#2"}),   # needs two passages
+        (["a.md:2", "b.md:1", "c.md:4", "a.md:7", "d.md:1"], {"b.md:1"}),
+        (["e.md:3", "e.md:4", "f.md:1", "g.md:2", "h.md:9"], {"x.md:1"}),          # a miss
+        (["k.md:1", "m.md:2", "k.md:2", "n.md:5", "p.md:1"], {"k.md:1", "k.md:2"}),   # needs two passages
     ]
     for name, fn in [("hit@5", hit_at_k), ("recall@5", recall_at_k), ("precision@5", precision_at_k)]:
         print(name, round(sum(fn(r, rel, 5) for r, rel in cases) / len(cases), 2))
@@ -74,6 +77,54 @@ if __name__ == "__main__":
 Running this prints `hit@5 0.67`, `recall@5 0.67`, `precision@5 0.2` and `MRR 0.5`. Only score answerable questions this way; out-of-scope questions have no relevant chunks.
 
 Each of these is an average over questions, so it gets a bootstrap confidence interval exactly like any other score from Eval Statistics. With 40 questions, a hit rate of 0.80 can easily have an interval from 0.68 to 0.92.
+
+### When the chunker changes
+
+Stable IDs survive re-ingestion, but not a new chunker. Change the chunk size, the overlap or the heading rules and you get different chunks with different IDs, and every `relevant_ids` label written for the old chunks is now wrong. Worse, it's wrong silently: a label that names a chunk that no longer exists just never matches, so hit rate drops and you blame the new chunker for a labeling problem. This is exactly the situation in an experiment like "does a smaller chunk size help?"
+
+Three habits keep your labels honest:
+
+1. **Check labels before every run.** Before scoring, confirm that every ID in `relevant_ids` exists in the current `chunks` table, and stop with an error that lists the missing ones if any don't.
+1. **Re-label from the evidence.** Each case's `evidence` quotes are still in the documents, whatever the chunker did. After re-ingesting, find the chunk that now contains each quote and write the new IDs. A quote that falls across a chunk boundary, or matches nothing because the text was edited, goes on a short list to fix by hand.
+1. **Keep a coarser fallback.** The ID scheme gives you a document- and page-level *location* for free: drop the last part of `handbook.pdf:p2:0` and you get `handbook.pdf:p2`, and `config.md:3` gives `config.md`. Hit rate at the location level survives any chunker change as long as the parser and the pages stay the same. It's coarser, but when you compare two chunkers it's also fairer, because bigger chunks are easier to "hit" at the chunk level simply by covering more text.
+
+Here is the re-labeling step and the location fallback:
+
+```python
+# relabel.py: re-point eval labels at new chunk IDs after a chunker change.
+def normalize(text: str) -> str:
+    return " ".join(text.lower().split())
+
+
+def location(chunk_id: str) -> str:
+    """'handbook.pdf:p2:0' -> 'handbook.pdf:p2', and 'config.md:3' -> 'config.md'."""
+    return chunk_id.rsplit(":", 1)[0]
+
+
+def relabel(case: dict, chunks: list[dict]) -> tuple[list[str], list[str]]:
+    """New IDs of the chunks containing each evidence quote, plus quotes that matched nothing."""
+    new_ids, missing = [], []
+    for quote in case["evidence"]:
+        found = [c["id"] for c in chunks if normalize(quote) in normalize(c["content"])]
+        new_ids += [i for i in found if i not in new_ids]
+        if not found:
+            missing.append(quote)
+    return new_ids, missing
+
+
+if __name__ == "__main__":
+    # In your project, load the chunks with: SELECT id, content FROM chunks
+    chunks = [
+        {"id": "config.md:0", "content": "Install the tool with uv add mytool."},
+        {"id": "config.md:1", "content": "Pass --timeout with the number of seconds.\nThe default is 30."},
+    ]
+    case = {"id": "q14", "relevant_ids": ["config.md:3"],
+            "evidence": ["Pass --timeout with the number of seconds"]}
+    print(relabel(case, chunks))                     # (['config.md:1'], [])
+    print(location("handbook.pdf:p2:0"), location("config.md:3"))
+```
+
+Run `relabel` over every case, write the results to a new file, and review the changes in a diff before you replace `eval_set.jsonl`. A quote that now matches several chunks is probably too short to be useful, and a missing quote needs a human. To score at the location level, map both lists through `location` and reuse the same metric functions: `hit_at_k([location(i) for i in retrieved], {location(i) for i in relevant}, 5)`. Report the chunk-level and location-level numbers side by side, and say which one your before-and-after comparison relies on.
 
 ### Answer metrics
 
@@ -198,12 +249,12 @@ Keep the CI set to a size that finishes in a few minutes and costs cents: 30 to 
    - Read the descriptions of context precision, context recall, faithfulness and response relevancy. Note which ones use an LLM, and how their definitions differ from the ID-based versions in this lesson.
 1. Read [promptfoo's introduction](https://www.promptfoo.dev/docs/intro/) and follow its [getting started guide](https://www.promptfoo.dev/docs/getting-started/).
    - Set up a config with two prompt variants and a few test cases, and run `promptfoo eval` and `promptfoo view`.
-   - OpenAI announced it would acquire promptfoo in March 2026. It remains open source and works with many model providers, including Claude.
+   - OpenAI [announced it would acquire promptfoo](https://openai.com/index/openai-to-acquire-promptfoo/) in March 2026. It remains open source and works with many model providers, including Claude.
 1. Read [promptfoo's assertions and metrics reference](https://www.promptfoo.dev/docs/configuration/expected-outputs/) to see which checks are code-based and which are model-graded, and [promptfoo's GitHub Action guide](https://www.promptfoo.dev/docs/integrations/github-action/) to compare its CI setup with the hand-written one above.
 1. Revisit the sections of the [Hamel and Shreya evals FAQ](https://hamel.dev/blog/posts/evals-faq/) that cover RAG and retrieval.
-1. Practice: write 20 test questions for your Chat With Your Docs system, each with the relevant chunk IDs and a short reference answer, plus 5 the documents can't answer.
+1. Practice: write 20 test questions for your Chat With Your Docs system, each with the relevant chunk IDs, an evidence quote for each and a short reference answer, plus 5 the documents can't answer.
    - Compute hit rate at 5, recall at 5 and MRR with the code from this lesson, each with a bootstrap confidence interval.
-   - Change one retrieval setting (such as chunk size or the number of reranked results), rerun, and use `compare.py` to list which questions got better and which got worse.
+   - Change one retrieval setting (such as chunk size or the number of reranked results), rerun, and use `compare.py` to list which questions got better and which got worse. If you changed the chunk size, run `relabel.py` first and report location-level hit rate too.
    - Add the eval as a GitHub Actions job and confirm that a deliberately bad change (for example, k=1) fails the build.
 
 </div>
@@ -214,8 +265,8 @@ The following questions are an opportunity to reflect on key topics in this less
 
 - [Why should you score retrieval separately from the final answer?](#evaluate-the-pipeline-in-stages)
 - [What is the difference between hit rate at k, recall at k and MRR?](#retrieval-metrics-in-plain-python)
+- [Why do relevance labels break when you change the chunker, and how do you repair them?](#when-the-chunker-changes)
 - [How can an answer be faithful but incorrect, and what does that tell you?](#answer-metrics)
-- [Why should you check a framework's LLM-graded metric before trusting it?](#what-frameworks-add)
 - [Why compare results per question instead of only comparing averages?](#what-a-regression-is)
 - [What three things make a before-and-after comparison fair?](#comparing-fairly)
 - [How does an eval job in GitHub Actions fail the build?](#regression-suites-in-ci)

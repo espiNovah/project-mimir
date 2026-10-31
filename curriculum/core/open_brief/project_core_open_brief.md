@@ -84,7 +84,7 @@ There is no step-by-step guide for this project. These are the requirements your
 
 - Put a real user in front of it. Watch them use it without your help, write down where they got stuck, and fix the worst problem.
 - Run your evals in GitHub Actions on every pull request, with your API key as a repository secret, and fail the build when a score drops below its bar. Link a failed run from a deliberately bad pull request. (Evaluating RAG and Catching Regressions)
-- Compare two models on your success criteria and cost per request, and say which one you'd ship and why.
+- Compare two models, ideally from different providers, on your success criteria and cost per request, and say which one you'd ship and why.
 - Write a public post about the project, as in Learning in Public: the problem, the bar, and what it took to clear it.
 
 </div>

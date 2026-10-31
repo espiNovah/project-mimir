@@ -163,13 +163,15 @@ Prompted reasoning in `<thinking>` and `<answer>` tags works on any model, which
 
 ```python
 # think_other.py  (uv add openai; ollama pull qwen3:4b)
+import os
+
 from openai import OpenAI
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # OpenAI(): reads OPENAI_API_KEY
 question = ("A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. "
             "How much does the ball cost? Give just the amount in your final answer.")
 response = client.chat.completions.create(
-    model="qwen3:4b",              # or an OpenAI reasoning model ID
+    model=os.environ.get("MIMIR_MODEL", "qwen3:4b"),  # or an OpenAI reasoning model ID
     reasoning_effort="high",       # try "low"; levels depend on the model
     max_completion_tokens=4000,    # reasoning + answer (Ollama documents max_tokens)
     messages=[{"role": "user", "content": question}],

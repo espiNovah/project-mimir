@@ -244,7 +244,7 @@ from openai import OpenAI
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # key is ignored
 response = client.chat.completions.create(
-    model="llama3.2:3b",
+    model="qwen3:4b",
     messages=[{"role": "user", "content": "Say hello."}],
 )
 print("context size:", response.usage.prompt_tokens)   # record this in your model span

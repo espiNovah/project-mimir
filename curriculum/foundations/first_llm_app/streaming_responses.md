@@ -31,14 +31,17 @@ There's a second, practical reason. Very long responses can take minutes, and lo
 The Python SDK's `client.messages.stream()` takes the same arguments as `messages.create()`, but you use it in a `with` block and loop over the text as it arrives:
 
 ```python
+import os
+
 import anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
 client = anthropic.Anthropic()
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 with client.messages.stream(
-    model="claude-haiku-5-5",
+    model=MODEL,
     max_tokens=2000,
     messages=[{"role": "user", "content": "Write a four-line poem about debugging."}],
 ) as stream:
@@ -66,7 +69,7 @@ To use streaming in a chatbot, you need the full reply text to add to your histo
 ```python
 def stream_reply(history: list[dict], system: str) -> str:
     with client.messages.stream(
-        model="claude-haiku-5-5",
+        model=MODEL,
         max_tokens=2000,
         system=system,
         messages=history,

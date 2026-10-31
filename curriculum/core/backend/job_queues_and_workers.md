@@ -166,7 +166,7 @@ async def run_job(ctx, job_id: int) -> None:
 
 `llm.summarize` is your async model call from the summarizer API, moved into its own `llm.py` module. Importing the module (`import llm`) and calling `llm.summarize` rather than importing the function directly lets tests swap it out with `monkeypatch`, as you'll see.
 
-The names are the same ones Deploying Your API uses. **`process_job`** does the real work and doesn't know or care who called it. **`run_job`** is the thin wrapper the worker calls; arq always passes a `ctx` dictionary as the first argument, and `ctx["job_try"]` is the attempt number, starting at 1. Deploying Your API shows `run_job` without the retry logic, to keep that lesson short. This is the full version.
+Deploying Your API reuses these names. **`process_job`** does the real work and doesn't know or care who called it. **`run_job`** is the thin wrapper the worker calls; arq always passes a `ctx` dictionary as the first argument, and `ctx["job_try"]` is the attempt number, starting at 1. Deploying Your API will show `run_job` without the retry logic, to keep that lesson short; this is the full version.
 
 Notice what goes on the queue: only the job's ID. The text, the owner and the status all live in Postgres, where they're safe and queryable. Small messages also mean nothing breaks when you change the `Job` table later.
 

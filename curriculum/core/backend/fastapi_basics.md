@@ -275,7 +275,7 @@ def fake_summarizer(text: str, max_sentences: int) -> str:
 app.dependency_overrides[get_summarizer] = lambda: fake_summarizer
 ```
 
-In production, FastAPI calls `get_summarizer()` and your route gets the real function. In tests, it calls the override instead and your route gets the fake, which returns instantly and always says the same thing. The route's code doesn't change at all. You will use exactly this mechanism in the next lessons to hand each request a database session, and later to check API keys.
+In production, FastAPI calls `get_summarizer()` and your route gets the real function. In tests, it calls the override instead and your route gets the fake, which returns instantly and always says the same thing. The route's code doesn't change at all. You will use exactly this mechanism in the next lessons to hand each request a database session, and later to check who is logged in.
 
 ### On other providers
 

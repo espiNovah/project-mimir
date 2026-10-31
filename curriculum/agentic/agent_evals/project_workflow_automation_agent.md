@@ -52,6 +52,7 @@ Your README must show:
 - The failure log: for each observed-failure scenario, the one-line description of the original failure, and the grouped causes from your improvement round with a count for each.
 - The prompt-injection results: for each injection scenario, the attack failed in every run, shown by environment state and your `audit.jsonl` (no forbidden email sent, no file shared, no CRM row changed). Report how many runs the agent *proposed* the injected action to the approver, since a proposal that only the approval gate stopped is a closer call than one the agent never made, and name the structural defense that stops each attack. (Prompt Injection and the Lethal Trifecta, Secure Design Patterns)
 - A durable approval, end to end: a short recording or a terminal transcript in which a run pauses on an irreversible action, the process is stopped, the request is approved on the approval page, and a fresh process resumes and performs the action once. Show the matching lines from the audit log.
+- **A public post.** A link to your post about this project, as Learning in Public asks for each path you complete: your Agentic Systems post.
 
 #### Extra credit
 

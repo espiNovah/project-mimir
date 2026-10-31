@@ -55,7 +55,7 @@ A **conversion rate** is the share of opportunities that move from one stage to 
 
 - **Low application-to-screen** means your materials or targeting aren't landing. Maybe you're applying to roles that need more experience, or your resume and portfolio don't make the match obvious, or your applications arrive cold.
 - **Low screen-to-interview** usually means your story in a short call isn't clear: what role you want, why, and your best evidence.
-- **Low interview-to-offer** points at interview skills, which the Resume & Interviews section covers.
+- **Low interview-to-offer** points at interview skills, which the Interviews section covers.
 
 Your tracker makes these rates easy to compute. If you export it as `pipeline.csv`, this short script prints your funnel. It uses only the standard library, so you can run it with `uv run funnel.py` in any folder:
 

@@ -20,14 +20,17 @@ This section contains a general overview of topics that you will learn in this l
 The `system` parameter holds instructions that apply to the whole conversation: who the model should be, how it should behave, what it should and shouldn't do. It's separate from the `messages` list. A separate `system` field is how Anthropic's API does it; OpenAI-style APIs put the system prompt inside the list instead, as you'll see in [On other providers](#on-other-providers).
 
 ```python
+import os
+
 import anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
 client = anthropic.Anthropic()
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 response = client.messages.create(
-    model="claude-haiku-5-5",
+    model=MODEL,
     max_tokens=2000,
     system=(
         "You are a patient Python tutor for complete beginners. "
@@ -57,12 +60,12 @@ Here's a surprise for most people. Try this:
 
 ```python
 first = client.messages.create(
-    model="claude-haiku-5-5",
+    model=MODEL,
     max_tokens=2000,
     messages=[{"role": "user", "content": "My name is Ada. Please remember it."}],
 )
 second = client.messages.create(
-    model="claude-haiku-5-5",
+    model=MODEL,
     max_tokens=2000,
     messages=[{"role": "user", "content": "What's my name?"}],
 )
@@ -87,11 +90,14 @@ Send that, and the model answers "Ada," because the earlier turns are right ther
 Put those pieces together and you have a working chatbot in about 25 lines:
 
 ```python
+import os
+
 import anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
 client = anthropic.Anthropic()
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 SYSTEM_PROMPT = "You are a friendly, concise assistant. Answer in plain text without Markdown."
 history: list[dict] = []
@@ -110,7 +116,7 @@ while True:
 
     history.append({"role": "user", "content": user_input})
     response = client.messages.create(
-        model="claude-haiku-5-5",
+        model=MODEL,
         max_tokens=2000,
         system=SYSTEM_PROMPT,
         messages=history,

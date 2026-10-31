@@ -268,7 +268,7 @@ from openai import OpenAI
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # key is ignored
 tools = [{"type": "function", "function": {"name": t["name"], "description": t["description"],
           "parameters": t["input_schema"]}} for t in TOOLS]          # TOOLS from browser_agent.py
-response = client.chat.completions.create(model="llama3.2:3b", tools=tools, messages=messages)
+response = client.chat.completions.create(model="qwen3:4b", tools=tools, messages=messages)
 for call in response.choices[0].message.tool_calls or []:
     print(call.function.name, json.loads(call.function.arguments))
 ```

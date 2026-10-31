@@ -170,7 +170,7 @@ A few details worth noticing:
 - **`APITimeoutError` is a subclass of `APIConnectionError`**, so one `isinstance` check covers both "couldn't connect" and "took too long."
 - **The client is passed in.** Your FastAPI app creates one client at startup and hands it to `call_model`; tests hand it a fake. This is the dependency injection you learned in Testing with pytest.
 - **`sleep` is passed in too.** Tenacity calls it between attempts, so a test can record the waits instead of actually waiting.
-- **It's async**, because your routes and your `process_job` function from Deploying Your API are `async def`. Inside async code, never use the blocking `anthropic.Anthropic()` client or `time.sleep()`. If you use RQ with plain functions instead, tenacity's `Retrying` class works the same way without `async`.
+- **It's async**, because your routes and your `process_job` function from Job Queues and Workers are `async def`. Inside async code, never use the blocking `anthropic.Anthropic()` client or `time.sleep()`. If you use RQ with plain functions instead, tenacity's `Retrying` class works the same way without `async`.
 
 When retries run out, the error still reaches your route. Catch it there and turn it into a deliberate response, as you learned in FastAPI Basics: a `503 Service Unavailable` (with a `Retry-After` of your own if the provider sent one) for rate limits and overloads, or a `504 Gateway Timeout` for a timeout. In a job, store the error message and mark the job `failed`. Never let a stack trace reach the client.
 

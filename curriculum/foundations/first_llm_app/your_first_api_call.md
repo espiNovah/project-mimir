@@ -30,7 +30,7 @@ This curriculum uses Claude for its examples, but every major provider (OpenAI, 
 ANTHROPIC_API_KEY=sk-ant-api03-...your-key...
 ```
 
-How much will this cost? Very little, if you use a small model. Prices are quoted per million tokens (MTok). At the time of writing, Claude Haiku 5.5 costs $0.10 per million input tokens and $0.50 per million output tokens for prompts up to 100,000 tokens. A typical short question and answer uses maybe 50 input tokens and 300 output tokens, which works out to well under a tenth of a cent. A few dollars of credit will comfortably last through this whole section. Check the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) for current numbers.
+How much will this cost? Very little, if you use a small model. Prices are quoted per million tokens (MTok). At the time of writing, the [cheap model](#/models) costs $0.10 per million input tokens and $0.50 per million output tokens for prompts up to 100,000 tokens. A typical short question and answer uses maybe 50 input tokens and 300 output tokens, which works out to well under a tenth of a cent. A few dollars of credit will comfortably last through this whole section. Check the [pricing page](https://platform.claude.com/docs/en/about-claude/pricing) for current numbers.
 
 <div class="lesson-note lesson-note--tip" markdown="1">
 
@@ -53,14 +53,17 @@ uv add anthropic python-dotenv
 Make sure your `.env` file is in this folder and `.env` is in `.gitignore`. Then put this in `main.py`:
 
 ```python
+import os
+
 import anthropic
 from dotenv import load_dotenv
 
 load_dotenv()                    # copies ANTHROPIC_API_KEY from .env into the environment
 client = anthropic.Anthropic()   # reads ANTHROPIC_API_KEY automatically
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")  # one place to change models
 
 response = client.messages.create(
-    model="claude-haiku-5-5",
+    model=MODEL,
     max_tokens=2000,
     messages=[
         {"role": "user", "content": "Explain what an API is in two sentences."},
@@ -76,7 +79,7 @@ Run it with `uv run main.py`. If you see two sentences about APIs, congratulatio
 
 The three required arguments:
 
-- `model` picks which model answers. Smaller, cheaper models like Haiku are fast and great for most simple tasks; larger ones like Sonnet and Opus are more capable and more expensive. The [models overview](https://platform.claude.com/docs/en/about-claude/models/overview) lists the current ones and their exact IDs.
+- `model` picks which model answers. Smaller, cheaper models like Haiku are fast and great for most simple tasks; larger ones like Sonnet and Opus are more capable and more expensive. The [models overview](https://platform.claude.com/docs/en/about-claude/models/overview) lists the current ones and their exact IDs. The code keeps the ID in one place, `MODEL`, read from a `MIMIR_MODEL` environment variable with the [cheap model](#/models) as the fallback, so you can switch models by adding a line such as `MIMIR_MODEL=...` to `.env` instead of editing code. Every lesson in this curriculum uses this pattern.
 - `max_tokens` caps how many tokens the response may contain, including any thinking. It's a safety limit, not a target: the model stops when it's finished, or when it hits this cap. Anthropic's API requires it; most other providers make it optional.
 - `messages` is a list of messages, each with a `role` (`"user"` or `"assistant"`) and `content`. Here there's just one user message. You'll build longer lists in the next lesson.
 
@@ -213,7 +216,7 @@ One more thing you'll run into: OpenAI's own docs now lead with a newer interfac
 1. Experiment with your `main.py`:
    - Print `response.stop_reason` and `response.usage`. Then set `max_tokens=20` and ask for a long story. What happens to `stop_reason` and to the text?
    - Run the same prompt three times. Are the answers identical? Connect what you see to the Context Windows and Sampling lesson.
-   - Change `model` to the [capable model](#/models) and compare the answer, the speed and the `usage` numbers.
+   - Set `MIMIR_MODEL` in your `.env` to the [capable model](#/models) and compare the answer, the speed and the `usage` numbers.
    - Make the same call with `curl` and find each field from this lesson in the raw JSON.
 1. Optional: run the Ollama version from [On other providers](#on-other-providers). It's free.
    - Ask the same question of the local model and of the cheap Claude model, and note in your learning journal how the answers, the speed and the token counts differ.

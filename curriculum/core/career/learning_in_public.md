@@ -64,7 +64,7 @@ Post wherever your readers are: a personal blog, a developer platform, LinkedIn,
 
 Writing is a habit, not a campaign. A short post every week or two, tied to whatever you're building, is sustainable. Long silences followed by one perfect post are not.
 
-To make the habit concrete, this curriculum now asks for **at least one public post for each path you complete from here on**: one for Core (this lesson's assignment), one for Agentic Systems, one for Production, one for the Capstone, and one for any elective path you take. Each later path's final project will remind you. More is welcome. Each post must:
+To make the habit concrete, this curriculum asks for **at least one public post for each path you complete from here on**: one for Core (this lesson's assignment), one for Agentic Systems, one for Production, one for the Capstone, and one for any elective path you take. Each later path's final project will remind you. More is welcome. Each post must:
 
 - be publicly readable without a login;
 - be about something you built or measured in that path;

@@ -48,7 +48,7 @@ Each of these is a week of work done well, or an afternoon done badly. When you 
 
 ### What frameworks hide
 
-Frameworks are worst at the things that decide **quality**. The 12-Factor Agents essay you read in the previous lesson names three:
+Frameworks are worst at the things that decide **quality**. The 12-Factor Agents essay you read in LangGraph and the Wider Ecosystem names three:
 
 - **The prompt.** Many frameworks add their own system prompt, tool-use instructions or output-format text around yours. If a framework's built-in prompt says "think step by step and always use a tool", your agent will call tools it doesn't need, and you won't know why.
 - **The context window.** Something decides which messages, tool results and retrieved documents go into each request, in what order and how they're trimmed. You learned in Context Engineering for Agents that this assembly is most of what makes an agent good. In a framework, it may happen in code you've never read, including automatic compaction that drops the one fact the agent needed.
@@ -163,7 +163,7 @@ A managed runtime makes sense for long-running or scheduled agents when you'd ot
 
 ### Keep the core yours
 
-Whatever you choose, you can make switching cheap. Put the parts that decide quality in plain Python you own, with no framework imports, and keep each framework at the edges as thin glue. You already did this with `tools.py` in the previous two lessons. Do the same for your prompts and your context assembly:
+Whatever you choose, you can make switching cheap. Put the parts that decide quality in plain Python you own, with no framework imports, and keep each framework at the edges as thin glue. You already did this with `tools.py` earlier in this section. Do the same for your prompts and your context assembly:
 
 ```python
 """core.py: the parts that decide quality. Plain Python, no framework imports."""
@@ -218,7 +218,7 @@ Everything in this lesson's method is provider-neutral. The recording proxy work
    - For each, write one sentence on whether the Claude Agent SDK and your chosen framework let you do it.
 1. Reread the parts of the [Claude Agent SDK overview](https://code.claude.com/docs/en/agent-sdk/overview) that compare the SDK with the plain Client SDK and with Claude Code.
    - Then skim the [Claude Managed Agents overview](https://platform.claude.com/docs/en/managed-agents/overview) and list three things it takes off your plate and one thing it takes away from you.
-1. Practice: build `recorder.py` and point two versions of the same agent at it, such as your raw loop and the LangGraph agent from the previous lesson.
+1. Practice: build `recorder.py` and point two versions of the same agent at it, such as your raw loop and the LangGraph agent from LangGraph and the Wider Ecosystem.
    - Run the same task through each and compare the logged requests: system prompt length, number of model calls and the total size of the last request.
    - Find one instruction in a framework's request that you didn't write, or confirm there is none.
 1. Take one failed run from a framework you tried in the previous lessons and find the exact prompt the model saw. Time how long that takes, and note what tool or setting made it possible.

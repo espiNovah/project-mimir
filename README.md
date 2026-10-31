@@ -51,8 +51,8 @@ In the repo, go to **Settings → Pages**. Under **Build and deployment**, set S
 
 ## Status
 
-- **Foundations:** fully written lessons and projects.
-- **All other paths:** structured outlines with curated resources and full project briefs. They will be written out to Foundations' depth over time. Contributions are welcome.
+- **Required paths** (Foundations, AI Engineering Core, Agentic Systems, Production & LLMOps, Capstone, Getting Hired): fully written lessons and projects.
+- **Electives** (ML Foundations, Research Track): mostly structured outlines with curated resources and project briefs. Contributions are welcome.
 
 ## Contributing
 

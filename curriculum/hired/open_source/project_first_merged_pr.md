@@ -55,4 +55,4 @@ This contribution lives in someone else's repo, so the ML-style rungs of the evi
 
 ### Submitting your work
 
-A strong submission links a PR that a reviewer could read without context: small, focused, tested, well described, and with polite, prompt responses to review. The post is honest about what was hard. Add the merged PR to your resume and your Portfolio Site's About section; it's one of the most credible lines you can have.
+A strong submission links a PR that a reviewer could read without context: small, focused, tested, well described, and with polite, prompt responses to review. The post is honest about what was hard. Add the merged PR to your Portfolio Site's About section, and to your resume when you write it in Resume for AI Roles; it's one of the most credible lines you can have.

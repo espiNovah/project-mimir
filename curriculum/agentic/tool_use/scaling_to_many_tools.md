@@ -310,6 +310,6 @@ The following questions are an opportunity to reflect on key topics in this less
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
-- [Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) from Anthropic shows the same "tools as code" idea applied to MCP servers, a preview of the MCP section.
+- [Code execution with MCP](https://www.anthropic.com/research/code-execution-with-mcp) from Anthropic shows the same "tools as code" idea applied to MCP servers, a preview of the MCP section.
 - The [tool search with embeddings](https://platform.claude.com/cookbook/tool-use-tool-search-with-embeddings) cookbook builds a custom client-side tool search with embeddings, end to end.
 - [RAG-MCP: Mitigating Prompt Bloat in LLM Tool Selection](https://arxiv.org/abs/2505.03275) is a short research paper that measures how tool selection degrades as the tool list grows and tests retrieving tools before each request, much like the router in this lesson.

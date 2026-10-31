@@ -214,7 +214,7 @@ Run `agent.py` and `lean_agent.py` on the same goal a few times each, then run `
 
 Not every step needs your most capable model. Chaining and Routing already sent easy tickets to the [cheap model](#/models) and hard ones to the [capable model](#/models). In an agent, the same idea applies per step: classifying an input, summarizing a long tool result or extracting fields are jobs a small model does well, while planning the next move in an unfamiliar task may need a big one. Reasoning **effort** is a second dial on the same model: low effort for routine steps, higher effort for the hard decisions.
 
-Two cautions keep this honest. First, caches belong to one model, so switching models on alternate steps of one loop throws the cache away every time. Switch at boundaries instead: a separate workflow step, or a subagent (Multi-Agent Systems) that runs a whole sub-task on the cheaper model and hands back a short answer. Second, judge every change by **cost per completed task**, not cost per call. A cheaper model that takes twice as many steps, or finishes 70% of tasks instead of 90%, can easily cost more per useful result. Measure on the same set of goals, with the same eval, before and after.
+Two cautions keep this honest. First, caches belong to one model, so switching models on alternate steps of one loop throws the cache away every time. Switch at boundaries instead: a separate workflow step that runs a whole sub-task on the cheaper model and hands back a short answer. (Subagents, in Multi-Agent Systems later, are another such boundary.) Second, judge every change by **cost per completed task**, not cost per call. A cheaper model that takes twice as many steps, or finishes 70% of tasks instead of 90%, can easily cost more per useful result. Measure on the same set of goals, with the same eval, before and after.
 
 ### Parallelism trades money for time
 
@@ -296,7 +296,7 @@ The following questions are an opportunity to reflect on key topics in this less
 - [What is cost per completed task, and why is it a better measure than cost per run?](#measuring-a-run-from-its-traces)
 - [Which parts of an agent run make it slow, and which levers cut latency most?](#where-the-time-goes)
 - [Why do agent loops benefit so much from prompt caching, and what silently breaks the cache?](#prompt-caching-in-agent-loops)
-- [Why should you switch models at step boundaries or subagents rather than on alternate turns?](#choosing-a-model-for-each-step)
+- [Why should you switch models at step boundaries rather than on alternate turns?](#choosing-a-model-for-each-step)
 - [Which kind of parallelism saves money as well as time, and which only saves time?](#parallelism-trades-money-for-time)
 - [What three budgets should an agent run have, and how do you choose their limits?](#budgets-for-steps-tokens-and-dollars)
 

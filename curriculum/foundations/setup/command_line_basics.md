@@ -27,7 +27,7 @@ This section contains a general overview of topics that you will learn in this l
 
 #### Windows: keep your work inside Linux
 
-Once you have WSL, keep your project folders inside the Linux file system (your Linux home folder, `~`), not in `C:\Users\...`. Tools run much faster there, and you avoid confusing permission problems. VS Code can open those folders directly, as you'll see in the next lesson.
+Once you have WSL, keep your project folders inside the Linux file system (your Linux home folder, `~`), not in `C:\Users\...`. Tools run much faster there, and you avoid confusing permission problems. VS Code can open those folders directly, as you'll see in the Installing Python and VS Code lesson.
 
 </div>
 

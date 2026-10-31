@@ -30,7 +30,7 @@ Your tests should never call a real model. Make the extractor a FastAPI dependen
 1. Store every extraction in Postgres with SQLModel, including the input text, the parsed result, the raw model output, the status and any error message. Create every table with Alembic migrations, as in Migrations with Alembic, not with `create_all`. Commit the migration files, and include at least one migration that changes an existing table (for example, adding a column), so your history shows the schema evolving.
 1. Create `GET /extractions/{id}` that returns a stored extraction, and `404` if it doesn't exist.
 1. Move long inputs onto a job queue, as in Job Queues and Workers, using Redis with arq or RQ:
-   - `POST /jobs` accepts text, creates a job row with status `pending`, enqueues it, and returns `202` with the job ID immediately. Send every job through one `submit_job` function, as in Deploying Your API, so a setting can switch between the queue and running inline. Locally, with the queue, the API process never runs the extraction itself.
+   - `POST /jobs` accepts text, creates a job row with status `pending`, enqueues it, and returns `202` with the job ID immediately. Send every job through one `submit_job` function, as in Job Queues and Workers, so a setting can switch between the queue and running inline. Locally, with the queue, the API process never runs the extraction itself.
    - The `worker` service picks up the job, sets it to `running`, runs the extraction, and stores the result.
    - `GET /jobs/{id}` returns the status (`pending`, `running`, `done` or `failed`) and, when done, the extraction result.
    - A job that errors is retried a limited number of times, then ends as `failed` with a stored error message.

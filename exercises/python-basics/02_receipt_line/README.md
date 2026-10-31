@@ -1,6 +1,6 @@
 # 02 · Receipt line
 
-**Lesson:** [Variables and Types](https://espinovah.github.io/project-mimir/#/lessons/foundations/variables-and-types)
+**Lesson:** [Functions](https://espinovah.github.io/project-mimir/#/lessons/foundations/functions)
 
 ## Task
 

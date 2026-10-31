@@ -17,8 +17,8 @@ This is the most important artifact you'll make in Getting Hired. Your resume, a
 <div class="lesson-content__panel" markdown="1">
 
 1. Publish a site on GitHub Pages with a home page, a case study page for each of your three projects, a blog section, and an About section. It must work and be readable on a phone.
-1. Write the About section: two or three sentences naming your target role, what you build, and how to contact you. Link your GitHub and resume.
-1. Write three case studies, with your Capstone first, following the five-part arc from The shape of a case study. Each one must include:
+1. Write the About section: two or three sentences naming your target role, what you build, and how to contact you. Link your GitHub, and add a link to your resume once you've written it in Resume for AI Roles.
+1. Publish three case studies, with your Capstone first, following the five-part arc from The shape of a case study. The Capstone one is the version you revised in Case Studies and Demo Videos; for the other two, start from those projects' READMEs and Evidence sections rather than writing from scratch. Each one must include:
    - The problem, the constraints and your approach, in under 300 words before any details, so the first screen makes the case on its own.
    - Measured evidence near the top, in a results table: eval scores with the test set size and a 95% confidence interval, plus cost and latency against their budgets where relevant (Turning Evidence into headlines).
    - At least one failure case and what you did about it.

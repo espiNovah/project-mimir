@@ -134,7 +134,7 @@ Two lessons hide in that table. On 50 cases, your 82% is honestly "somewhere fro
 
 #### The formula breaks at the edges
 
-If every case passes, `p * (1 - p)` is zero and the formula claims you're certain, which you aren't: 20 out of 20 is quite consistent with a true rate of 90%. The same problem makes the interval unreliable when `n` is small or `p` is near 0 or 1. In those cases use the bootstrap below, or the Wilson interval (see Additional resources).
+If every case passes, `p * (1 - p)` is zero and the formula claims you're certain, which you aren't: 20 out of 20 is quite consistent with a true rate of 90%. The same problem makes the interval unreliable when `n` is small or `p` is near 0 or 1. In those cases use the bootstrap below, or the **Wilson interval**, a formula built for exactly this case. It never goes below 0% or above 100%, and for 20 out of 20 it gives roughly 84% to 100% instead of a single point. You don't need to derive it: `statsmodels` computes it with `proportion_confint(successes, n, method="wilson")`, and later projects that report pass rates on small samples ask for it.
 
 </div>
 

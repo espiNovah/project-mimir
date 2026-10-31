@@ -125,7 +125,7 @@ print(back == results)           # True
 
 `indent=2` makes the file readable by humans. Without it, everything goes on one line, which is fine for machines.
 
-Once loaded, JSON is *just dicts and lists*. Everything from the last lesson applies: index into lists, look up keys, loop with `.items()`, use `.get()` when a key might be missing.
+Once loaded, JSON is *just dicts and lists*. Everything from the Lists, Dicts, Sets and Tuples lesson applies: index into lists, look up keys, loop with `.items()`, use `.get()` when a key might be missing.
 
 This is the pattern you will use again and again with AI. You ask a model to reply in JSON, you get back a string, you call `json.loads()` on it, and then you work with ordinary Python data. When the model's reply isn't valid JSON, `json.loads()` raises `json.JSONDecodeError`. Catching that error is one of the first things you'll do in the Errors and Exceptions lesson.
 
@@ -164,7 +164,7 @@ JSON Lines lets you add records one at a time and read huge files line by line w
 1. Read the "Basic Usage" section of [the official json module docs](https://docs.python.org/3/library/json.html), focusing on the four functions above and the `indent` parameter. Then look at [json.org](https://www.json.org/json-en.html), which defines the whole format on one page.
 1. Practice:
    - Do Lines of Code from [CS50P Problem Set 6](https://cs50.harvard.edu/python/psets/6/).
-   - Save the conversation log you built in the previous lesson to `conversation.json` when the user quits, and load it again at startup if the file exists, so the conversation continues between runs. Open the file in VS Code and confirm it looks like the messages list.
+   - Save the conversation log you built in the Lists, Dicts, Sets and Tuples lesson to `conversation.json` when the user quits, and load it again at startup if the file exists, so the conversation continues between runs. Open the file in VS Code and confirm it looks like the messages list.
 
 </div>
 

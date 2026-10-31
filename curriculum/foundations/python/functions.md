@@ -145,6 +145,7 @@ The `if __name__ == "__main__":` line means "only call `main()` when this file i
    - Do Tip Calculator from [CS50P Problem Set 0](https://cs50.harvard.edu/python/psets/0/) and Meal Time from [CS50P Problem Set 1](https://cs50.harvard.edu/python/psets/1/). Both ask you to fill in specific functions.
    - Do Vanity Plates from [CS50P Problem Set 2](https://cs50.harvard.edu/python/psets/2/), which rewards splitting the rules into small helper functions.
    - Go back to one program you wrote in the previous two lessons and restructure it: move the logic into functions that `return` values, and add a `main()`.
+   - In the [Python basics exercise set](https://github.com/espiNovah/project-mimir/tree/main/exercises/python-basics), make the tests pass for exercises 01, 02 and 08 (Temperature converter, Receipt line and Token budget). Each exercise has a starter file and failing tests; run them with `uv run pytest python-basics/<exercise>` from the `exercises/` folder (the set's README shows the setup).
 
 </div>
 
