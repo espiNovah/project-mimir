@@ -188,6 +188,8 @@ URL=$(gcloud run services describe mimir-api --format 'value(status.url)')
 uv run python smoke.py "$URL"        # the smoke test from Deploying Your API
 ```
 
+Anything your app writes to its own disk is gone when the instance stops, and Cloud Run stops instances whenever traffic drops. A JSONL trace file inside the container is lost the same way. Keep traces where they outlive the instance: write them to standard output so they land in Cloud Logging, or into a Postgres table.
+
 The first request after a quiet spell is slower, because Cloud Run has to start an instance. That's a **cold start**, usually a few seconds for a Python app, much shorter than Render's free-plan wake-up. If the deploy fails, the usual causes match Render's: the app isn't listening on `0.0.0.0` and the right port, a secret the service account can't read (the error names it), or a database URL that doesn't work from the cloud.
 
 ### Shutting it down

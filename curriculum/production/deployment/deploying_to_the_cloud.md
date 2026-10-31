@@ -141,6 +141,8 @@ A rollback restores code and configuration. It doesn't undo anything outside the
 - **Secrets you destroyed.** Pinned versions are why the old revision still finds the old key, so don't destroy a secret's previous version until the release is stable.
 - **The outside world.** If your model provider retired a model, an older revision won't help.
 
+You now have two services, two service accounts and two sets of secrets, but the `teardown.sh` from One Real Cloud only knows about one. Extend it to take the environment as an argument, so `teardown.sh staging` removes staging alone and `teardown.sh all` removes everything.
+
 ### A release checklist
 
 Pilots use checklists because memory fails under pressure, and releases are no different. Keep yours in the repository as `RELEASE.md`, and copy it into the description of each release:

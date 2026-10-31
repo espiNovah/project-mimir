@@ -47,7 +47,7 @@ import sys
 # Prices at the time of writing; check the pricing page before relying on them.
 PRICES = {
     "claude-haiku-5-5": (0.10, 0.50, 0.125, 0.01),
-    "claude-sonnet-5-5": (2.00, 10.00, 2.50, 0.10),
+    "claude-sonnet-5-5": (2.00, 10.00, 2.50, 0.20),
     "claude-opus-5-5": (4.00, 20.00, 5.00, 0.20),
 }
 

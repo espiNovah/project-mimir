@@ -1194,7 +1194,7 @@
             {
               "id": "project-hello-production",
               "title": "Project: Hello, Production",
-              "description": "Your API, containerized and live on the internet.",
+              "description": "Your API on Cloud Run with staging and production, a tested rollback and a teardown script.",
               "file": "production/deployment/project_hello_production.md",
               "project": true
             }
@@ -1265,7 +1265,7 @@
             {
               "id": "batching-rate-limits-and-fallbacks",
               "title": "Batching, Rate Limits and Fallbacks",
-              "description": "Throughput, retries and graceful degradation.",
+              "description": "Throughput, batch APIs, fallbacks and graceful degradation.",
               "file": "production/cost_and_latency/batching_rate_limits_and_fallbacks.md"
             },
             {
