@@ -65,7 +65,7 @@
     main.innerHTML = `
       <nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Paths</a><span>/</span><span>${esc(path.title)}</span></nav>
       <header class="path-head">
-        <div class="eyebrow">Path ${String(manifest.paths.indexOf(path)).padStart(2, "0")}${path.optional ? " · Elective" : ""}</div>
+        <div class="eyebrow">Path ${String(manifest.paths.indexOf(path) + 1).padStart(2, "0")}${path.optional ? " · Elective" : ""}</div>
         <h1>${esc(path.title)}</h1>
         <p class="lead">${esc(path.description)}</p>
         ${(path.requires || []).length ? `<p class="requires">Requires: ${path.requires.map((id) => { const r = findPath(id); return r ? `<a href="#/paths/${r.id}">${esc(r.title)}</a>` : ""; }).join(", ")}</p>` : ""}

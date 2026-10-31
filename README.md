@@ -8,14 +8,14 @@ A free, open-source, project-based curriculum that takes you from zero coding ex
 
 | Path | Focus |
 | --- | --- |
-| 00 · Foundations | Terminal, Git, Python, data tools, AI coding assistants, HTTP/APIs, how LLMs work, your first LLM app |
-| 01 · AI Engineering Core | Prompt & context engineering, evals, structured outputs, classic ML, FastAPI + Postgres backends, RAG, TypeScript/React frontend |
-| 02 · Agentic Systems | Agent loops, tool design, MCP, memory, frameworks, coding/browser agents, multi-agent, safety, agent evals |
-| 03 · Production & LLMOps | Deployment, tracing, cost & latency, CI evals, security |
-| 04 · ML Foundations (elective) | Math intuition, neural nets, serving and fine-tuning open models |
-| 05 · Research Track (elective) | Math for research, reinforcement learning, planning, multi-agent theory, reading and reproducing papers. For a master's degree or research roles. Requires ML Foundations |
-| 06 · Final Capstone | A real system for real users |
-| 07 · Getting Hired | Portfolio, open source, interviews |
+| 01 · Foundations | Terminal, Git, Python, data tools, AI coding assistants, HTTP/APIs, how LLMs work, your first LLM app |
+| 02 · AI Engineering Core | Prompt & context engineering, evals, structured outputs, classic ML, FastAPI + Postgres backends, RAG, TypeScript/React frontend |
+| 03 · Agentic Systems | Agent loops, tool design, MCP, memory, frameworks, coding/browser agents, multi-agent, safety, agent evals |
+| 04 · Production & LLMOps | Deployment, tracing, cost & latency, CI evals, security |
+| 05 · ML Foundations (elective) | Math intuition, neural nets, serving and fine-tuning open models |
+| 06 · Research Track (elective) | Math for research, reinforcement learning, planning, multi-agent theory, reading and reproducing papers. For a master's degree or research roles. Requires ML Foundations |
+| 07 · Final Capstone | A real system for real users |
+| 08 · Getting Hired | Portfolio, open source, interviews |
 
 Each lesson follows the same layout: an introduction, a lesson overview, written explanation, an assignment built from the best **free** resources online, and optional additional resources. Projects come every few lessons, and each one goes on your GitHub.
 
