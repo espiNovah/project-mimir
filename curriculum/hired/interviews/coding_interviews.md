@@ -183,7 +183,7 @@ No study proves that a particular number of problems gets you hired, so be wary 
 
 - **Weeks 1–4: learn the patterns.** Work through the [NeetCode roadmap](https://neetcode.io/roadmap) one topic at a time, in its order (arrays and hashing, two pointers, sliding window, stack, binary search, and so on). Do the Easy problems in a topic, then the first few Mediums. Aim for roughly 3–5 problems per session, several sessions a week.
 - **Weeks 5–8: mixed, timed practice.** Pick problems without knowing their topic (the [Grind 75 list](https://www.techinterviewhandbook.org/grind75/) works well for this), and give yourself 25–40 minutes each. Recognizing the pattern without the topic label is the real skill.
-- **From about week 4: mock interviews.** At least one a week, with a peer from this curriculum or a developer community, taking turns as interviewer. Record them if your peer agrees. You'll hear every silent stretch and skipped test. Being the interviewer teaches you what a good answer sounds like.
+- **From about week 4: mock interviews.** At least one a week, with a friend who codes or someone from a developer community, taking turns as interviewer. Record them if your partner agrees. If you can't find anyone, record a solo session against a fixed problem and review it the next day. You'll hear every silent stretch and skipped test. Being the interviewer teaches you what a good answer sounds like.
 - **Every week: one practical build.** Set a 60-minute timer and build something small: a log analyzer, a retry wrapper around a model call, a CLI that dedupes a CSV. Alternate between solo and AI-assisted builds so you practice both kinds of round.
 - **Spaced review throughout.** Revisit each problem you struggled with about 1 day, 1 week and 1 month later, and solve it again from a blank file. Retrieving something from memory at growing intervals is called **spaced repetition**, and it's one of the best-supported findings in learning research. Re-solving a few old problems a session is worth more than adding new ones.
 
@@ -218,7 +218,7 @@ Use the language you know best, and for you that's Python. Interviewers don't pe
    - Solve at least 15 problems this week across the first four topics (arrays and hashing, two pointers, sliding window, stack), mostly Easy with a few Medium.
    - Start your practice log with the columns described in [A realistic practice plan](#a-realistic-practice-plan), and schedule your first spaced reviews.
 1. Do one 60-minute practical build twice, once without AI and once AI-assisted: read a JSONL file of fake agent traces (generate 1,000 lines with a script), and print the five slowest tool calls and the most common error type, with pytest tests. Compare the two attempts in a short note: what was faster, and what did you have to fix in the AI's code?
-1. Book one mock coding interview with a peer this week and swap roles. Record what the interviewer noticed. You'll run a fuller version in the Mock Interview Loop project.
+1. Book one mock coding interview with a friend or someone from a developer community this week and swap roles, and record what the interviewer noticed. If you can't find a partner, record yourself solving an unseen problem out loud and review it the next day. You'll run a fuller version in the Mock Interview Loop project.
 
 </div>
 

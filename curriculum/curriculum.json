@@ -1707,6 +1707,12 @@
               "file": "hired/running_the_search/networking_and_referrals.md"
             },
             {
+              "id": "resume-for-ai-roles",
+              "title": "Resume for AI Roles",
+              "description": "A one-page resume that leads with evidence.",
+              "file": "hired/interviews/resume_for_ai_roles.md"
+            },
+            {
               "id": "running-a-job-search",
               "title": "Running a Job Search",
               "description": "Track your pipeline, set weekly targets and keep going through rejection.",
@@ -1715,7 +1721,7 @@
             {
               "id": "freelance-and-contract-work",
               "title": "Freelance and Contract Work",
-              "description": "Paid projects as a bridge into your first full-time role.",
+              "description": "Find, scope, price and deliver small paid AI projects that become case studies and references.",
               "file": "hired/running_the_search/freelance_and_contract_work.md"
             },
             {
@@ -1732,12 +1738,6 @@
           "title": "Resume & Interviews",
           "description": "Prepare for coding rounds, system design, behavioral questions and take-homes.",
           "lessons": [
-            {
-              "id": "resume-for-ai-roles",
-              "title": "Resume for AI Roles",
-              "description": "A one-page resume that leads with evidence.",
-              "file": "hired/interviews/resume_for_ai_roles.md"
-            },
             {
               "id": "coding-interviews",
               "title": "Coding Interviews",
@@ -1771,7 +1771,7 @@
             {
               "id": "project-mock-interview-loop",
               "title": "Project: Mock Interview Loop",
-              "description": "Resume, timed design, mock interview and take-home.",
+              "description": "Resume, timed design, live coding, an AI-assisted build, a mock interview and a take-home.",
               "file": "hired/interviews/project_mock_interview_loop.md",
               "project": true
             }
