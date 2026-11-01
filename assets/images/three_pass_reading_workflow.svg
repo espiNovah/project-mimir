@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#9333ea" />
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#059669" />
+    </marker>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="800" height="380" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="400" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">S. Keshav's Three-Pass Method for Reading Research Papers</text>
+
+  <!-- Pass 1: Bird's Eye View -->
+  <g transform="translate(30, 60)">
+    <rect width="220" height="275" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+    <rect x="0" y="0" width="220" height="36" rx="8" fill="#eff6ff"/>
+    <text x="110" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Pass 1: The Bird's Eye View</text>
+    <text x="110" y="55" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#2563eb" text-anchor="middle">5 to 10 Minutes (Triage)</text>
+
+    <!-- Scan elements -->
+    <rect x="15" y="68" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="25" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Read Title, Abstract &amp; Intro</text>
+    <text x="25" y="100" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Scan Section &amp; Sub-headings</text>
+    <text x="25" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Inspect Figures &amp; Conclusion</text>
+
+    <!-- Keshav's 5 Cs -->
+    <rect x="15" y="142" width="190" height="85" rx="4" fill="#dbeafe" stroke="#93c5fd"/>
+    <text x="110" y="160" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1e3a8a" text-anchor="middle">Answer Keshav's 5 Cs:</text>
+    <text x="25" y="177" font-family="system-ui, sans-serif" font-size="9" fill="#1e40af">1. Category: type of paper</text>
+    <text x="25" y="190" font-family="system-ui, sans-serif" font-size="9" fill="#1e40af">2. Context: related work</text>
+    <text x="25" y="203" font-family="system-ui, sans-serif" font-size="9" fill="#1e40af">3. Correctness, Contributions, Clarity</text>
+
+    <!-- Gate decision -->
+    <rect x="25" y="235" width="170" height="26" rx="4" fill="#fee2e2" stroke="#fca5a5"/>
+    <text x="110" y="252" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#991b1b" text-anchor="middle">Decision: Drop vs. Read Further</text>
+  </g>
+
+  <!-- Pass 1 to 2 Arrow -->
+  <path d="M 250 195 L 285 195" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+
+  <!-- Pass 2: Grasp Content -->
+  <g transform="translate(290, 60)">
+    <rect width="220" height="275" rx="8" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+    <rect x="0" y="0" width="220" height="36" rx="8" fill="#faf5ff"/>
+    <text x="110" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7e22ce" text-anchor="middle">Pass 2: Grasp Content</text>
+    <text x="110" y="55" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#9333ea" text-anchor="middle">~1 Hour (Detailed Inspection)</text>
+
+    <!-- Scan elements -->
+    <rect x="15" y="68" width="190" height="75" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="25" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Read thoroughly (skip proofs)</text>
+    <text x="25" y="100" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Check graphs: axes &amp; error bars</text>
+    <text x="25" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Highlight unread citations</text>
+    <text x="25" y="130" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Pinpoint core claim vs. evidence</text>
+
+    <!-- Critical check -->
+    <rect x="15" y="152" width="190" height="75" rx="4" fill="#f3e8ff" stroke="#d8b4fe"/>
+    <text x="110" y="170" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#581c87" text-anchor="middle">Critical Reading Audit:</text>
+    <text x="25" y="187" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">• Untuned baselines?</text>
+    <text x="25" y="200" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">• Missing ablation studies?</text>
+    <text x="25" y="213" font-family="system-ui, sans-serif" font-size="9" fill="#6b21a8">• Speculation vs. empirical fact?</text>
+
+    <!-- Note output -->
+    <rect x="25" y="235" width="170" height="26" rx="4" fill="#e0e7ff" stroke="#a5b4fc"/>
+    <text x="110" y="252" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#3730a3" text-anchor="middle">Output: 1-Page Summary Note</text>
+  </g>
+
+  <!-- Pass 2 to 3 Arrow -->
+  <path d="M 510 195 L 545 195" fill="none" stroke="#9333ea" stroke-width="2.5" marker-end="url(#arrow-purple)"/>
+
+  <!-- Pass 3: Deep Mastery / Reproduction -->
+  <g transform="translate(550, 60)">
+    <rect width="220" height="275" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+    <rect x="0" y="0" width="220" height="36" rx="8" fill="#f0fdf4"/>
+    <text x="110" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#15803d" text-anchor="middle">Pass 3: Deep Mastery</text>
+    <text x="110" y="55" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#16a34a" text-anchor="middle">3 to 5 Hours (Virtual Re-creation)</text>
+
+    <!-- Scan elements -->
+    <rect x="15" y="68" width="190" height="85" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="25" y="85" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Re-derive proofs from scratch</text>
+    <text x="25" y="100" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Identify hidden assumptions</text>
+    <text x="25" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Reconstruct algorithm in code</text>
+    <text x="25" y="130" font-family="system-ui, sans-serif" font-size="10" fill="#334155">• Anticipate reviewer critiques</text>
+
+    <!-- Outcomes -->
+    <rect x="15" y="162" width="190" height="65" rx="4" fill="#dcfce7" stroke="#86efac"/>
+    <text x="110" y="180" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#14532d" text-anchor="middle">Research Yield:</text>
+    <text x="25" y="197" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• Full paper reproduction</text>
+    <text x="25" y="212" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• Identify novel research gaps</text>
+
+    <!-- Finished badge -->
+    <rect x="25" y="235" width="170" height="26" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="110" y="252" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#14532d" text-anchor="middle">True Scholarly Mastery</text>
+  </g>
+
+  <!-- Footer Banner -->
+  <rect x="30" y="348" width="740" height="22" rx="4" fill="#e2e8f0"/>
+  <text x="400" y="363" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#334155" text-anchor="middle">Rule of Thumb: 90% of papers only need Pass 1. 9% deserve Pass 2. Only 1% require Pass 3.</text>
+</svg>
+

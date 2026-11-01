@@ -32,6 +32,23 @@ This is the kind of study you read about in Emergent Behavior in LLM Agents, don
 1. Report the total cost and the cost per game for each model, and confirm you stayed within budget.
 1. Push your project to GitHub with a README that explains what it does, how to rerun every experiment, and what you learned. Write the README as a short report: research questions, setup, predictions, results with plots and error bars, the controlled variation, limitations and two or three example transcripts that illustrate typical behavior.
 
+#### Evidence
+
+Your project repository must prove that your multi-agent tournament is methodologically sound, reproducible, and evaluated against rigorous statistical controls:
+
+- `pytest` test suite in `tests/` verifying:
+  - Payoff matrix arithmetic: unit tests confirming exact payoff allocation across all possible game states for the Iterated Prisoner's Dilemma.
+  - Information isolation: automated tests asserting that private valuation variables (buyer value, seller cost) never leak into the opposing agent's context window.
+  - Deterministic strategy verification: unit tests confirming that fixed-strategy players (Tit-for-Tat, Always-Defect, Grim Trigger, Conceder) execute mathematically exact responses to historical sequences.
+  - Offer parser robustness: tests verifying that numerical offers and termination tokens are reliably extracted from diverse natural language completions.
+- A GitHub Actions CI workflow running `ruff check .` and `pytest` on every commit, with a passing badge in your README.
+- A committed, preregistered `PREDICTIONS.md` outlining formal equilibrium predictions and behavioral hypotheses prior to running LLM trials.
+- Raw JSONL match transcripts in `data/` recording move histories, parsing retries, token usage, and cumulative payoffs across all 30+ games per pairing.
+- Two publication-quality plots:
+  - `ipd_cooperation_by_round.png`: Round-by-round cooperation curves across pairings with 95% bootstrap confidence bands.
+  - `negotiation_surplus_split.png`: Histogram / boxplot showing the empirical division of surplus compared to the 50/50 Nash bargaining solution benchmark.
+- A comprehensive results table in your README reporting sample sizes, mean payoffs, 95% confidence intervals, and total API expenditure.
+
 #### Extra credit
 
 - Run a round-robin tournament in the style of Axelrod with all strategies and at least two LLMs, and show the final standings with confidence intervals.

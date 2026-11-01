@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#dc2626" />
+    </marker>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="760" height="380" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="380" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">The Four Fundamental Subspaces of Linear Algebra (Gilbert Strang)</text>
+
+  <!-- Domain R^n -->
+  <g transform="translate(40, 55)">
+    <rect width="280" height="290" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <text x="140" y="24" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Domain Rⁿ (x ∈ Rⁿ)</text>
+
+    <!-- Row Space C(A^T) -->
+    <rect x="20" y="42" width="240" height="105" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" />
+    <text x="35" y="68" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1d4ed8">Row Space C(Aᵀ)</text>
+    <text x="35" y="90" font-family="system-ui, sans-serif" font-size="12" fill="#2563eb">dim = r (rank of A)</text>
+    <text x="35" y="112" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Spanned by rows of A; carries all signal</text>
+    <circle cx="210" cy="95" r="5" fill="#2563eb"/>
+    <text x="220" y="100" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1d4ed8">xᵣ</text>
+
+    <!-- Orthogonality symbol -->
+    <path d="M 130 152 L 140 152 L 140 162" fill="none" stroke="#64748b" stroke-width="1.5"/>
+    <text x="150" y="162" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#64748b">⊥ Orthogonal Complements</text>
+
+    <!-- Null Space N(A) -->
+    <rect x="20" y="172" width="240" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5" />
+    <text x="35" y="198" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#b91c1c">Null Space N(A)</text>
+    <text x="35" y="220" font-family="system-ui, sans-serif" font-size="12" fill="#dc2626">dim = n - r (nullity)</text>
+    <text x="35" y="242" font-family="system-ui, sans-serif" font-size="11" fill="#475569">All x where A·x = 0; collapsed to zero</text>
+    <circle cx="210" cy="225" r="5" fill="#dc2626"/>
+    <text x="220" y="230" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#b91c1c">xₙ</text>
+  </g>
+
+  <!-- Central Mappings -->
+  <g transform="translate(320, 55)">
+    <!-- Row Space to Column Space Invertible Mapping -->
+    <path d="M 20 95 L 95 95" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+    <text x="58" y="85" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#2563eb" text-anchor="middle">A xᵣ</text>
+    <text x="58" y="125" font-family="system-ui, sans-serif" font-size="10" fill="#475569" text-anchor="middle">1-to-1 invertible</text>
+    <text x="58" y="138" font-family="system-ui, sans-serif" font-size="10" fill="#475569" text-anchor="middle">isomorphism</text>
+
+    <!-- Null Space to Zero Mapping -->
+    <path d="M 20 225 L 95 225" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="4 3" marker-end="url(#arrow-red)"/>
+    <text x="58" y="215" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">A xₙ = 0</text>
+  </g>
+
+  <!-- Codomain R^m -->
+  <g transform="translate(440, 55)">
+    <rect width="280" height="290" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <text x="140" y="24" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1e293b" text-anchor="middle">Codomain Rᵐ (b ∈ Rᵐ)</text>
+
+    <!-- Column Space C(A) -->
+    <rect x="20" y="42" width="240" height="105" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5" />
+    <text x="35" y="68" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#15803d">Column Space C(A)</text>
+    <text x="35" y="90" font-family="system-ui, sans-serif" font-size="12" fill="#16a34a">dim = r (rank of A)</text>
+    <text x="35" y="112" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Range of A; all achievable outputs A·x</text>
+    <circle cx="210" cy="95" r="5" fill="#16a34a"/>
+    <text x="220" y="100" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d">b</text>
+
+    <!-- Orthogonality symbol -->
+    <path d="M 130 152 L 140 152 L 140 162" fill="none" stroke="#64748b" stroke-width="1.5"/>
+    <text x="150" y="162" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#64748b">⊥ Orthogonal Complements</text>
+
+    <!-- Left Null Space N(A^T) -->
+    <rect x="20" y="172" width="240" height="100" rx="8" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5" />
+    <text x="35" y="198" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7e22ce">Left Null Space N(Aᵀ)</text>
+    <text x="35" y="220" font-family="system-ui, sans-serif" font-size="12" fill="#9333ea">dim = m - r</text>
+    <text x="35" y="242" font-family="system-ui, sans-serif" font-size="11" fill="#475569">All y where Aᵀ·y = 0; error space</text>
+    <circle cx="210" cy="225" r="5" fill="#9333ea"/>
+    <text x="220" y="230" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#7e22ce">0</text>
+  </g>
+
+  <!-- Rank-Nullity Equation Banner -->
+  <rect x="150" y="352" width="460" height="24" rx="4" fill="#e2e8f0"/>
+  <text x="380" y="368" font-family="monospace" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Rank-Nullity: dim(C(A)) + dim(N(A)) = r + (n - r) = n</text>
+</svg>
+

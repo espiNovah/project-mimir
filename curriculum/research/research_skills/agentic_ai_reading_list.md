@@ -1,82 +1,109 @@
-<div class="lesson-note lesson-note--warning" markdown="1">
-
-#### Outline lesson
-
-This lesson has its key ideas and a full assignment, but the written explanation is still to come. Want to help write it? See the [contributing guide](https://github.com/espiNovah/project-mimir/blob/main/CONTRIBUTING.md).
-
-</div>
-
 ### Introduction
 
-Every field has a set of papers that everyone in it is assumed to have read. In agentic AI the set is young, since most of it was written after 2020, but it is already the shared vocabulary of interviews, lab meetings and master's seminars. This lesson gives you an annotated list of 19 papers in a sensible reading order, each with one line on why it matters. You have met several of them already in this curriculum. Now read them as primary sources.
+Every established discipline in computer science possesses an implicit "canon"—a curated collection of foundational papers that researchers, research engineers, and doctoral candidates are expected to know intimately.
 
-### Lesson overview
+Because modern agentic AI emerged largely after 2020, the literature is fast-moving. Yet within this compressed timeline, a core body of roughly twenty seminal papers has defined the field's concepts, architectures, and benchmarks:
+- When colleagues discuss the "ReAct pattern," they refer to Yao et al. (2022).
+- When a coding agent uses an agent-computer interface, they draw on Yang et al. (2024).
+- When developers debate verifiable rewards and test-time compute, they reference DeepSeek-R1 (2025).
 
-This section contains a general overview of topics that you will learn in this lesson.
+This lesson provides an annotated reading roadmap through the 19 seminal papers that built the agentic AI landscape, grouped into six logical themes. Rather than reading randomly by publication date, this roadmap traces the conceptual evolution: from base transformers and alignment, to tool use, reflective cognitive loops, memory architectures, benchmarks, and defensive security.
 
-- The foundation papers behind modern language models.
-- How models were taught to follow instructions and to reason.
-- The papers that defined tool use, reflection and planning for agents.
-- Memory and long-running agents.
-- The benchmarks used to measure agents.
-- Securing agents against prompt injection.
+### Foundations of large language models
 
-### Key ideas
+Modern autonomous agents are built upon autoregressive foundation models. Understanding their mechanics and emergent capabilities is the prerequisite for all downstream systems:
 
-- **Read in order, not by date.** The list is grouped so that each paper builds on the ones before it: first the models, then how they were aligned, then how they act, remember, are measured and are secured.
-- **Most of these papers are claims about a capability.** ReAct claims interleaving reasoning and acting helps; Reflexion claims verbal self-critique helps; SWE-agent claims the interface matters as much as the model. Read each one asking what experiment would falsify the claim.
-- **Benchmarks shape the field.** SWE-bench, tau-bench and similar papers define what "a good agent" means in practice. Understanding how a benchmark is built, scored and gamed is as important as knowing the leaderboard.
-- **Many results are tied to a specific model generation.** A prompting trick that gave a large gain on GPT-3 may give none on a current model. When you read an older paper, note the model it used and ask whether the finding is about the method or the model.
-- **Several of these papers have public code.** ReAct, Tree of Thoughts, Reflexion, Voyager, Generative Agents, SWE-agent, tau-bench and DPO all released code, which makes them good candidates for the Reproduce a Paper project.
-- **The list is a starting point.** Use the citation-tracing skills from Reading Papers to follow each paper forward to the work that challenged or extended it.
+1. **[Attention Is All You Need](https://arxiv.org/abs/1706.03762)** (Vaswani et al., 2017)
+   - *Why it matters:* Introduced the Transformer architecture, replacing recurrent and convolutional neural networks with multi-head self-attention. It made massive parallel pretraining on GPUs computationally feasible.
+   - *Key takeaway:* Self-attention allows any token to dynamically attend to any other token across the context window with `O(1)` path length, eliminating vanishing gradients across sequences.
+2. **[Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)** (Brown et al., 2020)
+   - *Why it matters:* GPT-3 proved that scaling parameter count and dataset size alone causes **in-context learning** to emerge. A single frozen model can perform diverse tasks purely from in-context natural language demonstrations without gradient updates.
+   - *Key takeaway:* Prompt engineering is not a trick; it is programming a general-purpose in-context pattern processor.
+3. **[Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903)** (Wei et al., 2022)
+   - *Why it matters:* Showed that prompting models to generate intermediate steps (`"Let's think step by step"`) dramatically boosts accuracy on multi-step arithmetic, symbolic reasoning, and logic benchmarks.
+   - *Key takeaway:* Autoregressive transformers can dedicate variable test-time compute to difficult problems by generating additional reasoning tokens.
 
-### The reading list
+### Alignment and post-training
 
-Foundations of large language models:
+Raw pretrained base models simply predict the next token on the web. Post-training is the discipline that aligns these engines into helpful assistants and rigorous reasoning systems:
 
-1. [Attention Is All You Need](https://arxiv.org/abs/1706.03762) (Vaswani et al., 2017): introduced the transformer, the architecture behind every model in this curriculum, and the one you built in Building a Tiny GPT.
-1. [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) (Brown et al., 2020): GPT-3 showed that scale alone produces in-context learning, which is what makes prompting work.
-1. [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903) (Wei et al., 2022): asking for intermediate steps unlocks multi-step reasoning, the seed of every reasoning technique since.
+4. **[Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)** (Ouyang et al., 2022)
+   - *Why it matters:* InstructGPT introduced the three-stage RLHF pipeline: Supervised Fine-Tuning (SFT), Bradley-Terry Reward Modeling, and PPO with a per-token KL divergence penalty.
+   - *Key takeaway:* A 1.3B parameter model trained with RLHF was preferred by human annotators over an untuned 175B base model, proving that post-training alignment yields orders of magnitude in effective quality.
+5. **[Constitutional AI: Harmlessness from AI Feedback](https://arxiv.org/abs/2212.08073)** (Bai et al., 2022)
+   - *Why it matters:* Anthropic demonstrated that human preference annotation can be automated by having an AI critique and revise its own outputs against a written constitution of principles (RLAIF).
+   - *Key takeaway:* Scalable oversight can be achieved through self-critique guided by explicit rules, reducing human labeling bottleneck.
+6. **[Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290)** (Rafailov et al., 2023)
+   - *Why it matters:* Proved that the KL-constrained RLHF objective can be solved analytically, eliminating the reward model and reinforcement learning rollouts entirely in favor of a stable binary cross-entropy loss.
+   - *Key takeaway:* DPO democratized alignment, becoming the standard fine-tuning recipe for open-weights models.
+7. **[DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning](https://arxiv.org/abs/2501.12948)** (DeepSeek-AI, 2025)
+   - *Why it matters:* Demonstrated that training base models purely with reinforcement learning against programmatic verifiable rewards (unit tests, mathematical equality) autonomously elicits long chains of thought, self-correction, and backtracking without human demonstrations.
+   - *Key takeaway:* Post-training with verifiable rewards creates a new scaling law along the test-time compute axis.
 
-Alignment and post-training:
+### Reasoning, tool use, and reflection
 
-1. [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155) (Ouyang et al., 2022): InstructGPT defined the RLHF recipe that turned base models into assistants.
-1. [Constitutional AI: Harmlessness from AI Feedback](https://arxiv.org/abs/2212.08073) (Bai et al., 2022): replaced most human harm labels with AI feedback guided by written principles.
-1. [Direct Preference Optimization](https://arxiv.org/abs/2305.18290) (Rafailov et al., 2023): showed preference tuning can skip the reward model and RL loop, and became the default open-source alignment method.
-1. [DeepSeek-R1](https://arxiv.org/abs/2501.12948) (DeepSeek-AI, 2025): RL from verifiable rewards produced long reasoning chains, with an open recipe that reshaped post-training.
+Once models could reason in prose, researchers gave them the ability to act on the world, call APIs, and inspect their own failures:
 
-Reasoning and acting:
+8. **[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)** (Yao et al., 2022)
+   - *Why it matters:* Interleaved internal reasoning traces (`"Thought"`) with external tool calls (`"Action"`) and feedback (`"Observation"`). This became the ubiquitous architectural skeleton of autonomous agents.
+   - *Key takeaway:* Reasoning grounds action execution; observations ground subsequent reasoning.
+9. **[Toolformer: Language Models Can Teach Themselves to Use Tools](https://arxiv.org/abs/2302.04761)** (Schick et al., 2023)
+   - *Why it matters:* Showed that models can self-supervisedly annotate corpora with API calls (calculator, search, calendar) and fine-tune themselves to invoke tools natively whenever doing so reduces cross-entropy loss.
+   - *Key takeaway:* Tool calling is not an external wrapper; it can be learned natively as part of language modeling.
+10. **[Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)** (Shinn et al., 2023)
+    - *Why it matters:* Introduced episodic self-reflection: when an agent fails a task, an evaluator summarizes the mistake, and the agent writes a verbal critique into an episodic memory buffer that conditions its next attempt.
+    - *Key takeaway:* Agents can perform trial-and-error learning at inference time without modifying model weights.
+11. **[Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://arxiv.org/abs/2305.10601)** (Yao et al., 2023)
+    - *Why it matters:* Generalized linear Chain-of-Thought into a tree search (BFS/DFS/A*), where the model generates multiple candidate thoughts, evaluates their promise, and prunes or backtracks from dead ends.
+    - *Key takeaway:* Classical heuristic search algorithms can be grafted directly onto neural language generation.
 
-1. [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) (Yao et al., 2022): the thought-action-observation loop at the core of nearly every agent.
-1. [Toolformer: Language Models Can Teach Themselves to Use Tools](https://arxiv.org/abs/2302.04761) (Schick et al., 2023): a model learned when to call APIs by training on its own useful tool calls, an early step toward native function calling.
-1. [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) (Shinn et al., 2023): agents improve across attempts by writing feedback to themselves, learning without changing weights.
-1. [Tree of Thoughts](https://arxiv.org/abs/2305.10601) (Yao et al., 2023): turned reasoning into an explicit search over partial solutions, linking LLMs to classical search.
+### Memory, cognitive architectures, and embodiment
 
-Memory, environments and architecture:
+Long-horizon tasks require agents that persist across sessions, build skills, and navigate complex simulated or digital environments:
 
-1. [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) (Park et al., 2023): memory streams, reflection and planning produced believable social behavior in a simulated town.
-1. [Voyager: An Open-Ended Embodied Agent with Large Language Models](https://arxiv.org/abs/2305.16291) (Wang et al., 2023): a Minecraft agent that writes and stores reusable code skills, an early version of today's agent skill libraries.
-1. [MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560) (Packer et al., 2023): treats the context window like RAM and external storage like disk, with the model managing its own memory.
-1. [Cognitive Architectures for Language Agents](https://arxiv.org/abs/2309.02427) (Sumers et al., 2023): CoALA gives a shared vocabulary for comparing agent designs, drawn from cognitive science.
+12. **[Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442)** (Park et al., 2023)
+    - *Why it matters:* Deployed 25 autonomous agents in a sandbox town using a composite memory stream, periodic higher-level reflection, and recursive plan decomposition.
+    - *Key takeaway:* Believable multi-agent social behavior emerges from clean cognitive memory and retrieval architectures.
+13. **[Voyager: An Open-Ended Embodied Agent with Large Language Models](https://arxiv.org/abs/2305.16291)** (Wang et al., 2023)
+    - *Why it matters:* The first autonomous lifelong learning agent in Minecraft. Voyager iteratively writes, executes, tests, and stores executable JavaScript control programs in an external skill library.
+    - *Key takeaway:* An agent can build an open-ended curriculum of reusable procedural code skills, bootstrapping complex competencies from simple primitives.
+14. **[MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560)** (Packer et al., 2023)
+    - *Why it matters:* Applied operating system memory virtualization concepts to LLMs: treating the context window as RAM and vector databases/disk as virtual storage, with the model managing its own paging via function calls.
+    - *Key takeaway:* Context window constraints can be mitigated by giving the model explicit tools to read, write, and evict long-term memories.
+15. **[Cognitive Architectures for Language Agents (CoALA)](https://arxiv.org/abs/2309.02427)** (Sumers et al., 2023)
+    - *Why it matters:* Unified diverse LLM agent frameworks under the formal taxonomy of cognitive science: working, episodic, semantic, and procedural memory paired with action and decision cycles.
+    - *Key takeaway:* Provides the standard academic taxonomy for evaluating and designing language agents.
 
-Evaluation:
+### Benchmarks and evaluation methodology
 
-1. [SWE-bench: Can Language Models Resolve Real-World GitHub Issues?](https://arxiv.org/abs/2310.06770) (Jimenez et al., 2023): real issues with hidden tests became the standard benchmark for coding agents.
-1. [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](https://arxiv.org/abs/2405.15793) (Yang et al., 2024): showed that designing the tools and interface for the agent matters as much as the model.
-1. [tau-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) (Yao et al., 2024): simulated users, domain policies and the pass^k metric for measuring whether agents are reliable, not just occasionally right.
+In AI research, progress is defined by what we can measure. The transition from multiple-choice tests to execution-based interactive benchmarks shaped modern agent engineering:
 
-Security:
+16. **[SWE-bench: Can Language Models Resolve Real-World GitHub Issues?](https://arxiv.org/abs/2310.06770)** (Jimenez et al., 2023)
+    - *Why it matters:* Replaced synthetic coding puzzles (HumanEval) with 2,294 real-world GitHub issues from popular Python repositories. Agents are given a repo and issue description, must locate the bug, edit files, and pass unseen regression test suites.
+    - *Key takeaway:* Established the gold standard for evaluating autonomous software engineering agents.
+17. **[SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](https://arxiv.org/abs/2405.15793)** (Yang et al., 2024)
+    - *Why it matters:* Demonstrated that the design of the **Agent-Computer Interface (ACI)**—such as custom file viewers, linters, and search tools—has an enormous impact on agent performance, rivaling gains from model scaling.
+    - *Key takeaway:* Human command-line interfaces are poorly matched to LLMs; tools must be custom-tailored to model context windows.
+18. **[tau-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045)** (Yao et al., 2024)
+    - *Why it matters:* Evaluated customer service and booking agents interacting with simulated users and complex databases. Introduced the `pass^k` metric to measure consistency across repeat trials.
+    - *Key takeaway:* Reliability requires consistent success across repeated runs, not merely high single-trial pass rates.
 
-1. [Design Patterns for Securing LLM Agents against Prompt Injections](https://arxiv.org/abs/2506.08837) (Beurer-Kellner et al., 2025): a catalog of architectures that limit what an injected instruction can do, trading some capability for provable safety properties.
+### Defensive security and safety
+
+As agents are granted write access to file systems, databases, and financial credentials, security against untrusted inputs becomes paramount:
+
+19. **[Design Patterns for Securing LLM Agents against Prompt Injections](https://arxiv.org/abs/2506.08837)** (Beurer-Kellner et al., 2025)
+    - *Why it matters:* Analyzed the architectural vulnerabilities of LLM agents to indirect prompt injections and cataloged structural security design patterns (such as dual-LLM architectures, capability confinement, and privilege separation).
+    - *Key takeaway:* Robust security cannot be achieved with prompting alone; it requires formal architectural isolation between untrusted input channels and privileged tool execution.
 
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
 
-1. Do a first pass, using the method from Reading Papers, on all 19 papers. Record each in your reading log with one sentence on its main claim.
-1. Do a full second pass on at least six papers, one from each group, and write a one-page summary of each.
-1. For two papers, trace forward with [Semantic Scholar](https://www.semanticscholar.org/): find one later paper that extended the result and one that challenged or failed to replicate it, and add both to your log.
-1. Pick the paper you will reproduce in Reproduce a Paper. Check that it has public code or a clearly described method, and write down the one result you will target and what it would cost to rerun at small scale.
+1. Execute **Pass 1** (5–10 minutes each) across all 19 papers in the list above, recording each in your research notebook with its 5 Cs.
+2. Select **at least six papers** (one from each of the six thematic sections) and execute a full **Pass 2** reading, producing a structured 1-page summary for each.
+3. Choose one seminal paper (e.g., ReAct, Reflexion, or DPO) and use [Semantic Scholar](https://www.semanticscholar.org/) or [Connected Papers](https://www.connectedpapers.com/) to trace forward three years: identify one paper that extended the method and one paper that identified an empirical vulnerability or failure mode.
+4. Prepare for your capstone [Reproduce a Paper](#/lesson/research/research_skills/project_reproduce_a_paper) project: select one paper with accessible public code and small-scale reproduction requirements, and verify that its evaluation dataset and baseline code run locally.
 
 </div>
 
@@ -84,6 +111,16 @@ Security:
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
-- [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401) is the paper that named RAG, worth reading if you want the origin of the Core path's retrieval section.
-- [WebArena](https://arxiv.org/abs/2307.13854) and [AgentBench](https://arxiv.org/abs/2308.03688) are two more widely cited agent benchmarks, covering web browsing and a mix of environments.
-- [A Survey on the Memory Mechanism of Large Language Model based Agents](https://arxiv.org/abs/2404.13501) organizes the fast-growing agent memory literature.
+- [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401) (Lewis et al., 2020): The paper that formulated RAG for generative question answering.
+- [WebArena: A Realistic Web Environment for Building Autonomous Agents](https://arxiv.org/abs/2307.13854): The standard benchmark for web navigation and browsing agents.
+- [A Survey on the Memory Mechanism of Large Language Model based Agents](https://arxiv.org/abs/2404.13501): Comprehensive taxonomy of short-term, long-term, and hybrid agent memory systems.
+
+### Knowledge check
+
+Use these questions to verify your understanding of the agentic AI reading list:
+
+1. [How did the Chain-of-Thought paper (Wei et al.) demonstrate that intermediate tokens function as test-time compute scaling?](#foundations-of-large-language-models)
+2. [Why was the Direct Preference Optimization (DPO) paper considered a breakthrough for open-source LLM post-training?](#alignment-and-post-training)
+3. [What is the core distinction between ReAct and Reflexion regarding the role of memory?](#reasoning-tool-use-and-reflection)
+4. [What does the SWE-agent paper by Yang et al. show about the importance of custom Agent-Computer Interfaces (ACIs)?](#benchmarks-and-evaluation-methodology)
+5. [Why is prompt engineering alone insufficient to secure autonomous agents against indirect prompt injection attacks?](#defensive-security-and-safety)

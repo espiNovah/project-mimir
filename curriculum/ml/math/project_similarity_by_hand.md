@@ -44,6 +44,15 @@ def norm(a: list[float]) -> float:
    - The nearest-neighbor table for at least five sentences, and a comment on whether your clusters came out as expected. Did the "bank" sentences get confused? Did the no-shared-words paraphrase pair find each other?
    - Whether the embeddings your model returned were already unit length, and how you checked.
 
+#### Evidence
+
+Your portfolio project must prove that your mathematical implementations are correct and fast:
+
+- `pytest` passes with at least 8 tests across both implementations, covering identity, orthogonality, scale invariance, and agreement with `scikit-learn` to within `1e-6`.
+- A GitHub Actions workflow runs `ruff check .` and `pytest` on every push, with a passing badge in your README.
+- A timing benchmark in `benchmark.py` comparing the pure-Python loop against NumPy matrix multiplication across 1,000 random vectors, with the measured speedup ratio reported in your README table.
+- A printed nearest-neighbor report in your README verifying that your 20 clustered sentences produced expected semantic groupings.
+
 #### Extra credit
 
 - Repeat the ranking with Euclidean distance on raw and on normalized vectors. Show that the ordering matches cosine similarity once vectors are normalized, and explain why.

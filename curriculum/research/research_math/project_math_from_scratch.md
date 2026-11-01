@@ -29,6 +29,19 @@ This is the classic first exercise in many graduate ML courses, and for good rea
 1. Write `compare.py` that trains scikit-learn's `LogisticRegression` on the same split with matching regularization, and reports for both models: test accuracy, test log loss, and the largest absolute difference between the learned weights. Your accuracy should be within one percentage point of scikit-learn's, and your weights should be close. If they are not, explain why (for example, different regularization scaling or stopping before convergence).
 1. Push your project to GitHub with a README that explains what it does, how to run it, and what you learned. The README must include the gradient check result, the loss plot, the comparison table, and a paragraph on what the learning rate experiment shows about step size and curvature.
 
+#### Evidence
+
+Your project repository must prove that your mathematical derivation and implementation are correct:
+
+- `pytest` tests in `tests/` verifying:
+  - Central difference gradient check: analytical gradients match numerical gradients within `1e-6` on randomized data.
+  - Numerical stability: `predict_proba` returns valid probabilities in `[0, 1]` without `NaN` or overflow on inputs with magnitude `|z| > 500`.
+  - Feature scaling: confirms mean and variance normalization parameters are learned strictly from the training split.
+- A GitHub Actions workflow running `ruff check .` and `pytest` on every push, with a passing badge in your README.
+- A written `derivation.md` or `derivation.pdf` in your repository containing the complete step-by-step derivation of the loss, gradient vector, and Hessian matrix.
+- `loss.png` in your repository showing loss curves across three learning rates, demonstrating convergence versus oscillation.
+- A comparison table in your README reporting test accuracy, test log-loss, and maximum weight deviation against `scikit-learn`'s `LogisticRegression`.
+
 #### Extra credit
 
 - Implement Newton's method using the Hessian you derived, and compare the number of iterations it needs to converge with gradient descent.

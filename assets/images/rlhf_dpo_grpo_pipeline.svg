@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 440" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#16a34a" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#9333ea" />
+    </marker>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="840" height="440" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="420" y="30" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">Post-Training Alignment Paradigms for Large Language Models</text>
+
+  <!-- Track 1: Standard RLHF (PPO) -->
+  <g transform="translate(30, 50)">
+    <rect width="780" height="110" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="20" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1d4ed8">1. Standard RLHF with PPO (InstructGPT, ChatGPT)</text>
+
+    <!-- Step 1: Human Comparisons -->
+    <rect x="20" y="40" width="160" height="55" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="100" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e3a8a" text-anchor="middle">Human Comparison Data</text>
+    <text x="100" y="78" font-family="monospace" font-size="10" fill="#2563eb" text-anchor="middle">(prompt, y_win, y_lose)</text>
+
+    <!-- Arrow -->
+    <path d="M 180 67 L 220 67" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- Step 2: Reward Model -->
+    <rect x="225" y="40" width="160" height="55" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="305" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e3a8a" text-anchor="middle">Reward Model r_ϕ(x, y)</text>
+    <text x="305" y="78" font-family="system-ui, sans-serif" font-size="10" fill="#475569" text-anchor="middle">Bradley-Terry loss</text>
+
+    <!-- Arrow -->
+    <path d="M 385 67 L 425 67" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- Step 3: PPO Loop -->
+    <rect x="430" y="40" width="330" height="55" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+    <text x="595" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">PPO RL Optimization + Critic V_ψ + KL Leash</text>
+    <text x="595" y="78" font-family="monospace" font-size="10" fill="#1d4ed8" text-anchor="middle">E [ r_ϕ(x,y) - β·D_KL(π_θ || π_ref) ]</text>
+  </g>
+
+  <!-- Track 2: Direct Preference Optimization (DPO) -->
+  <g transform="translate(30, 175)">
+    <rect width="780" height="110" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="20" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#15803d">2. Direct Preference Optimization (DPO) — Rafailov et al. (2023)</text>
+
+    <!-- Preference pairs -->
+    <rect x="20" y="40" width="180" height="55" rx="6" fill="#ffffff" stroke="#86efac"/>
+    <text x="110" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#14532d" text-anchor="middle">Preference Pairs</text>
+    <text x="110" y="78" font-family="monospace" font-size="10" fill="#15803d" text-anchor="middle">(x, y_win, y_lose)</text>
+
+    <!-- Arrow -->
+    <path d="M 200 67 L 250 67" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+    <!-- Implicit Reward Objective -->
+    <rect x="255" y="40" width="505" height="55" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="507" y="58" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#14532d" text-anchor="middle">Direct Closed-Form Loss (No Reward Model, No Critic, No Rollouts)</text>
+    <text x="507" y="78" font-family="monospace" font-size="10" fill="#166534" text-anchor="middle">L_DPO = -E [ log σ( β·log(π_θ(y_w)/π_ref(y_w)) - β·log(π_θ(y_l)/π_ref(y_l)) ) ]</text>
+  </g>
+
+  <!-- Track 3: Group Relative Policy Optimization (GRPO / DeepSeek-R1) -->
+  <g transform="translate(30, 300)">
+    <rect width="780" height="120" rx="8" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+    <text x="20" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7e22ce">3. GRPO &amp; Verifiable Rewards (DeepSeek-R1, Shao et al. 2024)</text>
+
+    <!-- Group rollouts -->
+    <rect x="20" y="40" width="180" height="65" rx="6" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="110" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#581c87" text-anchor="middle">Sample G Outputs</text>
+    <text x="110" y="76" font-family="monospace" font-size="9" fill="#7e22ce" text-anchor="middle">{y_1, y_2, ..., y_G} ~ π_θ</text>
+    <text x="110" y="92" font-family="system-ui, sans-serif" font-size="9" fill="#64748b" text-anchor="middle">Per prompt x</text>
+
+    <!-- Arrow -->
+    <path d="M 200 72 L 250 72" fill="none" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- Rule-based verifiable rewards -->
+    <rect x="255" y="40" width="220" height="65" rx="6" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="365" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#581c87" text-anchor="middle">Verifiable Rule-Based Rewards</text>
+    <text x="365" y="76" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce" text-anchor="middle">• Unit tests pass? (1 or 0)</text>
+    <text x="365" y="92" font-family="system-ui, sans-serif" font-size="10" fill="#7e22ce" text-anchor="middle">• Math equality check? (1 or 0)</text>
+
+    <!-- Arrow -->
+    <path d="M 475 72 L 525 72" fill="none" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- Group Advantage -->
+    <rect x="530" y="40" width="230" height="65" rx="6" fill="#f3e8ff" stroke="#9333ea"/>
+    <text x="645" y="58" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#581c87" text-anchor="middle">Group Relative Advantage</text>
+    <text x="645" y="75" font-family="monospace" font-size="10" fill="#6b21a8" text-anchor="middle">A_i = (r_i - mean(r)) / std(r)</text>
+    <text x="645" y="92" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#7e22ce" text-anchor="middle">Zero Critic Network Required</text>
+  </g>
+</svg>
+

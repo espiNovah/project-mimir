@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 480" width="100%" height="auto">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <rect width="540" height="480" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="270" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">Decoder Transformer Block</text>
+
+  <!-- Input -->
+  <rect x="180" y="420" width="180" height="36" rx="6" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="270" y="443" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#334155" text-anchor="middle">Input Tokens / Embeddings</text>
+
+  <!-- Flow up into LayerNorm 1 -->
+  <line x1="270" y1="420" x2="270" y2="385" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LayerNorm 1 -->
+  <rect x="195" y="350" width="150" height="34" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="270" y="372" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e" text-anchor="middle">LayerNorm</text>
+
+  <!-- Flow into Multi-Head Attention -->
+  <line x1="270" y1="350" x2="270" y2="315" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Multi-Head Attention -->
+  <rect x="160" y="270" width="220" height="44" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="270" y="294" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Multi-Head Causal Attention</text>
+  <text x="270" y="307" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6" text-anchor="middle">(Queries · Keys · Values with Causal Mask)</text>
+
+  <!-- Flow into Add 1 -->
+  <line x1="270" y1="270" x2="270" y2="236" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Add 1 circle -->
+  <circle cx="270" cy="225" r="14" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
+  <text x="270" y="230" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#10b981" text-anchor="middle">+</text>
+
+  <!-- Skip connection 1 (Residual Highway) -->
+  <path d="M 270 405 L 120 405 L 120 225 L 254 225" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+  <text x="110" y="315" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="end">Residual Skip</text>
+
+  <!-- Flow into LayerNorm 2 -->
+  <line x1="270" y1="211" x2="270" y2="185" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- LayerNorm 2 -->
+  <rect x="195" y="150" width="150" height="34" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="270" y="172" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e" text-anchor="middle">LayerNorm</text>
+
+  <!-- Flow into Feed Forward -->
+  <line x1="270" y1="150" x2="270" y2="125" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Feed Forward MLP -->
+  <rect x="160" y="80" width="220" height="44" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="270" y="103" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#5b21b6" text-anchor="middle">Feed-Forward Network (MLP)</text>
+  <text x="270" y="117" font-family="system-ui, sans-serif" font-size="10" fill="#6d28d9" text-anchor="middle">Linear(4d) → GELU → Linear(d)</text>
+
+  <!-- Flow into Add 2 -->
+  <line x1="270" y1="80" x2="270" y2="56" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Add 2 circle -->
+  <circle cx="270" cy="48" r="12" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
+  <text x="270" y="53" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#10b981" text-anchor="middle">+</text>
+
+  <!-- Skip connection 2 (Residual Highway) -->
+  <path d="M 270 205 L 420 205 L 420 48 L 284 48" fill="none" stroke="#10b981" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrow)"/>
+  <text x="430" y="125" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669">Residual Skip</text>
+</svg>
+

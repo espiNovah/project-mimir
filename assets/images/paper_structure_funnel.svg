@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="800" height="400" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="400" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">The Scientific Paper Hourglass: Rhetorical Architecture &amp; Flow</text>
+
+  <!-- Left: The Hourglass Structural Diagram -->
+  <g transform="translate(40, 55)">
+    <!-- Top Funnel: Broad Introduction -->
+    <polygon points="20,0 260,0 210,80 70,80" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="140" y="32" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">1. Introduction (Broad to Focused)</text>
+    <text x="140" y="52" font-family="system-ui, sans-serif" font-size="10" fill="#2563eb" text-anchor="middle">Real-world context → Problem → Gap</text>
+    <text x="140" y="68" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1e3a8a" text-anchor="middle">Explicit Contributions List</text>
+
+    <!-- Upper Transition: Related Work -->
+    <polygon points="70,85 210,85 180,125 100,125" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+    <text x="140" y="105" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#7e22ce" text-anchor="middle">2. Related Work</text>
+    <text x="140" y="118" font-family="system-ui, sans-serif" font-size="9" fill="#9333ea" text-anchor="middle">Position against prior art</text>
+
+    <!-- Center Cylinder: Narrow Technical Precision (Method & Results) -->
+    <rect x="100" y="130" width="80" height="95" rx="4" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+    <text x="140" y="152" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#0f172a" text-anchor="middle">3. Method</text>
+    <text x="140" y="168" font-family="system-ui, sans-serif" font-size="8" fill="#475569" text-anchor="middle">Math, Arch, Algo</text>
+    <line x1="105" y1="178" x2="175" y2="178" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="140" y="196" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#0f172a" text-anchor="middle">4. Experiments</text>
+    <text x="140" y="212" font-family="system-ui, sans-serif" font-size="8" fill="#475569" text-anchor="middle">Evals &amp; Ablations</text>
+
+    <!-- Bottom Inverted Funnel: Broadening to Impact & Limitations -->
+    <polygon points="100,230 180,230 260,315 20,315" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+    <text x="140" y="260" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#15803d" text-anchor="middle">5. Discussion &amp; Limitations</text>
+    <text x="140" y="278" font-family="system-ui, sans-serif" font-size="10" fill="#166534" text-anchor="middle">Where the method fails</text>
+    <text x="140" y="295" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#14532d" text-anchor="middle">Broader impacts &amp; future work</text>
+  </g>
+
+  <!-- Right: The 5 Writing Commandments -->
+  <g transform="translate(360, 60)">
+    <rect width="400" height="315" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="200" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0f172a" text-anchor="middle">Peyton Jones &amp; Academic Writing Principles</text>
+
+    <!-- Rule 1 -->
+    <rect x="20" y="42" width="360" height="46" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="35" y="60" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1d4ed8">1. Write to Think (Early Drafting)</text>
+    <text x="35" y="76" font-family="system-ui, sans-serif" font-size="10" fill="#334155">Draft before experiments finish; writing uncovers missing evidence.</text>
+
+    <!-- Rule 2 -->
+    <rect x="20" y="96" width="360" height="46" rx="4" fill="#fefce8" stroke="#fde047"/>
+    <text x="35" y="114" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#a16207">2. One Big Idea per Paper</text>
+    <text x="35" y="130" font-family="system-ui, sans-serif" font-size="10" fill="#334155">A sharp single contribution beats three half-baked proposals.</text>
+
+    <!-- Rule 3 -->
+    <rect x="20" y="150" width="360" height="46" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+    <text x="35" y="168" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#15803d">3. The Self-Contained Figure 1</text>
+    <text x="35" y="184" font-family="system-ui, sans-serif" font-size="10" fill="#334155">Figure 1 + its caption must convey the entire paper to a skimmer.</text>
+
+    <!-- Rule 4 -->
+    <rect x="20" y="204" width="360" height="46" rx="4" fill="#faf5ff" stroke="#d8b4fe"/>
+    <text x="35" y="222" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#7e22ce">4. Falsifiable Contributions List</text>
+    <text x="35" y="238" font-family="system-ui, sans-serif" font-size="10" fill="#334155">Bullet points at end of Intro must point to explicit result numbers.</text>
+
+    <!-- Rule 5 -->
+    <rect x="20" y="258" width="360" height="46" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
+    <text x="35" y="276" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#b91c1c">5. Candid Limitations Section</text>
+    <text x="35" y="292" font-family="system-ui, sans-serif" font-size="10" fill="#334155">State flaws plainly before reviewers find them; honesty builds trust.</text>
+  </g>
+</svg>
+

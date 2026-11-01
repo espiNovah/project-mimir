@@ -42,6 +42,22 @@ print(result.reason, result.inapplicable_action)  # why it failed, if it did
 1. Analyze failures. Read at least 15 failed LLM plans and sort them into categories you define, such as "violated a precondition," "goal not reached," "invalid format" or "loop." Report the count for each category, and show one example of each.
 1. Push your project to GitHub with a README that explains what it does, how to rerun the whole benchmark, and what you learned. Write the README as a short research report: question, setup, results, failure analysis and limitations (for example, Blocksworld is one domain, and your instance sizes are small).
 
+#### Evidence
+
+Your project repository must prove that your benchmark evaluation is scientifically rigorous, deterministic, and verifiable:
+
+- `pytest` test suite in `tests/` verifying:
+  - Transition mechanics: unit tests verifying legal and illegal preconditions for `pick-up`, `put-down`, `stack`, and `unstack`.
+  - State equivalence: unit tests confirming that your pure-Python BFS and A* implementations produce valid, minimal plans for 3-block and 4-block test cases matching Fast Downward.
+  - Obfuscation bijection: tests confirming that symbol substitution preserves domain isomorphism (every valid plan in the obfuscated domain maps 1-to-1 to a valid plan in standard Blocksworld).
+  - Parser robustness: tests verifying the output extraction handles common LLM syntax irregularities (markdown code blocks, trailing text, lowercase predicates).
+- A GitHub Actions CI workflow running `ruff check .` and `pytest` on every push, with a passing badge in your README.
+- Saved benchmark logs in `data/` recording execution outcomes, plan lengths, state expansions, token counts, and costs across all 60 problem instances.
+- Two publication-ready plots:
+  - `success_rate_by_blocks.png`: Line chart comparing success rate (%) across 4, 6, 8, and 10 blocks for BFS, A*, Fast Downward, LLM direct, and LLM + Validator.
+  - `cost_and_runtime_comparison.png`: Wall-clock latency and dollar cost per solved instance.
+- An empirical failure taxonomy in `REPORT.md` or README analyzing at least 15 failed LLM plans, categorizing violations (precondition failure, cycle/loop, invalid format, goal omission) with exact state trace extracts.
+
 #### Extra credit
 
 - Add an LLM+P condition: the model translates a natural-language description into a PDDL problem file, and Fast Downward solves it. Measure how often the translation, not the planner, is the point of failure.

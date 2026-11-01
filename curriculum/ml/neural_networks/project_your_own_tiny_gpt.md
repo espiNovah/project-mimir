@@ -29,6 +29,19 @@ When an interviewer asks "do you understand how these models actually work?", a 
    - The three samples, with a sentence each on what the model had learned by that point.
    - Your experiment: the hypothesis, the one change, both curves, and what happened to the loss and why you think it happened.
 
+#### Evidence
+
+Your project repository must prove that your transformer was correctly implemented and trained:
+
+- `pytest` tests verifying:
+  - Output tensor shapes for arbitrary batch sizes and sequence lengths `(B, T, vocab_size)`.
+  - Causal masking: altering token `T` in an input does not change logits at positions `< T`.
+  - Attention matrix weights sum to 1.0 along the row dimension.
+- A GitHub Actions workflow running `ruff check .` and `pytest` on every push, with a passing status badge in your README.
+- `loss.png` and `loss.csv` in your repository showing training and validation loss curves beating your bigram baseline.
+- At least three dated generation samples saved in `samples/` demonstrating model progress from random characters to structured vocabulary.
+- A written analysis of your controlled experiment with side-by-side validation loss curves.
+
 #### Extra credit
 
 - Deliberately overfit: train a large model on a tiny slice of your corpus and show the training and validation curves separating, then fix it with dropout.

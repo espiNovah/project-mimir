@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#d97706" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#059669" />
+    </marker>
+  </defs>
+
+  <rect width="760" height="380" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="380" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">Optimization Landscapes: SGD vs. Momentum vs. Adam</text>
+  <text x="380" y="52" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Navigating an ill-conditioned loss valley with steep walls and gentle floor</text>
+
+  <g transform="translate(40, 50)">
+    <!-- Contour ellipses -->
+    <ellipse cx="440" cy="180" rx="260" ry="110" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+    <ellipse cx="440" cy="180" rx="190" ry="75" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <ellipse cx="440" cy="180" rx="120" ry="45" fill="none" stroke="#64748b" stroke-width="1.5"/>
+    <ellipse cx="440" cy="180" rx="50" ry="20" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+
+    <!-- Minimum target -->
+    <circle cx="440" cy="180" r="5" fill="#dc2626"/>
+    <text x="440" y="200" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">Global Minimum</text>
+
+    <!-- Starting point -->
+    <circle cx="190" cy="100" r="6" fill="#1e293b"/>
+    <text x="180" y="85" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Start</text>
+
+    <!-- Path 1: Pure SGD (Oscillating across valley) -->
+    <path d="M 190 100 L 210 250 L 235 110 L 260 240 L 285 130 L 310 220 L 335 150 L 360 200 L 385 170" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrow-blue)"/>
+
+    <!-- Path 2: SGD with Momentum (Damped oscillations, accelerating forward) -->
+    <path d="M 190 100 Q 220 220 260 170 Q 300 130 350 175 Q 390 190 420 180" fill="none" stroke="#d97706" stroke-width="2.5" marker-end="url(#arrow-amber)"/>
+
+    <!-- Path 3: Adam (Adaptive scaling per axis: heads directly along gentle axis) -->
+    <path d="M 190 100 Q 250 160 330 175 T 434 180" fill="none" stroke="#059669" stroke-width="3" marker-end="url(#arrow-green)"/>
+
+    <!-- Legend -->
+    <g transform="translate(30, 240)">
+      <rect x="0" y="0" width="230" height="75" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <line x1="15" y1="18" x2="40" y2="18" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,3"/>
+      <text x="48" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#1e293b">Standard SGD (oscillates)</text>
+
+      <line x1="15" y1="38" x2="40" y2="38" stroke="#d97706" stroke-width="2.5"/>
+      <text x="48" y="42" font-family="system-ui, sans-serif" font-size="11" fill="#1e293b">Momentum (smooths path)</text>
+
+      <line x1="15" y1="58" x2="40" y2="58" stroke="#059669" stroke-width="3"/>
+      <text x="48" y="62" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669">Adam (per-parameter scaling)</text>
+    </g>
+  </g>
+</svg>
+

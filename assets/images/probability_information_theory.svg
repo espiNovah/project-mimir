@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="auto">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <rect width="760" height="380" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="380" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">Probability, Information Theory &amp; Estimation Uncertainty</text>
+
+  <!-- Left: Information Theory (Entropy & KL Divergence) -->
+  <g transform="translate(40, 50)">
+    <text x="150" y="20" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Entropy and KL Divergence</text>
+    <text x="150" y="38" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Quantifying surprise and distribution drift</text>
+
+    <!-- Bar container for Cross Entropy -->
+    <rect x="20" y="70" width="260" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    
+    <!-- True Entropy H(P) -->
+    <rect x="40" y="160" width="220" height="70" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="150" y="195" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Entropy H(P)</text>
+    <text x="150" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6" text-anchor="middle">Intrinsic surprise in true data P</text>
+
+    <!-- KL Divergence D_KL(P || Q) -->
+    <rect x="40" y="90" width="220" height="65" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="150" y="122" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">KL Divergence D_KL(P || Q)</text>
+    <text x="150" y="139" font-family="system-ui, sans-serif" font-size="10" fill="#b91c1c" text-anchor="middle">Inefficiency of using model Q to code P</text>
+
+    <!-- Total Bracket: Cross-Entropy -->
+    <text x="150" y="275" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">Cross-Entropy H(P, Q) = H(P) + D_KL(P || Q)</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="380" y1="50" x2="380" y2="340" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Right: Central Limit Theorem and Confidence Intervals -->
+  <g transform="translate(420, 50)">
+    <text x="150" y="20" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Sample Size and Uncertainty: σ / √n</text>
+    <text x="150" y="38" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Standard error of eval pass rates shrinks with √n</text>
+
+    <!-- Bell curve n = 25 (Wide) -->
+    <path d="M 20 230 Q 150 70 280 230" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4"/>
+    <text x="45" y="160" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">n = 25 (Wide SE)</text>
+
+    <!-- Bell curve n = 100 (Medium) -->
+    <path d="M 60 230 Q 150 40 240 230" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <text x="80" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#b45309">n = 100</text>
+
+    <!-- Bell curve n = 500 (Tight) -->
+    <path d="M 100 230 Q 150 0 200 230" fill="none" stroke="#2563eb" stroke-width="3"/>
+    <text x="150" y="45" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">n = 500 (Tight CI)</text>
+
+    <!-- Baseline Axis -->
+    <line x1="10" y1="230" x2="290" y2="230" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="150" y1="230" x2="150" y2="245" stroke="#1e293b" stroke-width="2"/>
+    <text x="150" y="260" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">True Mean μ (e.g. 70%)</text>
+    
+    <text x="150" y="295" font-family="system-ui, sans-serif" font-size="11" fill="#059669" text-anchor="middle">To halve error bars, you need 4x more test samples</text>
+  </g>
+</svg>
+

@@ -1,49 +1,210 @@
-<div class="lesson-note lesson-note--warning" markdown="1">
-
-#### Outline lesson
-
-This lesson has its key ideas and a full assignment, but the written explanation is still to come. Want to help write it? See the [contributing guide](https://github.com/espiNovah/project-mimir/blob/main/CONTRIBUTING.md).
-
-</div>
-
 ### Introduction
 
-Put many LLM agents in a shared environment and behavior appears that nobody programmed: agents organize a party, spread information, cooperate, or collude. A growing body of research uses these setups to simulate social behavior, to test how LLMs act strategically, and to improve answers through debate. This lesson surveys that work and, just as important, the methodological problems that make many of its findings fragile.
+When multiple autonomous language model agents are deployed within a shared interactive environment, behaviors emerge that were never explicitly specified in any individual agent's prompt:
+- Agents organically organize social gatherings and propagate rumors through word-of-mouth.
+- Autonomous pricing agents engage in tacit algorithmic collusion, holding prices above competitive market levels without ever sending an explicit message.
+- Competing reasoning agents in a multi-agent debate uncover logical fallacies and converge on correct mathematical solutions.
 
-### Lesson overview
+This phenomenon—where complex, macro-level collective patterns arise spontaneously from local interactions between individual agents—is known as **emergent behavior**.
 
-This section contains a general overview of topics that you will learn in this lesson.
+While multi-agent LLM simulations offer exciting testbeds for social science, economic mechanism design, and cooperative problem-solving, the literature is plagued by reproducibility challenges, prompt sensitivity, and anecdotal evaluations.
 
-- Generative agents: memory, reflection and planning in a simulated town.
-- Role-playing agent societies and communicative agents.
-- LLMs playing classic games: what they do compared with equilibrium predictions.
-- Multi-agent debate as a way to improve reasoning.
-- Emergent risks: collusion, deception and correlated failures.
-- How to design multi-agent simulation studies that hold up.
+This lesson surveys the foundational architectures of communicative agent societies (such as Stanford's Generative Agents), examines how LLMs actually behave when placed in classical game-theoretic environments, analyzes multi-agent debate, and details the rigorous empirical controls required to conduct credible multi-agent research.
 
-### Key ideas
+### Generative agents: memory, reflection, and planning
 
-- **Generative agents combine memory, reflection and planning.** In the Generative Agents paper, 25 LLM-driven characters in a sandbox town stored observations in a memory stream, retrieved them by recency, importance and relevance, periodically wrote higher-level reflections, and made daily plans. Starting from one agent's intention to host a party, invitations spread and other agents showed up. Ablations showed each component mattered for believability.
-- **Role-play creates agent societies cheaply.** Frameworks such as CAMEL assign agents roles (for example, a user and an assistant) and let them converse to complete tasks. This is useful for generating data and studying cooperation, but conversations can loop, drift off task or flip roles.
-- **LLMs are not textbook rational players.** In repeated games studies, models often cooperate more than game theory predicts in the one-shot prisoner's dilemma, can be unforgiving after a single defection, and coordinate poorly in games that require taking turns. Benchmarks such as GTBench find that strategic reasoning varies widely across game types and models. Results can change with prompt wording, the names of the actions and the model version.
-- **Debate can help, under conditions.** Having several model instances propose answers, critique each other and revise improves accuracy on some reasoning and factuality tasks. Gains depend on diversity between agents. Copies of the same model often agree on the same wrong answer.
-- **New risks come from interaction.** Agents can learn to collude, for example tacitly raising prices in a simulated market, and can be manipulated by messages from other agents (a multi-agent form of prompt injection). Because agents often share one underlying model, their errors are correlated, so a group of agents is less independent than it looks.
-- **Simulation studies need careful controls.** Strong claims need fixed-strategy baselines, many runs with different seeds, varied prompt framings, and checks that the model has not simply memorized the game from its training data. Treat a single impressive transcript as an anecdote, not evidence.
+In 2023, Park et al. published the landmark paper *"Generative Agents: Interactive Simulacra of Human Behavior"*, deploying 25 autonomous LLM characters in "Smallville", an open-ended virtual sandbox town reminiscent of The Sims.
+
+![Generative Agents Architecture: Memory, Reflection, and Planning](assets/images/generative_agents_architecture.svg)
+
+Rather than generating reactive responses from raw conversational context, each agent was driven by a three-tiered cognitive architecture:
+
+#### 1. The memory stream and retrieval function
+
+The foundation of a generative agent is its **Memory Stream**: a comprehensive chronological database of every observation, interaction, dialogue turn, and internal thought experienced by the agent.
+
+Because context windows are finite, an agent cannot include its entire life history in every prompt. When deciding how to act or converse, the agent queries its memory stream using a weighted **Retrieval Function**:
+
+```text
+Score(m) = α_recency * Recency(m) + α_importance * Importance(m) + α_relevance * Relevance(m)
+```
+
+- **Recency:** An exponential decay function over elapsed game time: `Recency(m) = γ^{t - t_m}` (e.g. `γ = 0.995`).
+- **Importance:** A scalar rating from 1 to 10 generated by prompting the LLM at the time the memory was recorded: *"On a scale of 1 to 10, where 1 is purely mundane (brushing teeth) and 10 is life-changing (a breakup), rate the importance of: [observation]"*.
+- **Relevance:** The cosine similarity between the dense vector embedding of the current situation query and the memory text embedding.
+
+#### 2. Higher-level reflection
+
+Raw episodic memories are low-level observations (e.g., *"Klaus is reading a book"*, *"Klaus bought a coffee"*). To develop genuine personality traits and deep relationships, agents periodically engage in **Reflection**:
+1. When the cumulative importance score of recent memories crosses a threshold (e.g. 150), reflection triggers.
+2. The agent queries the LLM: *"Given the 100 most recent memories, what are 3 high-level salient questions about the agent's life?"*
+3. The agent retrieves relevant memories for each question and asks the model to extract broad synthetic insights (e.g., *"Klaus is dedicated to his research but struggles to maintain personal relationships"*).
+4. The generated reflection is written back into the memory stream as a first-class memory record. Future reflections can reflect on prior reflections, creating a recursive tree of abstract beliefs.
+
+#### 3. Hierarchical planning and reactive replanning
+
+Agents formulate coarse top-down plans that are recursively decomposed into fine-grained actions:
+- In the morning, the agent generates an overall daily agenda (e.g., wake up at 7:00 AM, work at library until noon, lunch with Maria at 1:00 PM).
+- Hourly schedules are decomposed into 5-to-15 minute action blocks.
+- **Reactive replanning:** When an agent perceives a salient event (e.g., encountering a friend in the town square or noticing a kitchen fire), the agent interrupts its schedule and prompts the model to decide whether to continue the plan or react.
+
+#### Emergent social phenomena
+
+Without hard-coded simulation scripts, the researchers seeded one agent (Isabella Rodriguez) with the intention to host a Valentine's Day party. Over two simulated days:
+- Isabella invited friends while working at the cafe.
+- Characters spread the invitation to other characters who had never spoken to Isabella.
+- Characters discussed dates and coordinated their schedules.
+- On the designated day, multiple independent agents showed up at the party at the correct location and time.
+
+### Communicative agent societies and role-playing
+
+Frameworks such as **CAMEL** (Li et al., 2023) explored autonomous task-solving societies through communicative role-play:
+- Two or more agents are assigned complementary personas (e.g., a "Product Manager" and a "Python Programmer") via **inception prompting**.
+- The agents converse autonomously in a dialogue loop to flesh out requirements, draft code, and debug implementations without human intervention.
+
+#### Common multi-agent conversational failure modes
+
+Unconstrained multi-agent dialogue loops frequently succumb to characteristic pathologies:
+1. **Conversational Loops & Echo Chambers:** Agents exchange polite pleasantries indefinitely (*"Thank you! That looks great."* → *"You're welcome! Let me know if you need anything else."* → *"Understood, thanks again!"*).
+2. **Role Inversion / Identity Collapse:** Over prolonged conversations, agents lose track of their assigned personas. The programmer starts issuing management decisions, or both agents begin mimicking each other's linguistic style.
+3. **Cascading Hallucination:** If Agent A hallucinates an incorrect API endpoint or variable name, Agent B treats it as authoritative ground truth, compounding the error until the entire codebase is broken.
+
+### LLMs in strategic game-theoretic environments
+
+When researchers pit LLMs against each other in game-theoretic environments (such as the repeated Prisoner's Dilemma, Stag Hunt, or Public Goods games), models do not behave like textbook game-theoretic rational players:
+
+#### 1. Hyper-cooperativeness in one-shot dilemmas
+
+In one-shot Prisoner's Dilemma experiments, modern aligned models (such as GPT-4 or Claude) often choose to **Cooperate** between 60% and 80% of the time, directly violating the dominant-strategy prediction of game theory.
+
+This behavior is primarily an artifact of **RLHF alignment tuning**: models are heavily trained to be helpful, harmless, and cooperative conversational partners. Unless explicitly prompted with a ruthless or competitive persona, their default inductive bias is prosocial.
+
+#### 2. The forgiveness deficit
+
+In repeated games, classical human players and optimal algorithms (like Tit-for-Tat) readily forgive accidental defections. In contrast, many LLM agents display an extreme **forgiveness deficit**: after observing a single defection by an opponent, the model's in-context memory fixes on the betrayal, causing it to defect unconditionally for the remainder of the game.
+
+#### 3. Fragility to action labeling and framing
+
+Benchmarks like **GTBench** (Duan et al., 2024) show that model strategic competence is fragile:
+- In standard "Rock-Paper-Scissors", models play near mixed-strategy equilibrium.
+- If the actions are renamed to "Fire-Water-Earth" or arbitrary symbols "Alpha-Beta-Gamma", strategic performance drops dramatically.
+- The model often relies on semantic heuristics memorized during pretraining rather than reasoning dynamically about the payoff matrix.
+
+### Multi-agent debate for reasoning and factuality
+
+Can multi-agent communication improve individual model accuracy?
+
+In **Multi-Agent Debate** (Du et al., 2023; Liang et al., 2023), multiple instances of a language model are given the same reasoning problem. In round 1, each agent generates an independent response. In subsequent rounds, each agent reads the arguments generated by all other agents, critiques their logic, and updates its answer until consensus is achieved.
+
+#### The necessity of agent diversity
+
+Empirical studies demonstrate that multi-agent debate only improves performance when there is **meaningful cognitive diversity**:
+- Pitting three identical copies of the same model with temperature 0 often results in unanimous confirmation of the same initial hallucination.
+- True accuracy gains require varying base models (e.g., pairing Claude with GPT), varying system prompts (e.g., assigning explicit "devil's advocate" or "strict fact-checker" roles), or sampling diverse generation temperatures.
+
+### Emergent risks in autonomous multi-agent systems
+
+Deploying collections of autonomous agents introduces systemic risks that do not exist in single-agent architectures:
+
+1. **Tacit Algorithmic Collusion:** In simulated e-commerce marketplaces, autonomous reinforcement learning pricing bots have been observed to converge on supra-competitive prices (tacit collusion). Without exchanging a single explicit communication, the algorithms learn that punishing price cuts immediately and maintaining high prices maximizes collective profit.
+2. **Correlated Vulnerabilities:** Because modern agents are built on a handful of foundation models, thousands of independently deployed agents share identical pretraining blind spots, biases, and prompt injection vulnerabilities. A systemic failure in one foundation model can trigger simultaneous synchronized failures across an entire market.
+3. **Multi-Agent Prompt Injection:** In an agent network, an untrusted external message processed by Agent A can trick it into emitting an instruction that exploits Agent B's elevated system permissions, bypassing security perimeters via communicative contagion.
+
+### Methodological standards for multi-agent simulation research
+
+Because language models are sensitive to prompt phrasing, conducting credible multi-agent research requires strict experimental hygiene:
+
+- **Fixed-Strategy Baselines:** Never test LLMs solely against other LLMs. Always benchmark against deterministic, well-understood algorithmic baselines (e.g., Always-Defect, Random, Tit-for-Tat, fictitious play).
+- **Seed Averaging:** Run every experimental condition across at least 10–30 random seeds with variance error bars. Never draw scientific conclusions from a single transcribed dialogue.
+- **Action Renaming Ablations:** Rerun experiments with scrambled action names, reversed payoff rows, and neutral framing to verify whether the agent is actually reasoning over payoffs or merely reciting internet text.
+- **Controlled Temperature:** Report exact decoding temperatures and token limits to ensure exact reproducibility.
+
+### Python implementation: a generative memory stream
+
+Here is a minimal implementation of the Generative Agents memory stream with composite retrieval scoring:
+
+```python
+import time
+import numpy as np
+from dataclasses import dataclass
+
+@dataclass
+class MemoryRecord:
+    id: int
+    text: str
+    created_at: float
+    importance: float  # Scale 1.0 to 10.0
+    embedding: np.ndarray
+
+class GenerativeMemoryStream:
+    def __init__(self, decay_rate: float = 0.995, alpha_rec: float = 1.0, alpha_imp: float = 1.0, alpha_rel: float = 1.0):
+        self.records: list[MemoryRecord] = []
+        self.decay_rate = decay_rate
+        self.alpha_rec = alpha_rec
+        self.alpha_imp = alpha_imp
+        self.alpha_rel = alpha_rel
+
+    def add_memory(self, text: str, importance: float, embedding: np.ndarray):
+        record = MemoryRecord(
+            id=len(self.records),
+            text=text,
+            created_at=time.time(),
+            importance=importance,
+            embedding=embedding / (np.linalg.norm(embedding) + 1e-8),
+        )
+        self.records.append(record)
+
+    def retrieve(self, query_embedding: np.ndarray, top_k: int = 3) -> list[MemoryRecord]:
+        if not self.records:
+            return []
+
+        q_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+        now = time.time()
+
+        recency_scores = []
+        importance_scores = []
+        relevance_scores = []
+
+        for rec in self.records:
+            # Exponential decay based on elapsed seconds
+            elapsed = now - rec.created_at
+            recency = self.decay_rate ** elapsed
+            recency_scores.append(recency)
+
+            importance_scores.append(rec.importance / 10.0)
+
+            # Cosine similarity
+            relevance = float(np.dot(rec.embedding, q_norm))
+            relevance_scores.append(max(0.0, relevance))
+
+        # Normalize to [0, 1] range across current candidates
+        rec_arr = np.array(recency_scores)
+        imp_arr = np.array(importance_scores)
+        rel_arr = np.array(relevance_scores)
+
+        total_scores = (
+            self.alpha_rec * rec_arr +
+            self.alpha_imp * imp_arr +
+            self.alpha_rel * rel_arr
+        )
+
+        top_indices = np.argsort(total_scores)[::-1][:top_k]
+        return [self.records[idx] for idx in top_indices]
+```
 
 ### Assignment
 
 <div class="lesson-content__panel" markdown="1">
 
-1. Read [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) by Park and colleagues.
-   - Read sections 1 to 5 and the evaluation. Draw the agent architecture from memory, then compare it with the memory system you built in The Agent That Remembers.
-   - Optional: browse the [Generative Agents code](https://github.com/joonspk-research/generative_agents).
-1. Read [Playing repeated games with Large Language Models](https://arxiv.org/abs/2305.16867) by Akata and colleagues, which pits LLMs against each other and fixed strategies in repeated 2x2 games.
-   - Read the whole paper. Note the payoff matrices, the number of rounds, how behavior is measured, and the "prompting the model to predict the other player" intervention.
-1. Read [GTBench: Uncovering the Strategic Reasoning Limitations of LLMs via Game-Theoretic Evaluations](https://arxiv.org/abs/2402.12348).
-   - Read the introduction, the taxonomy of games and the main findings. Note which kinds of games are hardest for models.
-1. Read [Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325).
-   - Read the method and results, and look for evidence of how much improvement depends on the number of agents and rounds.
-1. Practice: write a one-page critique of one of the papers above as if you were a reviewer. Cover the claims, the evidence for each, missing baselines or controls, and one follow-up experiment that would most strengthen or weaken the main conclusion. Use the method from Reading Papers.
+1. Read [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) (Park et al., 2023).
+   - Review sections 3 to 5. Diagram the retrieval and reflection mechanisms from memory.
+2. Read [Playing repeated games with Large Language Models](https://arxiv.org/abs/2305.16867) (Akata et al., 2023).
+   - Note the comparison between LLMs and classic strategies in repeated 2x2 games, and observe how prompting for opponent prediction changes cooperative outcomes.
+3. Read [GTBench: Uncovering the Strategic Reasoning Limitations of LLMs via Game-Theoretic Evaluations](https://arxiv.org/abs/2402.12348).
+   - Review the taxonomy of game environments and the impact of action obfuscation on model decisions.
+4. Read [Improving Factuality and Reasoning in Language Models through Multiagent Debate](https://arxiv.org/abs/2305.14325) (Du et al., 2023).
+   - Analyze how the number of debate rounds and model diversity influence final accuracy.
+5. Practice: Conduct a 1-page peer review of one of the papers above, assessing whether its findings represent true emergent reasoning or artifacts of pretraining data memorization.
 
 </div>
 
@@ -51,6 +212,16 @@ This section contains a general overview of topics that you will learn in this l
 
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
-- [CAMEL: Communicative Agents for "Mind" Exploration of Large Language Model Society](https://arxiv.org/abs/2303.17760) introduced role-playing agent societies and analyzes how their conversations fail.
-- [Large Language Model based Multi-Agents: A Survey of Progress and Challenges](https://arxiv.org/abs/2402.01680) maps the field, including simulation, problem-solving and evaluation work.
-- [Theory of Mind for Multi-Agent Collaboration via Large Language Models](https://arxiv.org/abs/2310.10701) tests whether LLM agents model each other's beliefs during a cooperative game.
+- [CAMEL: Communicative Agents for "Mind" Exploration](https://arxiv.org/abs/2303.17760): The pioneering paper on autonomous role-playing multi-agent societies.
+- [Large Language Model based Multi-Agents: A Survey](https://arxiv.org/abs/2402.01680): Comprehensive taxonomy of collaborative, competitive, and simulation agent frameworks.
+- [Generative Agents GitHub Repository](https://github.com/joonspk-research/generative_agents): Official research code for the Smallville simulation.
+
+### Knowledge check
+
+Use these questions to verify your understanding of emergent behavior in LLM agents:
+
+1. [What are the three components of the retrieval scoring function in the Generative Agents architecture, and how are they calculated?](#generative-agents-memory-reflection-and-planning)
+2. [Why does the reflection mechanism in Generative Agents write synthetic insights back into the memory stream as first-class records?](#generative-agents-memory-reflection-and-planning)
+3. [What are the primary conversational failure modes that emerge in unconstrained multi-agent dialogue loops?](#communicative-agent-societies-and-role-playing)
+4. [Why do aligned language models often play unconditionally cooperative strategies in one-shot Prisoner's Dilemma games?](#llms-in-strategic-game-theoretic-environments)
+5. [What experimental controls are mandatory to establish credible, reproducible findings in multi-agent LLM simulations?](#methodological-standards-for-multi-agent-simulation-research)

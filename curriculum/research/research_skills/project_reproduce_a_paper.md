@@ -33,6 +33,20 @@ Reproduction is one of the most useful things a new researcher can do. It is how
 1. Write a 2 to 4 page report in paper format: abstract, introduction (what you reproduced and why), original claim, setup and differences, results (a main table or figure, with error bars), analysis of what matched and what did not, with your best explanations, limitations, and a reproducibility statement. Include the PDF in the repo.
 1. Push your project to GitHub with a README that summarizes the result in three sentences, links the report, and explains how to rerun every experiment with one command each. Include the filled-in [ML Reproducibility Checklist](https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf).
 
+#### Evidence
+
+Your project repository must prove that your empirical reproduction adheres to the highest standards of modern machine learning scholarship:
+
+- `pytest` test suite in `tests/` verifying:
+  - Metric computation: unit tests confirming that your scoring function (e.g., exact match, pass@k, pass^k, BLEU) matches ground truth calculations on verified test vectors.
+  - Mocked offline execution: unit tests verifying that the full agent evaluation pipeline can run end-to-end on mock model responses without requiring live API calls or network connectivity.
+  - Parsing and extraction: regex and schema tests confirming robust extraction of reasoning traces, tool calls, and final answers from model completions.
+- A GitHub Actions CI workflow running `ruff check .` and `pytest` on every commit, with a passing badge in your README.
+- A pre-registered `PLAN.md` explicitly quoting the original paper's target claim, citing the exact baseline table/figure, detailing all setup deviations, and committing to an API budget ceiling.
+- A compiled, publication-ready PDF report (2–4 pages) in your repository formatted in LaTeX (NeurIPS/ICLR style) containing an abstract, an introduction with explicit contributions, Figure 1, a results table with 95% confidence intervals, an ablation study, and a candid Limitations section.
+- A completed [ML Reproducibility Checklist](https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf) included in `REPRODUCIBILITY.md` or in the repository README.
+- Raw evaluation logs in `data/` recording task inputs, model generations, token counts, and execution traces across all trials, enabling instantaneous plot regeneration with `python plot_results.py`.
+
 #### Extra credit
 
 - Contact the paper's authors, or open a GitHub issue on their repo, about a discrepancy you found, and include the response (or lack of one) in your report.

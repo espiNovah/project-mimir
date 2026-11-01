@@ -18,13 +18,14 @@ import os
 import anthropic
 
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+MODEL = os.environ.get("MIMIR_MODEL", "claude-haiku-5-5")
 
 LABELS = ["card_arrival", "lost_or_stolen_phone", "..."]  # all labels from train.csv
 
 
 def classify(message: str) -> str:
     response = client.messages.create(
-        model="claude-haiku-5-5",
+        model=MODEL,
         max_tokens=20,
         system="Classify the customer message into exactly one of these intents. "
         "Reply with the intent name only.\n" + "\n".join(LABELS),
@@ -56,6 +57,25 @@ Develop your prompt and choose fine-tuning settings using the validation set onl
 1. Produce a results table and a short error analysis: which intents does each system get wrong, and do the systems fail in the same places?
 1. Write a one-page recommendation in your README of which system you would ship for a support team handling 100,000 messages a month, and why. Address quality, cost, latency, privacy and maintenance, and say what result would change your mind.
 1. Push your project to GitHub with a README that explains what it does, how to run it, and what you learned.
+
+#### Evidence
+
+Your project repository must prove that your comparison was conducted fairly on sealed data:
+
+- `pytest` tests verifying:
+  - Chat template formatter produces valid JSONL turns with correct special tokens.
+  - Evaluation parser correctly handles unexpected model output and scores invalid labels as errors.
+  - Macro-F1 computation agrees with `scikit-learn` to within `1e-6`.
+- A GitHub Actions workflow running `ruff check .` and `pytest` on every push, with a passing badge in your README.
+- A public link to your trained LoRA adapter on Hugging Face Hub (or attached as a `.tar.gz` to a GitHub Release).
+- A clean markdown results table in your README comparing:
+  - Classic baseline (from Beat the Baseline)
+  - Prompted frontier model ([cheap model](#/models) or [capable model](#/models))
+  - Base open model (un-tuned)
+  - Fine-tuned open model with LoRA
+  across Accuracy, Macro-F1, p50 and p95 latency, and Cost per 1,000 requests.
+- A cost calculation for the small model derived from measured batched throughput (or a local vLLM benchmark), documenting exact hardware assumptions.
+- A 1-page decision memo recommending which solution to ship for a support team processing 100,000 messages per month.
 
 #### Extra credit
 

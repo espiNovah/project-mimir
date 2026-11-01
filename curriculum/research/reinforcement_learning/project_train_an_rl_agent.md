@@ -31,6 +31,20 @@ Getting an RL algorithm to "work once" is easy. Showing that it works reliably, 
    - Notes at least one surprising or unstable result and what you think caused it.
 1. Push your project to GitHub with a README that explains what it does, how to reproduce every plot with one command each, and what you learned. Include the plots and a results table in the README.
 
+#### Evidence
+
+Your project repository must prove that your reinforcement learning agents and empirical evaluations are rigorous and reproducible:
+
+- `pytest` test suite in `tests/` verifying:
+  - Tabular Q-learning step: a hand-constructed transition `(s, a, r, s')` updates `Q(s, a)` to the exact value calculated analytically.
+  - Return calculation: the discounted return function `G_t = sum(gamma^k * r_{t+k+1})` produces exact expected values for positive, negative, and terminal reward sequences.
+  - Baseline invariance: unit tests confirming the sample mean gradient with baseline subtracted remains within standard error of the raw policy gradient.
+- A GitHub Actions CI workflow running `ruff check .` and `pytest` on every push, with a passing badge in your README.
+- Saved CSV raw logs in `data/` recording training and evaluation curves across all 5 random seeds, allowing plots to be regenerated instantaneously with `python plot.py`.
+- Two publication-quality Matplotlib plots (`q_learning_curves.png` and `reinforce_curves.png`) with mean curves and shaded standard-deviation envelopes across seeds.
+- A controlled ablation plot (`ablation_study.png`) illustrating the sensitivity of agent convergence to at least 3 distinct values of a key hyperparameter (such as epsilon decay or baseline choice).
+- A complete `REPORT.md` (1–2 pages) analyzing the empirical results, error bars, and observed failure modes referenced directly to relevant sections of Sutton & Barto.
+
 #### Extra credit
 
 - Implement SARSA and compare it with Q-learning on Gymnasium's `CliffWalking-v1`, reproducing the qualitative result of Sutton and Barto's cliff-walking example.

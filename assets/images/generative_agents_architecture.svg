@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="auto">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#9333ea" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#16a34a" />
+    </marker>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="800" height="420" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="400" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">Generative Agents Architecture: Memory, Reflection, and Planning (Park et al.)</text>
+
+  <!-- Left: Sandbox Environment & Percepts -->
+  <g transform="translate(30, 60)">
+    <rect width="150" height="320" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="75" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">Sandbox World</text>
+
+    <!-- Percepts Stream -->
+    <rect x="15" y="50" width="120" height="55" rx="6" fill="#eff6ff" stroke="#93c5fd"/>
+    <text x="75" y="72" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Perceptions</text>
+    <text x="75" y="88" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-anchor="middle">"Isabella is pouring tea"</text>
+
+    <!-- Actuators Execution -->
+    <rect x="15" y="215" width="120" height="65" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+    <text x="75" y="238" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#14532d" text-anchor="middle">Actions</text>
+    <text x="75" y="254" font-family="system-ui, sans-serif" font-size="9" fill="#15803d" text-anchor="middle">Speech, movement,</text>
+    <text x="75" y="268" font-family="system-ui, sans-serif" font-size="9" fill="#15803d" text-anchor="middle">sandbox interaction</text>
+  </g>
+
+  <!-- Center: Memory Stream -->
+  <g transform="translate(210, 60)">
+    <rect width="250" height="320" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="125" y="26" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1d4ed8" text-anchor="middle">Comprehensive Memory Stream</text>
+
+    <!-- Memory Record Entries -->
+    <rect x="15" y="45" width="220" height="38" rx="4" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="25" y="62" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">[09:05 AM] Observation (Imp: 4)</text>
+    <text x="25" y="75" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1e293b">"Sam walked into cafe"</text>
+
+    <rect x="15" y="90" width="220" height="38" rx="4" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="25" y="107" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">[09:12 AM] Observation (Imp: 8)</text>
+    <text x="25" y="120" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#1e293b">"Valentine's party invitation"</text>
+
+    <rect x="15" y="135" width="220" height="42" rx="4" fill="#fdf4ff" stroke="#d8b4fe"/>
+    <text x="25" y="152" font-family="system-ui, sans-serif" font-size="9" fill="#9333ea">[10:00 AM] Reflection (Imp: 9)</text>
+    <text x="25" y="167" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#6b21a8">"Klaus enjoys social events"</text>
+
+    <!-- Retrieval Scoring Box -->
+    <rect x="15" y="195" width="220" height="110" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="125" y="215" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e40af" text-anchor="middle">Retrieval Scoring Function</text>
+    <rect x="25" y="228" width="200" height="26" rx="4" fill="#eff6ff"/>
+    <text x="125" y="245" font-family="monospace" font-size="9" font-weight="700" fill="#1d4ed8" text-anchor="middle">score = α·Recency + β·Imp + γ·Rel</text>
+    <text x="125" y="272" font-family="system-ui, sans-serif" font-size="9" fill="#475569" text-anchor="middle">• Recency: exponential decay</text>
+    <text x="125" y="286" font-family="system-ui, sans-serif" font-size="9" fill="#475569" text-anchor="middle">• Importance: LLM rated 1–10</text>
+    <text x="125" y="299" font-family="system-ui, sans-serif" font-size="9" fill="#475569" text-anchor="middle">• Relevance: cosine similarity</text>
+  </g>
+
+  <!-- Right: Cognitive Reflection & Planning Engines -->
+  <g transform="translate(490, 60)">
+    <!-- Reflection Engine -->
+    <rect width="280" height="145" rx="8" fill="#faf5ff" stroke="#9333ea" stroke-width="1.5"/>
+    <text x="140" y="24" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7e22ce" text-anchor="middle">Higher-Level Reflection</text>
+    <text x="140" y="42" font-family="system-ui, sans-serif" font-size="10" fill="#9333ea" text-anchor="middle">Synthesizes memories into insights</text>
+
+    <rect x="20" y="55" width="240" height="70" rx="6" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="30" y="74" font-family="system-ui, sans-serif" font-size="10" fill="#475569">1. Prompts LLM for 3 salient questions</text>
+    <text x="30" y="92" font-family="system-ui, sans-serif" font-size="10" fill="#475569">2. Retrieves relevant memories</text>
+    <text x="30" y="110" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#6b21a8">3. Generates and stores new Insight</text>
+
+    <!-- Planning Engine -->
+    <rect y="165" width="280" height="155" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="140" y="189" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#15803d" text-anchor="middle">Hierarchical Planning &amp; Reacting</text>
+
+    <rect x="20" y="202" width="240" height="105" rx="6" fill="#ffffff" stroke="#86efac"/>
+    <text x="30" y="222" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#166534">Top-Down Plan Decomposition:</text>
+    <text x="30" y="238" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• Broad daily schedule (wake, work, lunch)</text>
+    <text x="30" y="252" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• Hourly sub-actions</text>
+    <text x="30" y="266" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">• 5-15 minute granular interactions</text>
+    <text x="30" y="286" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#047857">Reactive replanning upon novel percepts</text>
+  </g>
+
+  <!-- Connectors -->
+  <!-- Perceptions to Memory -->
+  <path d="M 135 115 L 205 115" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Memory to Reflection -->
+  <path d="M 460 135 L 485 135" fill="none" stroke="#9333ea" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Reflection back to Memory -->
+  <path d="M 485 155 L 465 155" fill="none" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Memory to Planning -->
+  <path d="M 460 260 L 485 260" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Planning to Action -->
+  <path d="M 490 305 L 140 305" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Footer Banner -->
+  <rect x="30" y="390" width="740" height="22" rx="4" fill="#e2e8f0"/>
+  <text x="400" y="405" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#334155" text-anchor="middle">Social Contagion Emergence: Information spreads across agent interactions without centralized simulation scripts.</text>
+</svg>
+

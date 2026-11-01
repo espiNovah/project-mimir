@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="100%" height="auto">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <rect width="760" height="380" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="380" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">Markov Decision Process: The Agent-Environment Loop &amp; Bellman Backup</text>
+
+  <!-- Left: Agent Environment Interaction Loop -->
+  <g transform="translate(40, 60)">
+    <text x="140" y="0" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">1. Agent-Environment Interaction</text>
+
+    <!-- Agent Box -->
+    <rect x="50" y="30" width="180" height="65" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="140" y="60" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af" text-anchor="middle">Agent (Policy π)</text>
+    <text x="140" y="78" font-family="system-ui, sans-serif" font-size="11" fill="#3b82f6" text-anchor="middle">Maps State → Action</text>
+
+    <!-- Environment Box -->
+    <rect x="50" y="200" width="180" height="65" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="140" y="230" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">Environment</text>
+    <text x="140" y="248" font-family="system-ui, sans-serif" font-size="11" fill="#b45309" text-anchor="middle">Transition Dynamics P &amp; Rewards R</text>
+
+    <!-- Action Arrow (Right down) -->
+    <path d="M 230 62 L 270 62 L 270 232 L 232 232" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="278" y="150" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Action A_t</text>
+
+    <!-- State & Reward Arrow (Left up) -->
+    <path d="M 50 232 L 10 232 L 10 62 L 48 62" fill="none" stroke="#059669" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="18" y="140" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#059669">Reward R_{t+1}</text>
+    <text x="18" y="160" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#059669">State S_{t+1}</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="380" y1="50" x2="380" y2="350" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Right: Bellman Backup Tree -->
+  <g transform="translate(420, 60)">
+    <text x="150" y="0" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">2. Bellman Expectation Backup</text>
+
+    <!-- Root State s -->
+    <circle cx="150" cy="40" r="14" fill="#2563eb"/>
+    <text x="150" y="44" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">s</text>
+    <text x="180" y="44" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">V(s)</text>
+
+    <!-- Policy Action Branches -->
+    <line x1="150" y1="54" x2="80" y2="120" stroke="#475569" stroke-width="1.5"/>
+    <line x1="150" y1="54" x2="220" y2="120" stroke="#475569" stroke-width="1.5"/>
+    <text x="95" y="80" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">π(a1|s)</text>
+    <text x="205" y="80" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">π(a2|s)</text>
+
+    <!-- Action Nodes (small filled circles) -->
+    <circle cx="80" cy="120" r="7" fill="#475569"/>
+    <text x="50" y="125" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Q(s, a1)</text>
+
+    <circle cx="220" cy="120" r="7" fill="#475569"/>
+    <text x="240" y="125" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Q(s, a2)</text>
+
+    <!-- Transition Branches to Next States -->
+    <line x1="80" y1="127" x2="40" y2="200" stroke="#475569" stroke-width="1.5"/>
+    <line x1="80" y1="127" x2="110" y2="200" stroke="#475569" stroke-width="1.5"/>
+    <line x1="220" y1="127" x2="190" y2="200" stroke="#475569" stroke-width="1.5"/>
+    <line x1="220" y1="127" x2="260" y2="200" stroke="#475569" stroke-width="1.5"/>
+
+    <!-- Next States s' -->
+    <circle cx="40" cy="200" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="40" y="204" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-anchor="middle">s'</text>
+
+    <circle cx="110" cy="200" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="110" y="204" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-anchor="middle">s'</text>
+
+    <circle cx="190" cy="200" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="190" y="204" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-anchor="middle">s'</text>
+
+    <circle cx="260" cy="200" r="10" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="260" y="204" font-family="system-ui, sans-serif" font-size="9" fill="#2563eb" text-anchor="middle">s'</text>
+
+    <!-- Recursive Equation Box -->
+    <rect x="20" y="240" width="260" height="50" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="150" y="260" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b" text-anchor="middle">V(s) = E_π [ R_{t+1} + γ * V(S_{t+1}) | S_t = s ]</text>
+    <text x="150" y="278" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Value of current state = immediate reward + discounted next</text>
+  </g>
+</svg>
+

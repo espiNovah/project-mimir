@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="auto">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <rect width="640" height="400" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="320" y="32" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b" text-anchor="middle">Low-Rank Adaptation (LoRA) Architecture</text>
+
+  <!-- Input Vector x -->
+  <rect x="220" y="340" width="200" height="36" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="320" y="363" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Input Vector x (dimension: d)</text>
+
+  <!-- Split paths -->
+  <path d="M 270 340 L 170 340 L 170 270" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 370 340 L 470 340 L 470 290" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Left: Frozen Base Model Weights W -->
+  <rect x="70" y="140" width="200" height="130" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="170" y="185" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#334155" text-anchor="middle">Frozen Base Weight W</text>
+  <text x="170" y="205" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Shape: (d × d)</text>
+  <text x="170" y="235" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#dc2626" text-anchor="middle">No gradient updates</text>
+
+  <!-- Right: Trainable Adapters A and B -->
+  <rect x="370" y="230" width="200" height="55" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="470" y="255" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Matrix A (Trainable)</text>
+  <text x="470" y="272" font-family="system-ui, sans-serif" font-size="11" fill="#3b82f6" text-anchor="middle">Shape: (r × d), Gaussian init</text>
+
+  <line x1="470" y1="230" x2="470" y2="195" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="480" y="215" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">rank r ≪ d</text>
+
+  <rect x="370" y="135" width="200" height="55" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="470" y="160" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af" text-anchor="middle">Matrix B (Trainable)</text>
+  <text x="470" y="177" font-family="system-ui, sans-serif" font-size="11" fill="#3b82f6" text-anchor="middle">Shape: (d × r), Zero init</text>
+
+  <!-- Scaling Box -->
+  <text x="470" y="115" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#059669" text-anchor="middle">× (alpha / r) scaling</text>
+
+  <!-- Merge into Add -->
+  <path d="M 170 140 L 170 85 L 296 85" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 470 135 L 470 85 L 344 85" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Summation Circle -->
+  <circle cx="320" cy="85" r="16" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
+  <text x="320" y="91" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#10b981" text-anchor="middle">+</text>
+
+  <!-- Final Output -->
+  <line x1="320" y1="69" x2="320" y2="45" stroke="#475569" stroke-width="2"/>
+  <text x="335" y="55" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">y = W·x + (alpha/r)·B·A·x</text>
+</svg>
+
